@@ -177,7 +177,8 @@ def write_packages_index(suite: str) -> None:
             gz.write(packages.encode())
 
     release_path = PUBLIC / "dists" / suite / "Release"
-    with release_path.open("w") as output:
+    release_tmp = PUBLIC / f".Release-{suite}.tmp"
+    with release_tmp.open("w") as output:
         subprocess.run(
             [
                 "apt-ftparchive",
@@ -195,6 +196,7 @@ def write_packages_index(suite: str) -> None:
             check=True,
             stdout=output,
         )
+    release_tmp.replace(release_path)
 
     release_text = release_path.read_text()
     marker = f"Codename: {suite}\n"
