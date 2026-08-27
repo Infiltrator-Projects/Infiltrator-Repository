@@ -1,0 +1,65 @@
+[
+  {
+    "id": "system-monitor",
+    "name": "Linux System Monitor",
+    "repo": "System-Monitor",
+    "category": "System",
+    "description": "Native Linux system monitoring for Mint and other Debian-family desktops.",
+    "deb_regex": "^linux-system-monitor_.*_amd64\\.deb$",
+    "icon": "monitor"
+  },
+  {
+    "id": "calendar-plus",
+    "name": "Calendar Plus",
+    "repo": "Calendar-Plus",
+    "category": "Productivity",
+    "description": "Enhanced Cinnamon clock and calendar with multiple time and calendar systems.",
+    "deb_regex": "^calendar-plus_.*_amd64\\.deb$",
+    "icon": "calendar"
+  },
+  {
+    "id": "defragger",
+    "name": "Linux Defragger",
+    "repo": "Defragger",
+    "category": "System",
+    "description": "Direct filesystem analysis and layout optimisation tooling.",
+    "deb_regex": "^linux-defragger_.*_amd64\\.deb$",
+    "icon": "disk"
+  },
+  {
+    "id": "infiltratorfs",
+    "name": "InfiltratorFS",
+    "repo": "InfiltratorFS",
+    "category": "Filesystems",
+    "description": "Experimental native Infiltrator filesystem implementation and tools.",
+    "deb_regex": "^infiltratorfs_.*_amd64\\.deb$",
+    "icon": "filesystem"
+  },
+  {
+    "id": "mblink",
+    "name": "MBLINK",
+    "repo": "MBLINK",
+    "category": "Automotive",
+    "description": "Mercedes-Benz diagnostics and vehicle-data application family.",
+    "deb_regex": "^MBLINK-.*-linux-amd64\\.deb$",
+    "icon": "car"
+  },
+  {
+    "id": "jaglink",
+    "name": "JAGLINK",
+    "repo": "Jaglink",
+    "category": "Automotive",
+    "description": "Jaguar diagnostics and vehicle-data application family.",
+    "deb_regex": "^JAGLINK-.*-linux-amd64\\.deb$",
+    "icon": "car"
+  },
+  {
+    "id": "wheres-wally",
+    "name": "WHERE'S WALLY",
+    "repo": "WheresWally",
+    "category": "Infrastructure",
+    "description": "Zabbix NPS authentication event monitor and search module.",
+    "deb_regex": "^nps-wheres-wally-zabbix_.*_all\\.deb$",
+    "icon": "network"
+  }
+]

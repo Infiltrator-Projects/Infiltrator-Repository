@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infiltrator Software — Alpha</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0d10;--panel:#151a21;--text:#f2f5f7;--muted:#9eabb8;--line:#2b333d;--accent:#77d8ff;--good:#7ee787}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(#090b0e,#10151b);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header,main,footer{max-width:1120px;margin:auto;padding-left:24px;padding-right:24px}header{padding-top:60px;padding-bottom:30px}
+.kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
+h1{font-size:clamp(38px,7vw,70px);line-height:1;margin:10px 0 16px;letter-spacing:-.04em}.lead{max-width:780px;color:var(--muted);font-size:18px}
+.alpha{font-size:12px;border:1px solid #805ad5;border-radius:999px;padding:5px 9px;color:#d6bcfa;vertical-align:middle}
+.install,.card{background:var(--panel);border:1px solid var(--line);border-radius:16px}.install{padding:18px;margin-bottom:24px}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.cmd{display:block;background:#080a0d;border:1px solid var(--line);padding:11px 12px;border-radius:9px;margin-top:8px;overflow:auto}
+.note{color:#d8c78b;margin-top:10px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:15px}
+.card{padding:19px;display:flex;flex-direction:column;min-height:210px}.meta{display:flex;justify-content:space-between;gap:10px}.cat{color:var(--accent);font-size:12px;text-transform:uppercase;font-weight:700}.ver{color:var(--good);font:12px ui-monospace,monospace}
+h2{margin:12px 0 5px}.desc{color:var(--muted);flex:1}.pkg{background:#0b0e12;border:1px solid var(--line);padding:8px;border-radius:8px;overflow:auto}.links{margin-top:13px;display:flex;gap:8px}.links a{color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:6px 9px}
+footer{padding-top:38px;padding-bottom:55px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header><div class="kicker">The First Infiltrator</div><h1>Infiltrator Software <span class="alpha">ALPHA</span></h1>
+<p class="lead">A live APT catalogue assembled from the current GitHub Releases of the Infiltrator Linux projects. The original repositories remain the source of truth.</p></header>
+<main>
+<section class="install"><strong>Add the alpha repository to Linux Mint</strong>
+<code class="cmd">echo 'deb [trusted=yes arch=amd64] https://the-first-infiltrator.github.io/Infiltrator-Repository stable main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list</code>
+<code class="cmd">sudo apt update</code>
+<div class="note">Alpha only: repository signing is not enabled yet, so this test source uses <code>trusted=yes</code>.</div></section>
+<div id="apps" class="grid"><article class="card">Loading current catalogue…</article></div>
+</main>
+<footer>Generated automatically from current GitHub Releases.</footer>
+<script>
+function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function card(a){
+  var article=document.createElement("article");article.className="card";
+  article.innerHTML='<div class="meta"><span class="cat">'+esc(a.category)+'</span><span class="ver">'+esc(a.version||"current")+'</span></div>'+
+    '<h2>'+esc(a.name)+'</h2><p class="desc">'+esc(a.description)+'</p>'+
+    '<code class="pkg">sudo apt install '+esc(a.package||a.id)+'</code>'+
+    '<div class="links"><a href="'+esc(a.release_url)+'">Latest release</a><a href="'+esc(a.source_url)+'">Source</a></div>';
+  return article;
+}
+fetch("catalogue/apps.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(apps){
+  var root=document.getElementById("apps");root.innerHTML="";apps.forEach(function(a){root.appendChild(card(a));});
+}).catch(function(){document.getElementById("apps").innerHTML='<article class="card">Catalogue unavailable. Check the latest Pages workflow.</article>';});
+</script>
+</body></html>
