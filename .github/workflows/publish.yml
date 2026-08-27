@@ -208,8 +208,8 @@ jobs:
           # that their Debian packages are co-installable and own distinct udev
           # rule paths so dpkg cannot regress to a shared-file collision.
           apt-get install -y --no-install-recommends mblink jaglink
-          dpkg-query -W -f='${Status}\\n' mblink | grep -q '^install ok installed$'
-          dpkg-query -W -f='${Status}\\n' jaglink | grep -q '^install ok installed$'
+          dpkg-query -W -f='${Status}\n' mblink | grep -q '^install ok installed$'
+          dpkg-query -W -f='${Status}\n' jaglink | grep -q '^install ok installed$'
           test -f /usr/lib/udev/rules.d/60-mblink-openport2.rules
           test -f /usr/lib/udev/rules.d/60-jaglink-openport2.rules
           test ! -e /usr/lib/udev/rules.d/60-link-openport2.rules
