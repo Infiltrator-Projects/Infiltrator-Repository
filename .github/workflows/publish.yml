@@ -213,7 +213,7 @@ jobs:
           cd /
           rm -rf /tmp/infiltrator-wally-test
           apt-get check
-MINT_E2E
+          MINT_E2E
 
       - name: Report Mint test result
         run: echo 'Linux Mint 22.3 Cinnamon repository lifecycle test passed'
