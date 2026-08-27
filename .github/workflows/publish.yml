@@ -197,12 +197,86 @@ jobs:
 
           for pkg in calendar-plus linux-defragger mblink jaglink; do
             apt-get install -y --no-install-recommends "$pkg"
-            dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
+            dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed
+          # loading requires a booted Mint kernel and is covered by InfiltratorFS itself.
+          apt-get -s install infiltratorfs
+
+          # Zabbix module: repository retrieval and Debian metadata are tested here.
+          # Full configuration requires the external Zabbix frontend dependency.
+          mkdir -p /tmp/infiltrator-wally-test
+          cd /tmp/infiltrator-wally-test
+          apt-get download nps-wheres-wally-zabbix
+          deb="$(find . -maxdepth 1 -name 'nps-wheres-wally-zabbix*.deb' -print -quit)"
+          test -n "$deb"
+          dpkg-deb --info "$deb" >/dev/null
+          cd /
+          rm -rf /tmp/infiltrator-wally-test
+          apt-get check
+          MINT_E2E
+
+      - name: Report Mint test result
+        run: echo 'Linux Mint 22.3 Cinnamon repository lifecycle test passed'
+
             apt-get check
             apt-get purge -y "$pkg"
             ! dpkg-query -W "$pkg" >/dev/null 2>&1
             apt-get check
           done
+
+          # MBLINK and JAGLINK both consume LINK's OpenPort 2.0 support. Prove
+          # that their Debian packages are co-installable and own distinct udev
+          # rule paths so dpkg cannot regress to a shared-file collision.
+          apt-get install -y --no-install-recommends mblink jaglink
+          dpkg-query -W -f='${Status}\n' mblink | grep -q '^install ok installed
+          # loading requires a booted Mint kernel and is covered by InfiltratorFS itself.
+          apt-get -s install infiltratorfs
+
+          # Zabbix module: repository retrieval and Debian metadata are tested here.
+          # Full configuration requires the external Zabbix frontend dependency.
+          mkdir -p /tmp/infiltrator-wally-test
+          cd /tmp/infiltrator-wally-test
+          apt-get download nps-wheres-wally-zabbix
+          deb="$(find . -maxdepth 1 -name 'nps-wheres-wally-zabbix*.deb' -print -quit)"
+          test -n "$deb"
+          dpkg-deb --info "$deb" >/dev/null
+          cd /
+          rm -rf /tmp/infiltrator-wally-test
+          apt-get check
+          MINT_E2E
+
+      - name: Report Mint test result
+        run: echo 'Linux Mint 22.3 Cinnamon repository lifecycle test passed'
+
+          dpkg-query -W -f='${Status}\n' jaglink | grep -q '^install ok installed
+          # loading requires a booted Mint kernel and is covered by InfiltratorFS itself.
+          apt-get -s install infiltratorfs
+
+          # Zabbix module: repository retrieval and Debian metadata are tested here.
+          # Full configuration requires the external Zabbix frontend dependency.
+          mkdir -p /tmp/infiltrator-wally-test
+          cd /tmp/infiltrator-wally-test
+          apt-get download nps-wheres-wally-zabbix
+          deb="$(find . -maxdepth 1 -name 'nps-wheres-wally-zabbix*.deb' -print -quit)"
+          test -n "$deb"
+          dpkg-deb --info "$deb" >/dev/null
+          cd /
+          rm -rf /tmp/infiltrator-wally-test
+          apt-get check
+          MINT_E2E
+
+      - name: Report Mint test result
+        run: echo 'Linux Mint 22.3 Cinnamon repository lifecycle test passed'
+
+          test -f /usr/lib/udev/rules.d/60-mblink-openport2.rules
+          test -f /usr/lib/udev/rules.d/60-jaglink-openport2.rules
+          test ! -e /usr/lib/udev/rules.d/60-link-openport2.rules
+          dpkg-query -S /usr/lib/udev/rules.d/60-mblink-openport2.rules | grep -q '^mblink:'
+          dpkg-query -S /usr/lib/udev/rules.d/60-jaglink-openport2.rules | grep -q '^jaglink:'
+          apt-get check
+          apt-get purge -y mblink jaglink
+          ! dpkg-query -W mblink >/dev/null 2>&1
+          ! dpkg-query -W jaglink >/dev/null 2>&1
+          apt-get check
 
           # Kernel-bound driver: dependency resolution is tested here; runtime DKMS
           # loading requires a booted Mint kernel and is covered by InfiltratorFS itself.
