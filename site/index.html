@@ -164,12 +164,12 @@ function showToast(text){var t=document.getElementById("toast");t.textContent=te
 
 function setupCommand(){
   if(repoInfo.signed){
-    return "sudo install -d -m 0755 /etc/apt/keyrings\\n"+
-      "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\\n"+
-      "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\\n"+
+    return "sudo install -d -m 0755 /etc/apt/keyrings\n"+
+      "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\n"+
+      "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
       "sudo apt update";
   }
-  return "echo 'deb [trusted=yes arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list\\n"+
+  return "echo 'deb [trusted=yes arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list\n"+
     "sudo apt update";
 }
 function updateRepoInfo(){
