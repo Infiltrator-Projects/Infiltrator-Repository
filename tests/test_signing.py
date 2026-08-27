@@ -18,7 +18,7 @@ def run(args, *, env=None, input_data=None, capture=False):
         args,
         env=env,
         input=input_data,
-        text=isinstance(input_data, str),
+        text=True,
         check=True,
         capture_output=capture,
     )
