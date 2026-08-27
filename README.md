@@ -62,9 +62,19 @@ When configured, the build creates `InRelease`, `Release.gpg` and `repository-ke
 
 Until those secrets are deliberately configured, the site clearly identifies the repository as an unsigned alpha.
 
+A local helper is provided at `scripts/create-signing-key.sh`. It creates a dedicated two-year APT signing key outside the repository and writes the two values that must be added as GitHub Actions secrets. The private key output must never be committed to Git.
+
+## Validation
+
+Every non-scheduled publish also runs two independent validation jobs.
+
+The signing self-test creates a disposable CI-only OpenPGP key, signs both suites through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
+
+The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all seven packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY is retrieved and Debian-metadata validated because complete installation also requires the external Zabbix frontend repository.
+
 ## Publication
 
-GitHub Actions publishes on pushes to `main`, on manual request and every six hours. A scheduled run therefore picks up new approved application releases without requiring changes to this repository.
+GitHub Actions publishes on pushes to `main`, on manual request and every six hours. Scheduled runs refresh packages without re-downloading the multi-gigabyte Mint ISO; the heavier Mint lifecycle and signing self-tests run on code changes and manual runs.
 
 Live software centre:
 

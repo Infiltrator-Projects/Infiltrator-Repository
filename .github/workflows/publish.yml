@@ -59,3 +59,161 @@ jobs:
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  signing-self-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name != 'schedule'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install GnuPG
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gnupg
+
+      - name: Exercise signing path with disposable key
+        run: |
+          python3 -m py_compile tests/test_signing.py
+          python3 tests/test_signing.py
+
+  mint-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    needs: build-and-deploy
+    if: github.event_name != 'schedule' && needs.build-and-deploy.result == 'success'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Mint test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends curl p7zip-full squashfs-tools
+
+      - name: Cache verified Mint 22.3 filesystem
+        id: mint-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/mint-squashfs/filesystem.squashfs
+          key: linuxmint-22.3-cinnamon-filesystem-v1
+
+      - name: Download and verify Linux Mint 22.3 Cinnamon ISO
+        if: steps.mint-cache.outputs.cache-hit != 'true'
+        env:
+          MINT_BASE: https://mirrors.edge.kernel.org/linuxmint/stable/22.3
+        run: |
+          set -euxo pipefail
+          ISO="$RUNNER_TEMP/linuxmint-22.3-cinnamon-64bit.iso"
+          mkdir -p "$RUNNER_TEMP/mint-iso" "$RUNNER_TEMP/mint-squashfs"
+          curl -fL --retry 5 --retry-delay 5 -o "$ISO" "$MINT_BASE/linuxmint-22.3-cinnamon-64bit.iso"
+          curl -fL --retry 5 --retry-delay 5 -o "$RUNNER_TEMP/sha256sum.txt" "$MINT_BASE/sha256sum.txt"
+          (cd "$RUNNER_TEMP" && grep 'linuxmint-22.3-cinnamon-64bit.iso' sha256sum.txt | sha256sum -c -)
+          7z x -y "$ISO" -o"$RUNNER_TEMP/mint-iso" casper/filesystem.squashfs
+          mv "$RUNNER_TEMP/mint-iso/casper/filesystem.squashfs" "$RUNNER_TEMP/mint-squashfs/filesystem.squashfs"
+          rm -rf "$RUNNER_TEMP/mint-iso" "$ISO" "$RUNNER_TEMP/sha256sum.txt"
+
+      - name: Wait for published alpha metadata
+        run: |
+          set -euo pipefail
+          URL='https://the-first-infiltrator.github.io/Infiltrator-Repository/dists/alpha/Release'
+          for attempt in $(seq 1 30); do
+            if curl -fsS --max-time 20 "$URL" | grep -q '^Codename: alpha$'; then
+              exit 0
+            fi
+            echo "Waiting for Pages propagation ($attempt/30)..."
+            sleep 5
+          done
+          echo 'Published alpha metadata did not become available in time' >&2
+          exit 1
+
+      - name: Extract clean Linux Mint userspace
+        run: |
+          set -euxo pipefail
+          ROOTFS="$RUNNER_TEMP/mint-root"
+          rm -rf "$ROOTFS"
+          sudo unsquashfs -processors 2 -d "$ROOTFS" "$RUNNER_TEMP/mint-squashfs/filesystem.squashfs"
+          sudo test -f "$ROOTFS/etc/linuxmint/info"
+          sudo grep -q '^RELEASE=22.3$' "$ROOTFS/etc/linuxmint/info"
+          sudo grep -q '^CODENAME=zena$' "$ROOTFS/etc/linuxmint/info"
+
+      - name: Test APT install upgrade and remove on Mint 22.3
+        run: |
+          set -euxo pipefail
+          ROOTFS="$RUNNER_TEMP/mint-root"
+
+          cleanup() {
+            sudo umount -lf "$ROOTFS/dev/pts" 2>/dev/null || true
+            sudo umount -lf "$ROOTFS/dev" 2>/dev/null || true
+            sudo umount -lf "$ROOTFS/proc" 2>/dev/null || true
+            sudo umount -lf "$ROOTFS/sys" 2>/dev/null || true
+            sudo umount -lf "$ROOTFS/run" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+
+          sudo mount --bind /dev "$ROOTFS/dev"
+          sudo mount --bind /dev/pts "$ROOTFS/dev/pts"
+          sudo mount -t proc proc "$ROOTFS/proc"
+          sudo mount -t sysfs sysfs "$ROOTFS/sys"
+          sudo mount -t tmpfs tmpfs "$ROOTFS/run"
+          sudo rm -f "$ROOTFS/etc/resolv.conf"
+          sudo cp -L /etc/resolv.conf "$ROOTFS/etc/resolv.conf"
+          printf '#!/bin/sh\nexit 101\n' | sudo tee "$ROOTFS/usr/sbin/policy-rc.d" >/dev/null
+          sudo chmod 755 "$ROOTFS/usr/sbin/policy-rc.d"
+
+          sudo chroot "$ROOTFS" /usr/bin/env HOME=/root DEBIAN_FRONTEND=noninteractive bash -euxo pipefail <<'MINT_E2E'
+          sed -i '/^[[:space:]]*deb[[:space:]].*cdrom:/d' /etc/apt/sources.list 2>/dev/null || true
+          for f in /etc/apt/sources.list.d/*.list; do
+            [ -e "$f" ] || continue
+            sed -i '/^[[:space:]]*deb[[:space:]].*cdrom:/d' "$f"
+          done
+
+          echo 'deb [trusted=yes arch=amd64] https://the-first-infiltrator.github.io/Infiltrator-Repository alpha main' > /etc/apt/sources.list.d/infiltrator-e2e.list
+          apt-get update
+
+          for pkg in linux-system-monitor calendar-plus linux-defragger infiltratorfs mblink jaglink nps-wheres-wally-zabbix; do
+            apt-cache policy "$pkg" | grep -q 'https://the-first-infiltrator.github.io/Infiltrator-Repository'
+          done
+
+          mapfile -t monitor_versions < <(apt-cache madison linux-system-monitor | awk '{print $3}' | awk '!seen[$0]++')
+          test "${#monitor_versions[@]}" -ge 2
+          latest="${monitor_versions[0]}"
+          previous="${monitor_versions[1]}"
+
+          apt-get install -y --no-install-recommends "linux-system-monitor=$previous"
+          test "$(dpkg-query -W -f='${Version}' linux-system-monitor)" = "$previous"
+          apt-get install -y --no-install-recommends "linux-system-monitor=$latest"
+          test "$(dpkg-query -W -f='${Version}' linux-system-monitor)" = "$latest"
+          apt-get purge -y linux-system-monitor
+          ! dpkg-query -W linux-system-monitor >/dev/null 2>&1
+          apt-get check
+
+          for pkg in calendar-plus linux-defragger mblink jaglink; do
+            apt-get install -y --no-install-recommends "$pkg"
+            dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
+            apt-get check
+            apt-get purge -y "$pkg"
+            ! dpkg-query -W "$pkg" >/dev/null 2>&1
+            apt-get check
+          done
+
+          # Kernel-bound driver: dependency resolution is tested here; runtime DKMS
+          # loading requires a booted Mint kernel and is covered by InfiltratorFS itself.
+          apt-get -s install infiltratorfs
+
+          # Zabbix module: repository retrieval and Debian metadata are tested here.
+          # Full configuration requires the external Zabbix frontend dependency.
+          mkdir -p /tmp/infiltrator-wally-test
+          cd /tmp/infiltrator-wally-test
+          apt-get download nps-wheres-wally-zabbix
+          deb="$(find . -maxdepth 1 -name 'nps-wheres-wally-zabbix*.deb' -print -quit)"
+          test -n "$deb"
+          dpkg-deb --info "$deb" >/dev/null
+          cd /
+          rm -rf /tmp/infiltrator-wally-test
+          apt-get check
+MINT_E2E
+
+      - name: Report Mint test result
+        run: echo 'Linux Mint 22.3 Cinnamon repository lifecycle test passed'
