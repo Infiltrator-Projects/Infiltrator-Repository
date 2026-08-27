@@ -19,6 +19,7 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -29,12 +30,21 @@ jobs:
       - name: Install repository tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils
+          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg
 
-      - name: Build repository from current releases
+      - name: Build and verify repository
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 scripts/sync-repository.py
+          APT_SIGNING_KEY_B64: ${{ secrets.APT_SIGNING_KEY_B64 }}
+          APT_SIGNING_KEY_FINGERPRINT: ${{ secrets.APT_SIGNING_KEY_FINGERPRINT }}
+          APT_SIGNING_PASSPHRASE: ${{ secrets.APT_SIGNING_PASSPHRASE }}
+        run: |
+          python3 -m py_compile scripts/sync-repository.py
+          python3 scripts/sync-repository.py
+          test -s public/dists/alpha/Release
+          test -s public/dists/alpha/main/binary-amd64/Packages.gz
+          test -s public/catalogue/apps.json
+          test -s public/catalogue/repository.json
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

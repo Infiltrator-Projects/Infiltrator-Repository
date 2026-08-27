@@ -1,46 +1,263 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Infiltrator Software — Alpha</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Infiltrator Software Centre — Linux packages published from The First Infiltrator projects.">
+<title>Infiltrator Software Centre</title>
 <style>
-:root{color-scheme:dark;--bg:#0b0d10;--panel:#151a21;--text:#f2f5f7;--muted:#9eabb8;--line:#2b333d;--accent:#77d8ff;--good:#7ee787}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(#090b0e,#10151b);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-header,main,footer{max-width:1120px;margin:auto;padding-left:24px;padding-right:24px}header{padding-top:60px;padding-bottom:30px}
-.kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
-h1{font-size:clamp(38px,7vw,70px);line-height:1;margin:10px 0 16px;letter-spacing:-.04em}.lead{max-width:780px;color:var(--muted);font-size:18px}
-.alpha{font-size:12px;border:1px solid #805ad5;border-radius:999px;padding:5px 9px;color:#d6bcfa;vertical-align:middle}
-.install,.card{background:var(--panel);border:1px solid var(--line);border-radius:16px}.install{padding:18px;margin-bottom:24px}
-code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.cmd{display:block;background:#080a0d;border:1px solid var(--line);padding:11px 12px;border-radius:9px;margin-top:8px;overflow:auto}
-.note{color:#d8c78b;margin-top:10px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:15px}
-.card{padding:19px;display:flex;flex-direction:column;min-height:210px}.meta{display:flex;justify-content:space-between;gap:10px}.cat{color:var(--accent);font-size:12px;text-transform:uppercase;font-weight:700}.ver{color:var(--good);font:12px ui-monospace,monospace}
-h2{margin:12px 0 5px}.desc{color:var(--muted);flex:1}.pkg{background:#0b0e12;border:1px solid var(--line);padding:8px;border-radius:8px;overflow:auto}.links{margin-top:13px;display:flex;gap:8px}.links a{color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:6px 9px}
-footer{padding-top:38px;padding-bottom:55px;color:var(--muted)}
+:root{
+  color-scheme:dark;
+  --bg:#0b0e12;--bg2:#10151b;--panel:#151b22;--panel2:#1b222b;--line:#2b3541;
+  --text:#f4f7f9;--muted:#a7b1bc;--accent:#72d6ff;--accent2:#9ce7ff;--good:#79e39b;
+  --warn:#e7c66d;--danger:#ff9d9d;--shadow:0 18px 48px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 15% -10%,#172633 0,transparent 36%),linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+button,input{font:inherit}
+a{color:inherit}
+.shell{max-width:1180px;margin:auto;padding:0 24px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:28px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:-.02em}
+.brandmark{width:38px;height:38px;border:1px solid #35505f;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#17232c,#0f151a);color:var(--accent);box-shadow:inset 0 1px rgba(255,255,255,.04)}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.02)}
+.badge.alpha{border-color:#66558f;color:#dbcaff}.badge.good{color:var(--good)}.badge.warn{color:var(--warn)}
+.hero{padding:54px 0 30px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(38px,6vw,64px);line-height:1.02;letter-spacing:-.045em;margin:9px 0 15px}
+.lead{max-width:760px;color:var(--muted);font-size:18px;margin:0}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.setup{border:1px solid var(--line);border-radius:17px;background:rgba(21,27,34,.86);box-shadow:var(--shadow);margin:10px 0 28px;overflow:hidden}
+.setup summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 19px;font-weight:700;list-style:none}
+.setup summary::-webkit-details-marker{display:none}
+.setup summary:after{content:"＋";font-size:19px;color:var(--muted)}
+.setup[open] summary:after{content:"−"}
+.setup-body{padding:0 19px 19px;border-top:1px solid var(--line)}
+.setup-note{color:var(--muted);margin:15px 0 12px}.setup-note.warning{color:var(--warn)}
+.command-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}
+.command{display:block;background:#080b0f;border:1px solid var(--line);border-radius:10px;padding:11px 12px;overflow:auto;white-space:pre-wrap;word-break:break-word;color:#dfe9ef;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+.btn{border:1px solid var(--line);border-radius:10px;background:#171e26;color:var(--text);padding:9px 12px;cursor:pointer;transition:.15s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:650}
+.btn:hover{border-color:#476070;background:#1d2731;transform:translateY(-1px)}
+.btn:focus-visible,input:focus-visible{outline:3px solid rgba(114,214,255,.35);outline-offset:2px}
+.btn.primary{background:#dff6ff;color:#071017;border-color:#dff6ff}
+.btn.primary:hover{background:white;border-color:white}
+.btn.small{padding:7px 9px;font-size:13px}
+.toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:0 0 16px}
+.search{position:relative;flex:1;max-width:520px}
+.search input{width:100%;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px 12px 42px}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;color:var(--muted)}
+.result-count{color:var(--muted);white-space:nowrap}
+.filters{display:flex;gap:8px;overflow:auto;padding:0 0 17px;scrollbar-width:thin}
+.filter{white-space:nowrap;border:1px solid var(--line);background:rgba(21,27,34,.72);color:var(--muted);border-radius:999px;padding:7px 11px;cursor:pointer}
+.filter.active{background:#dff6ff;color:#071017;border-color:#dff6ff;font-weight:750}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:15px}
+.card{border:1px solid var(--line);border-radius:17px;background:linear-gradient(180deg,rgba(27,34,43,.95),rgba(20,26,33,.95));padding:19px;display:flex;flex-direction:column;min-height:290px;box-shadow:0 12px 28px rgba(0,0,0,.12);transition:.18s ease}
+.card:hover{transform:translateY(-2px);border-color:#40505f;box-shadow:var(--shadow)}
+.card-head{display:flex;gap:14px;align-items:flex-start}
+.app-icon{width:48px;height:48px;flex:0 0 48px;border-radius:13px;display:grid;place-items:center;background:#0f171e;border:1px solid #30404d;color:var(--accent)}
+.app-icon svg{width:26px;height:26px}
+.card-titles{min-width:0;flex:1}.category{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:800}
+.card h2{font-size:21px;line-height:1.2;margin:4px 0 0;letter-spacing:-.02em}
+.version{color:var(--good);font:12px ui-monospace,SFMono-Regular,Consolas,monospace;margin-top:5px}
+.desc{color:var(--muted);margin:16px 0;flex:1}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.chip{font-size:11px;color:#c3ced6;border:1px solid var(--line);border-radius:7px;padding:4px 7px;background:#10161c}
+.actions{display:flex;gap:8px;align-items:center}.actions .source{margin-left:auto}
+.empty{grid-column:1/-1;border:1px dashed var(--line);border-radius:17px;padding:35px;text-align:center;color:var(--muted)}
+footer{color:var(--muted);padding:44px 0 58px;font-size:13px}
+dialog{border:1px solid var(--line);border-radius:18px;background:#121820;color:var(--text);width:min(760px,calc(100vw - 28px));max-height:88vh;padding:0;box-shadow:0 30px 100px rgba(0,0,0,.6)}
+dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
+.modal-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px}
+.modal-head .app-icon{width:52px;height:52px;flex-basis:52px}.modal-title{flex:1}.modal-title h2{margin:1px 0 4px;font-size:25px}.close{border:0;background:transparent;color:var(--muted);font-size:25px;cursor:pointer;padding:0 4px}
+.modal-body{padding:20px 22px;overflow:auto}.modal-desc{color:var(--muted);margin-top:0}
+.install-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:17px 0}
+.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:16px 0}
+.info{padding:11px 12px;border-bottom:1px solid var(--line)}.info:nth-child(odd){border-right:1px solid var(--line)}.info:nth-last-child(-n+2){border-bottom:0}
+.info-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.info-value{margin-top:3px;word-break:break-word}
+.depends{border:1px solid var(--line);background:#0b0f13;padding:10px;border-radius:10px;font:12px ui-monospace,monospace;color:#c8d2d9;word-break:break-word}
+.history{width:100%;border-collapse:collapse;margin-top:9px}.history th,.history td{text-align:left;border-bottom:1px solid var(--line);padding:9px 6px}.history th{font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:.07em}.history a{text-decoration:none;color:var(--accent)}
+.modal-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,18px);opacity:0;background:#eefaff;color:#071017;border-radius:10px;padding:10px 14px;font-weight:750;box-shadow:var(--shadow);transition:.2s;pointer-events:none;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:650px){.shell{padding:0 16px}.topbar{padding-top:18px}.hero{padding-top:36px}.toolbar{align-items:stretch;flex-direction:column}.search{max-width:none}.result-count{font-size:13px}.grid{grid-template-columns:1fr}.command-wrap,.install-row{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.info:nth-child(odd){border-right:0}.info:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.info:last-child{border-bottom:0}.actions{flex-wrap:wrap}.actions .source{margin-left:0}}
 </style>
 </head>
 <body>
-<header><div class="kicker">The First Infiltrator</div><h1>Infiltrator Software <span class="alpha">ALPHA</span></h1>
-<p class="lead">A live APT catalogue assembled from the current GitHub Releases of the Infiltrator Linux projects. The original repositories remain the source of truth.</p></header>
-<main>
-<section class="install"><strong>Add the alpha repository to Linux Mint</strong>
-<code class="cmd">echo 'deb [trusted=yes arch=amd64] https://the-first-infiltrator.github.io/Infiltrator-Repository stable main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list</code>
-<code class="cmd">sudo apt update</code>
-<div class="note">Alpha only: repository signing is not enabled yet, so this test source uses <code>trusted=yes</code>.</div></section>
-<div id="apps" class="grid"><article class="card">Loading current catalogue…</article></div>
-</main>
-<footer>Generated automatically from current GitHub Releases.</footer>
+<div class="shell">
+  <div class="topbar">
+    <div class="brand"><span class="brandmark" aria-hidden="true">I</span><span>Infiltrator Software Centre</span></div>
+    <span class="badge alpha">ALPHA</span>
+  </div>
+
+  <header class="hero">
+    <div class="eyebrow">The First Infiltrator</div>
+    <h1>Linux software, from one repository.</h1>
+    <p class="lead">Browse the current Infiltrator Linux applications, inspect versions and dependencies, and install them through normal APT on Linux Mint.</p>
+    <div class="stats">
+      <span class="badge" id="appStat">Loading applications…</span>
+      <span class="badge" id="versionStat">Loading versions…</span>
+      <span class="badge warn" id="trustStat">Checking repository trust…</span>
+    </div>
+  </header>
+
+  <main>
+    <details class="setup">
+      <summary><span>Add this repository to Linux Mint</span><span class="badge" id="suiteBadge">alpha</span></summary>
+      <div class="setup-body">
+        <p class="setup-note" id="setupNote">Loading current repository configuration…</p>
+        <div class="command-wrap">
+          <code class="command" id="repoCommand"></code>
+          <button class="btn small" id="copyRepo">Copy setup</button>
+        </div>
+      </div>
+    </details>
+
+    <div class="toolbar">
+      <label class="search" aria-label="Search applications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+        <input id="search" type="search" placeholder="Search applications, packages or categories…" autocomplete="off">
+      </label>
+      <div class="result-count" id="resultCount"></div>
+    </div>
+    <div class="filters" id="filters" aria-label="Application categories"></div>
+    <section class="grid" id="apps" aria-live="polite"><div class="empty">Loading current catalogue…</div></section>
+  </main>
+
+  <footer>
+    Generated from verified GitHub Release packages. Source projects remain independent and authoritative.
+  </footer>
+</div>
+
+<dialog id="details">
+  <div class="modal-head">
+    <div class="app-icon" id="modalIcon"></div>
+    <div class="modal-title"><div class="category" id="modalCategory"></div><h2 id="modalName"></h2><div class="version" id="modalVersion"></div></div>
+    <button class="close" id="closeModal" aria-label="Close">×</button>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
 <script>
+"use strict";
+var apps=[], repoInfo={}, activeCategory="All", query="";
+var base="https://the-first-infiltrator.github.io/Infiltrator-Repository";
+
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function fmtBytes(n){n=Number(n||0);if(!n)return "Unknown size";var u=["B","KiB","MiB","GiB"],i=0;while(n>=1024&&i<u.length-1){n/=1024;i++;}return (i<2?Math.round(n):n.toFixed(1))+" "+u[i];}
+function fmtDate(v){if(!v)return "Unknown";var d=new Date(v);return isNaN(d.getTime())?"Unknown":d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});}
+function iconSvg(kind){
+  var common='viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+  var p={
+    monitor:'<rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path>',
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M7 3v4M17 3v4M3 10h18M7 14h3M14 14h3M7 18h3"></path>',
+    disk:'<ellipse cx="12" cy="6" rx="8" ry="3"></ellipse><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path>',
+    filesystem:'<path d="M3 7h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path><path d="M3 7V5a2 2 0 0 1 2-2h5l2 2"></path>',
+    car:'<path d="M5 16h14l-1.4-5.2A2.5 2.5 0 0 0 15.2 9H8.8a2.5 2.5 0 0 0-2.4 1.8L5 16Z"></path><path d="M3 16h18v3H3zM6 19v2M18 19v2M7 13h.01M17 13h.01"></path>',
+    network:'<circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="19" r="2"></circle><path d="M12 7v4M5 17v-3h14v3M12 11H5"></path>'
+  };
+  return '<svg '+common+'>'+(p[kind]||p.monitor)+'</svg>';
+}
+function copyText(text,label){
+  navigator.clipboard.writeText(text).then(function(){showToast(label||"Copied");}).catch(function(){showToast("Copy failed — select the command manually");});
+}
+function showToast(text){var t=document.getElementById("toast");t.textContent=text;t.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){t.classList.remove("show");},1800);}
+
+function setupCommand(){
+  if(repoInfo.signed){
+    return "sudo install -d -m 0755 /etc/apt/keyrings\\n"+
+      "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\\n"+
+      "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\\n"+
+      "sudo apt update";
+  }
+  return "echo 'deb [trusted=yes arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list\\n"+
+    "sudo apt update";
+}
+function updateRepoInfo(){
+  document.getElementById("appStat").textContent=(repoInfo.app_count||apps.length)+" applications";
+  document.getElementById("versionStat").textContent=(repoInfo.package_version_count||0)+" retained package versions";
+  var trust=document.getElementById("trustStat");
+  trust.textContent=repoInfo.signed?"APT signed":"Unsigned alpha";
+  trust.className="badge "+(repoInfo.signed?"good":"warn");
+  document.getElementById("suiteBadge").textContent=repoInfo.suite||"alpha";
+  var note=document.getElementById("setupNote");
+  note.textContent=repoInfo.signed?"Packages and repository metadata are authenticated with the Infiltrator APT signing key.":"Alpha testing only: repository signing is not configured yet, so this source currently uses trusted=yes.";
+  note.className="setup-note"+(repoInfo.signed?"":" warning");
+  document.getElementById("repoCommand").textContent=setupCommand();
+}
+function buildFilters(){
+  var cats=["All"].concat(Array.from(new Set(apps.map(function(a){return a.category;}))).sort());
+  var root=document.getElementById("filters");root.innerHTML="";
+  cats.forEach(function(cat){
+    var b=document.createElement("button");b.className="filter"+(cat===activeCategory?" active":"");b.textContent=cat;
+    b.addEventListener("click",function(){activeCategory=cat;buildFilters();render();});root.appendChild(b);
+  });
+}
+function matches(a){
+  if(activeCategory!=="All"&&a.category!==activeCategory)return false;
+  if(!query)return true;
+  var hay=[a.name,a.description,a.category,a.package,a.version].join(" ").toLowerCase();
+  return hay.indexOf(query)>=0;
+}
 function card(a){
   var article=document.createElement("article");article.className="card";
-  article.innerHTML='<div class="meta"><span class="cat">'+esc(a.category)+'</span><span class="ver">'+esc(a.version||"current")+'</span></div>'+
-    '<h2>'+esc(a.name)+'</h2><p class="desc">'+esc(a.description)+'</p>'+
-    '<code class="pkg">sudo apt install '+esc(a.package||a.id)+'</code>'+
-    '<div class="links"><a href="'+esc(a.release_url)+'">Latest release</a><a href="'+esc(a.source_url)+'">Source</a></div>';
+  article.innerHTML=
+    '<div class="card-head"><div class="app-icon">'+iconSvg(a.icon)+'</div><div class="card-titles">'+
+    '<div class="category">'+esc(a.category)+'</div><h2>'+esc(a.name)+'</h2><div class="version">'+esc(a.version)+'</div></div></div>'+
+    '<p class="desc">'+esc(a.description)+'</p>'+
+    '<div class="chips"><span class="chip">'+esc(a.architecture)+'</span><span class="chip">'+fmtBytes(a.download_size)+'</span><span class="chip">'+esc(a.package)+'</span></div>'+
+    '<div class="actions"><button class="btn primary install">Install</button><button class="btn detailsBtn">Details</button><a class="btn small source" href="'+esc(a.source_url)+'">Source</a></div>';
+  article.querySelector(".install").addEventListener("click",function(){showDetails(a,true);});
+  article.querySelector(".detailsBtn").addEventListener("click",function(){showDetails(a,false);});
   return article;
 }
-fetch("catalogue/apps.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();}).then(function(apps){
-  var root=document.getElementById("apps");root.innerHTML="";apps.forEach(function(a){root.appendChild(card(a));});
-}).catch(function(){document.getElementById("apps").innerHTML='<article class="card">Catalogue unavailable. Check the latest Pages workflow.</article>';});
+function render(){
+  var root=document.getElementById("apps");root.innerHTML="";
+  var visible=apps.filter(matches);
+  document.getElementById("resultCount").textContent=visible.length+" of "+apps.length+" applications";
+  if(!visible.length){root.innerHTML='<div class="empty">No applications match this search.</div>';return;}
+  visible.forEach(function(a){root.appendChild(card(a));});
+}
+function showDetails(a,installFirst){
+  document.getElementById("modalIcon").innerHTML=iconSvg(a.icon);
+  document.getElementById("modalCategory").textContent=a.category;
+  document.getElementById("modalName").textContent=a.name;
+  document.getElementById("modalVersion").textContent="Version "+a.version;
+  var cmd="sudo apt install "+a.package;
+  var history=(a.history||[]).map(function(v){
+    return '<tr><td>'+esc(v.version)+'</td><td>'+esc(v.architecture)+'</td><td>'+fmtBytes(v.download_size)+'</td><td>'+fmtDate(v.published_at)+'</td><td><a href="'+esc(v.release_url)+'">Release</a></td></tr>';
+  }).join("");
+  var body=
+    '<p class="modal-desc">'+esc(a.description)+'</p>'+
+    '<div class="install-row"><code class="command" id="installCommand">'+esc(cmd)+'</code><button class="btn primary" id="copyInstall">Copy install command</button></div>'+
+    '<div class="info-grid">'+
+      '<div class="info"><div class="info-label">Package</div><div class="info-value">'+esc(a.package)+'</div></div>'+
+      '<div class="info"><div class="info-label">Architecture</div><div class="info-value">'+esc(a.architecture)+'</div></div>'+
+      '<div class="info"><div class="info-label">Download</div><div class="info-value">'+fmtBytes(a.download_size)+'</div></div>'+
+      '<div class="info"><div class="info-label">Published</div><div class="info-value">'+fmtDate(a.published_at)+'</div></div>'+
+    '</div>'+
+    (a.depends?'<h3>Dependencies</h3><div class="depends">'+esc(a.depends)+'</div>':'')+
+    '<h3>Available versions</h3><div style="overflow:auto"><table class="history"><thead><tr><th>Version</th><th>Arch</th><th>Size</th><th>Published</th><th></th></tr></thead><tbody>'+history+'</tbody></table></div>'+
+    '<div class="modal-links"><a class="btn" href="'+esc(a.release_url)+'">Latest release</a><a class="btn" href="'+esc(a.source_url)+'">Source code</a>'+(a.homepage?'<a class="btn" href="'+esc(a.homepage)+'">Homepage</a>':'')+'</div>';
+  var bodyEl=document.getElementById("modalBody");bodyEl.innerHTML=body;
+  bodyEl.querySelector("#copyInstall").addEventListener("click",function(){copyText(cmd,"Install command copied");});
+  var d=document.getElementById("details");d.showModal();
+  if(installFirst)setTimeout(function(){bodyEl.querySelector("#copyInstall").focus();},0);
+}
+document.getElementById("closeModal").addEventListener("click",function(){document.getElementById("details").close();});
+document.getElementById("details").addEventListener("click",function(e){if(e.target===this)this.close();});
+document.getElementById("search").addEventListener("input",function(e){query=e.target.value.trim().toLowerCase();render();});
+document.getElementById("copyRepo").addEventListener("click",function(){copyText(setupCommand(),"Repository setup copied");});
+
+Promise.all([
+  fetch("catalogue/apps.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("apps "+r.status);return r.json();}),
+  fetch("catalogue/repository.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("repo "+r.status);return r.json();})
+]).then(function(data){
+  apps=data[0];repoInfo=data[1];updateRepoInfo();buildFilters();render();
+}).catch(function(err){
+  document.getElementById("apps").innerHTML='<div class="empty">Catalogue unavailable. Check the latest repository deployment.</div>';
+  document.getElementById("resultCount").textContent="";
+  console.error(err);
+});
 </script>
-</body></html>
+</body>
+</html>
