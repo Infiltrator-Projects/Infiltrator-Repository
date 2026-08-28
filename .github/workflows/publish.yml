@@ -3,6 +3,8 @@ name: Publish Alpha Repository
 on:
   push:
     branches: [main]
+  repository_dispatch:
+    types: [application-release]
   workflow_dispatch:
   schedule:
     - cron: '17 */6 * * *'
