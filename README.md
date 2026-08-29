@@ -35,13 +35,13 @@ A missing latest package, ambiguous release asset or SHA-256 mismatch fails the 
 The primary alpha suite is:
 
 ```text
-deb [trusted=yes arch=amd64] https://the-first-infiltrator.github.io/Infiltrator-Repository alpha main
+deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main
 ```
 
 For the current unsigned alpha:
 
 ```bash
-echo 'deb [trusted=yes arch=amd64] https://the-first-infiltrator.github.io/Infiltrator-Repository alpha main' \
+echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main' \
   | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list
 sudo apt update
 ```
@@ -78,7 +78,7 @@ GitHub Actions publishes on pushes to `main`, on manual request and every six ho
 
 Live software centre:
 
-`https://the-first-infiltrator.github.io/Infiltrator-Repository/`
+`https://infiltrator-projects.github.io/Infiltrator-Repository/`
 
 ## Architecture
 

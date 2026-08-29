@@ -140,7 +140,7 @@ dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
 <script>
 "use strict";
 var apps=[], repoInfo={}, activeCategory="All", query="";
-var base="https://the-first-infiltrator.github.io/Infiltrator-Repository";
+var base="https://infiltrator-projects.github.io/Infiltrator-Repository";
 
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function fmtBytes(n){n=Number(n||0);if(!n)return "Unknown size";var u=["B","KiB","MiB","GiB"],i=0;while(n>=1024&&i<u.length-1){n/=1024;i++;}return (i<2?Math.round(n):n.toFixed(1))+" "+u[i];}
