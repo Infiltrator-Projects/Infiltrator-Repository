@@ -1,0 +1,7 @@
+{
+  "repository": "Infiltrator-Projects/MBLINK",
+  "version": "0.7.92",
+  "release_sha": "db50caaf05886afe1a350ec3066f9b38d183af78",
+  "release_published_at": "2026-08-29T12:04:07Z",
+  "reason": "central refresh fallback after source repository_dispatch returned HTTP 403 following repository relocation"
+}
