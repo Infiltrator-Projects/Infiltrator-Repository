@@ -1,7 +1,17 @@
 {
-  "repository": "Infiltrator-Projects/MBLINK",
-  "version": "0.7.92",
-  "release_sha": "db50caaf05886afe1a350ec3066f9b38d183af78",
-  "release_published_at": "2026-08-29T12:04:07Z",
-  "reason": "central refresh fallback after source repository_dispatch returned HTTP 403 following repository relocation"
+  "reason": "central refresh fallback after migrated source repository dispatch returned HTTP 403",
+  "releases": [
+    {
+      "repository": "Infiltrator-Projects/MBLINK",
+      "version": "0.7.93",
+      "release_sha": "3c622041c2e3d560e3ae9619eb2fc2198898f986",
+      "release_published_at": "2026-08-29T13:06:12Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Jaglink",
+      "version": "0.2.49",
+      "release_sha": "34bf6b21dbd7982153f2221bf89787e4cf9573d7",
+      "release_published_at": "2026-08-29T13:07:05Z"
+    }
+  ]
 }

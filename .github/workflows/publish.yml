@@ -7,7 +7,9 @@ on:
     types: [application-release]
   workflow_dispatch:
   schedule:
-    - cron: '17 */6 * * *'
+    # Safety net for source repositories whose cross-repository dispatch token
+    # is temporarily unavailable after moves or permission changes.
+    - cron: '7,22,37,52 * * * *'
 
 permissions:
   contents: read
