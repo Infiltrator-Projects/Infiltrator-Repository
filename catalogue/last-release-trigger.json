@@ -1,11 +1,11 @@
 {
-  "reason": "force repository refresh after MBLINK/JAGLINK release dispatch token returned HTTP 403; future safety poll tightened to five minutes",
+  "reason": "force immediate APT refresh for MBLINK 0.7.97 navigation-stability release while migrated cross-repository dispatch token remains 403",
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
-      "version": "0.7.96",
-      "release_sha": "25b91943c4d9a54e42d1a938dc4c0ba00463b3fa",
-      "release_published_at": "2026-08-30T09:43:02Z"
+      "version": "0.7.97",
+      "release_sha": "50bf29c9b84be4f9191e4c1f3687ca64c6aac10d",
+      "release_published_at": "2026-08-30T10:14:56Z"
     },
     {
       "repository": "Infiltrator-Projects/Jaglink",
