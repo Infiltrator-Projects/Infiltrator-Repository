@@ -38,9 +38,13 @@ The primary alpha suite is:
 deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main
 ```
 
-For the current unsigned alpha:
+For the current unsigned alpha, the setup command also repairs installations that still reference the pre-organisation GitHub Pages URL:
 
 ```bash
+OLD='https://the-first-infiltrator.github.io/Infiltrator-Repository'
+NEW='https://infiltrator-projects.github.io/Infiltrator-Repository'
+sudo grep -RIlF "$OLD" /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null \
+  | while IFS= read -r f; do sudo sed -i "s#$OLD#$NEW#g" "$f"; done
 echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main' \
   | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list
 sudo apt update
