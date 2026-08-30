@@ -1,17 +1,17 @@
 {
-  "reason": "central refresh fallback after migrated source repository dispatch returned HTTP 403",
+  "reason": "force repository refresh after MBLINK/JAGLINK release dispatch token returned HTTP 403; future safety poll tightened to five minutes",
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
-      "version": "0.7.93",
-      "release_sha": "3c622041c2e3d560e3ae9619eb2fc2198898f986",
-      "release_published_at": "2026-08-29T13:06:12Z"
+      "version": "0.7.96",
+      "release_sha": "25b91943c4d9a54e42d1a938dc4c0ba00463b3fa",
+      "release_published_at": "2026-08-30T09:43:02Z"
     },
     {
       "repository": "Infiltrator-Projects/Jaglink",
-      "version": "0.2.49",
-      "release_sha": "34bf6b21dbd7982153f2221bf89787e4cf9573d7",
-      "release_published_at": "2026-08-29T13:07:05Z"
+      "version": "0.2.51",
+      "release_sha": "cc34e2b17c35720156ca1eec225783f3b20c37eb",
+      "release_published_at": "2026-08-30T09:43:46Z"
     }
   ]
 }

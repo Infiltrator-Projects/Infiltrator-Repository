@@ -9,7 +9,7 @@ on:
   schedule:
     # Safety net for source repositories whose cross-repository dispatch token
     # is temporarily unavailable after moves or permission changes.
-    - cron: '7,22,37,52 * * * *'
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: read
@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
