@@ -171,7 +171,7 @@ function setupCommand(){
       "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
       "sudo apt update";
   }
-  return "echo 'deb [trusted=yes arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list\n"+
+  return migrate+"echo 'deb [trusted=yes arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list\n"+
     "sudo apt update";
 }
 function updateRepoInfo(){
