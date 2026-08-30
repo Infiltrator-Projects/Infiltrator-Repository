@@ -141,6 +141,7 @@ dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
 "use strict";
 var apps=[], repoInfo={}, activeCategory="All", query="";
 var base="https://infiltrator-projects.github.io/Infiltrator-Repository";
+var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";
 
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function fmtBytes(n){n=Number(n||0);if(!n)return "Unknown size";var u=["B","KiB","MiB","GiB"],i=0;while(n>=1024&&i<u.length-1){n/=1024;i++;}return (i<2?Math.round(n):n.toFixed(1))+" "+u[i];}
@@ -163,8 +164,9 @@ function copyText(text,label){
 function showToast(text){var t=document.getElementById("toast");t.textContent=text;t.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){t.classList.remove("show");},1800);}
 
 function setupCommand(){
+  var migrate="sudo grep -RIlF \'"+legacyBase+"\' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null | while IFS= read -r f; do sudo sed -i \'s#"+legacyBase+"#"+base+"#g\' \"$f\"; done\n";
   if(repoInfo.signed){
-    return "sudo install -d -m 0755 /etc/apt/keyrings\n"+
+    return migrate+"sudo install -d -m 0755 /etc/apt/keyrings\n"+
       "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\n"+
       "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
       "sudo apt update";
