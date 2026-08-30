@@ -1,17 +1,17 @@
 {
-  "reason": "force immediate APT refresh for MBLINK 0.7.97 navigation-stability release while migrated cross-repository dispatch token remains 403",
+  "reason": "force immediate APT refresh for current MBLINK and Jaglink releases after release publication",
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
-      "version": "0.7.97",
-      "release_sha": "50bf29c9b84be4f9191e4c1f3687ca64c6aac10d",
-      "release_published_at": "2026-08-30T10:14:56Z"
+      "version": "0.7.101",
+      "release_sha": "af5de0749724fd6042d327408e7dfc04dc34fb95",
+      "release_published_at": "2026-08-30T21:01:41Z"
     },
     {
       "repository": "Infiltrator-Projects/Jaglink",
-      "version": "0.2.51",
-      "release_sha": "cc34e2b17c35720156ca1eec225783f3b20c37eb",
-      "release_published_at": "2026-08-30T09:43:46Z"
+      "version": "0.2.53",
+      "release_sha": "c53dbcbaef13bbd8c42db96f644edb0f216a88cf",
+      "release_published_at": "2026-08-30T11:15:44Z"
     }
   ]
 }
