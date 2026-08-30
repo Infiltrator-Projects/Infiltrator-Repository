@@ -15,5 +15,6 @@ assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository"
 assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
 assert "grep -RIlF" in block, "setup command must search for the pre-move repository URL"
 assert "sed -i" in block and "legacyBase" in block, "setup command must migrate legacy repository sources"
+assert 'return migrate+"echo \'deb [trusted=yes arch=amd64]' in block, "unsigned alpha setup must run migration before writing the source"
 
 print("Software Centre setup-command regression test passed")
