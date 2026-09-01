@@ -24,6 +24,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      calendar_plus_changed: ${{ steps.release-delta.outputs.calendar_plus_changed }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -39,6 +41,30 @@ jobs:
       - name: Verify Software Centre setup commands
         run: python3 tests/test_site_setup.py
 
+      - name: Read currently published Calendar Plus version
+        id: previous-calendar
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(python3 - <<'PY'
+          import json
+          import urllib.error
+          import urllib.request
+
+          url = "https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json"
+          try:
+              with urllib.request.urlopen(url, timeout=20) as response:
+                  apps = json.load(response)
+          except (urllib.error.URLError, json.JSONDecodeError):
+              print("")
+          else:
+              print(next((str(app.get("version", "")) for app in apps
+                          if app.get("id") == "calendar-plus"), ""))
+          PY
+          )"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          printf 'Previously published Calendar Plus version: %s\n' "${version:-<none>}"
+
       - name: Build and verify repository
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -52,6 +78,30 @@ jobs:
           test -s public/dists/alpha/main/binary-amd64/Packages.gz
           test -s public/catalogue/apps.json
           test -s public/catalogue/repository.json
+
+      - name: Detect Calendar Plus publication change
+        id: release-delta
+        env:
+          PREVIOUS_VERSION: ${{ steps.previous-calendar.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          apps = json.loads(Path("public/catalogue/apps.json").read_text(encoding="utf-8"))
+          print(next((str(app.get("version", "")) for app in apps
+                      if app.get("id") == "calendar-plus"), ""))
+          PY
+          )"
+          test -n "$current"
+          changed=false
+          if [[ "$current" != "${PREVIOUS_VERSION:-}" ]]; then
+            changed=true
+          fi
+          echo "calendar_plus_changed=$changed" >> "$GITHUB_OUTPUT"
+          printf 'Calendar Plus catalogue version: %s (changed=%s)\n' "$current" "$changed"
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -92,7 +142,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     needs: build-and-deploy
-    if: github.event_name != 'schedule' && needs.build-and-deploy.result == 'success'
+    if: >-
+      needs.build-and-deploy.result == 'success' &&
+      (github.event_name != 'schedule' ||
+       needs.build-and-deploy.outputs.calendar_plus_changed == 'true')
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
