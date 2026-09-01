@@ -93,7 +93,47 @@ def human_description(value: str) -> str:
     return lines[0].strip() if lines else ""
 
 
+def collect_local_app(app: dict) -> dict:
+    source = ROOT / app["local_deb"]
+    if not source.is_file():
+        raise RuntimeError(f"{app['name']}: mirrored DEB is missing: {source}")
+
+    target = POOL / source.name
+    shutil.copy2(source, target)
+    digest = hashlib.sha256(target.read_bytes()).hexdigest()
+    version = deb_field(target, "Version")
+
+    release = {
+        "package": deb_field(target, "Package"),
+        "version": version,
+        "architecture": deb_field(target, "Architecture"),
+        "depends": deb_field(target, "Depends", optional=True),
+        "homepage": deb_field(target, "Homepage", optional=True),
+        "section": deb_field(target, "Section", optional=True),
+        "maintainer": deb_field(target, "Maintainer", optional=True),
+        "package_description": human_description(deb_field(target, "Description", optional=True)),
+        "installed_size_kib": deb_field(target, "Installed-Size", optional=True),
+        "asset": source.name,
+        "download_size": target.stat().st_size,
+        "sha256": digest,
+        "release_tag": app.get("release_tag") or f"v{version}",
+        "release_url": app.get("release_url") or f"https://github.com/{OWNER}/{app['repo']}",
+        "published_at": app.get("published_at", ""),
+    }
+
+    item = dict(app)
+    item.update(release)
+    item["source_url"] = f"https://github.com/{OWNER}/{app['repo']}"
+    item["history"] = [release]
+    for key in ("local_deb", "deb_regex", "release_tag", "release_url", "published_at"):
+        item.pop(key, None)
+    return item
+
+
 def collect_app(app: dict) -> dict:
+    if app.get("local_deb"):
+        return collect_local_app(app)
+
     releases = request_json(
         f"https://api.github.com/repos/{OWNER}/{app['repo']}/releases?per_page={HISTORY_LIMIT}"
     )
