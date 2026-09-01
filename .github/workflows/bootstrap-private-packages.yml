@@ -1,0 +1,50 @@
+name: Bootstrap private LINK-family packages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    if: startsWith(github.event.head_commit.message, 'Bootstrap private LINK-family packages')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Download verified package exports
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tmp/ford tmp/audi tmp/bmw mirrored-packages
+
+          curl -fL --retry 3 -o /tmp/ford.zip 'https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-8dc0-8211-8f00-4cff29d7ebd7/raw?se=2026-09-01T13%3A51%3A24Z&sp=r&sv=2026-02-06&sr=b&scid=3aacf52d-fb2d-5f5a-a95f-ef53bf25d123&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-01T03%3A21%3A46Z&ske=2026-09-02T03%3A21%3A46Z&sks=b&skv=2026-02-06&sig=Pa%2BZgvMLXGiWDlbiB80a3CayxuEx5/vMeB4qbFL6MfI%3D'
+          curl -fL --retry 3 -o /tmp/audi.zip 'https://sdmntprnznorth.oaiusercontent.com/files/00000000-fed4-820b-afb0-58d0981f5dea/raw?se=2026-09-01T13%3A51%3A27Z&sp=r&sv=2026-02-06&sr=b&scid=45c89be7-8968-51c2-8de8-ae5c328927c7&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-01T04%3A02%3A48Z&ske=2026-09-02T04%3A02%3A48Z&sks=b&skv=2026-02-06&sig=LlkWKuM0GdSdcbzb3BR3scvIgKzL/YOTsVxK/3qUYfY%3D'
+          curl -fL --retry 3 -o /tmp/bmw.zip 'https://sdmntprnznorth.oaiusercontent.com/files/00000000-69fc-820b-95d3-0867eac0f72d/raw?se=2026-09-01T13%3A51%3A28Z&sp=r&sv=2026-02-06&sr=b&scid=95e2fbcd-f0d7-5757-8a4b-7aa64ae8b407&skoid=d5627e4c-566b-4761-a954-54993b0ed17b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-31T23%3A55%3A02Z&ske=2026-09-01T23%3A55%3A02Z&sks=b&skv=2026-02-06&sig=l2Bvyp9QKWDR3nkzUZBGThIUBqwH5nQRHNWnZIJDRAw%3D'
+
+          unzip -q /tmp/ford.zip -d tmp/ford
+          unzip -q /tmp/audi.zip -d tmp/audi
+          unzip -q /tmp/bmw.zip -d tmp/bmw
+
+          install -m 0644 tmp/ford/FORDLINK-0.1.1-linux-amd64.deb mirrored-packages/
+          install -m 0644 tmp/audi/AUDILINK-0.1.1-linux-amd64.deb mirrored-packages/
+          install -m 0644 tmp/bmw/BMWLINK-0.1.1-linux-amd64.deb mirrored-packages/
+
+          test "$(dpkg-deb -f mirrored-packages/FORDLINK-0.1.1-linux-amd64.deb Package)" = fordlink
+          test "$(dpkg-deb -f mirrored-packages/AUDILINK-0.1.1-linux-amd64.deb Package)" = audilink
+          test "$(dpkg-deb -f mirrored-packages/BMWLINK-0.1.1-linux-amd64.deb Package)" = bmwlink
+          test "$(dpkg-deb -f mirrored-packages/FORDLINK-0.1.1-linux-amd64.deb Version)" = 0.1.1
+          test "$(dpkg-deb -f mirrored-packages/AUDILINK-0.1.1-linux-amd64.deb Version)" = 0.1.1
+          test "$(dpkg-deb -f mirrored-packages/BMWLINK-0.1.1-linux-amd64.deb Version)" = 0.1.1
+
+      - name: Commit mirrored packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mirrored-packages
+          git commit -m 'Mirror private LINK-family Debian packages'
+          git push origin HEAD:main
