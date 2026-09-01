@@ -10,9 +10,6 @@ Infiltrator Repository is the distribution layer for the Linux applications publ
 - InfiltratorFS
 - MBLINK
 - JAGLINK
-- FORDLINK
-- AUDILINK
-- BMWLINK
 - WHERE'S WALLY
 
 The allow-list lives in `catalogue/apps-source.json`. A package is published only when a release contains exactly the expected `.deb` asset.
@@ -77,7 +74,7 @@ Every non-scheduled publish also runs two independent validation jobs.
 
 The signing self-test creates a disposable CI-only OpenPGP key, signs both suites through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
 
-The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all ten packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY is retrieved and Debian-metadata validated because complete installation also requires the external Zabbix frontend repository.
+The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all seven packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY is retrieved and Debian-metadata validated because complete installation also requires the external Zabbix frontend repository.
 
 ## Publication
 

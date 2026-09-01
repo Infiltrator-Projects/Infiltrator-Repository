@@ -235,7 +235,7 @@ jobs:
           echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main' > /etc/apt/sources.list.d/infiltrator-e2e.list
           apt-get update
 
-          for pkg in linux-system-monitor calendar-plus linux-defragger infiltratorfs mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix; do
+          for pkg in linux-system-monitor calendar-plus linux-defragger infiltratorfs mblink jaglink nps-wheres-wally-zabbix; do
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
           done
 
@@ -252,7 +252,7 @@ jobs:
           ! dpkg-query -W linux-system-monitor >/dev/null 2>&1
           apt-get check
 
-          for pkg in calendar-plus linux-defragger mblink jaglink fordlink audilink bmwlink; do
+          for pkg in calendar-plus linux-defragger mblink jaglink; do
             apt-get install -y --no-install-recommends "$pkg"
             dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
             apt-get check

@@ -61,32 +61,5 @@
     "description": "Zabbix NPS authentication event monitor and search module.",
     "deb_regex": "^nps-wheres-wally-zabbix_.*_all\\.deb$",
     "icon": "network"
-  },
-  {
-    "id": "fordlink",
-    "name": "FORDLINK",
-    "repo": "FORDLINK",
-    "category": "Automotive",
-    "description": "Ford diagnostics with a generic LINK standards baseline.",
-    "deb_regex": "^FORDLINK-.*-linux-amd64\\.deb$",
-    "icon": "car"
-  },
-  {
-    "id": "audilink",
-    "name": "AUDILINK",
-    "repo": "AUDILINK",
-    "category": "Automotive",
-    "description": "Audi diagnostics with a generic LINK standards baseline.",
-    "deb_regex": "^AUDILINK-.*-linux-amd64\\.deb$",
-    "icon": "car"
-  },
-  {
-    "id": "bmwlink",
-    "name": "BMWLINK",
-    "repo": "BMWLink",
-    "category": "Automotive",
-    "description": "BMW diagnostics with a generic LINK standards baseline.",
-    "deb_regex": "^BMWLINK-.*-linux-amd64\\.deb$",
-    "icon": "car"
   }
 ]
