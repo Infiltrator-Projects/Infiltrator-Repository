@@ -1,17 +1,35 @@
 {
-  "reason": "force immediate APT refresh for current MBLINK and Jaglink releases after release publication",
+  "reason": "force immediate APT refresh for current LINK-family automotive releases",
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
-      "version": "0.7.129",
-      "release_sha": "7abd106f4c00d204c8f340d6b48ea5bb573087d2",
-      "release_published_at": "2026-09-02T00:14:57Z"
+      "version": "0.7.131",
+      "release_sha": "197489b9549472eb3de61852510e8c87080f2d50",
+      "release_published_at": "2026-09-02T00:46:37Z"
     },
     {
       "repository": "Infiltrator-Projects/Jaglink",
-      "version": "0.2.58",
-      "release_sha": "7a1281573a05fa027bc12d9337c1495da5c7d4f1",
-      "release_published_at": "2026-09-02T00:11:08Z"
+      "version": "0.2.59",
+      "release_sha": "129daa0378de13024b6c48ba94acb067d09dd152",
+      "release_published_at": "2026-09-02T00:44:47Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/FORDLINK",
+      "version": "0.2.1",
+      "release_sha": "7d796ced3e50e771f456c829a1b90916991cfefe",
+      "release_published_at": "2026-09-02T00:46:11Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/AUDILINK",
+      "version": "0.2.1",
+      "release_sha": "d7cde340385b1ccf95a280e9a2f61c64e5c3ff69",
+      "release_published_at": "2026-09-02T00:47:00Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/BMWLink",
+      "version": "0.2.1",
+      "release_sha": "2b27ac6b6a61235d1411af514cba7e44a942a265",
+      "release_published_at": "2026-09-02T00:47:13Z"
     }
   ]
 }
