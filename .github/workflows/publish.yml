@@ -301,7 +301,7 @@ jobs:
           deb="$(find . -maxdepth 1 -name 'intune-zabbix-bridge*.deb' -print -quit)"
           test -n "$deb"
           test "$(dpkg-deb -f "$deb" Package)" = intune-zabbix-bridge
-          test "$(dpkg-deb -f "$deb" Version)" = 0.6.0
+          test "$(dpkg-deb -f "$deb" Version)" = 0.7.0
           mkdir extracted
           dpkg-deb -x "$deb" extracted
           test ! -e extracted/etc/intune-zabbix-bridge/bridge.env
