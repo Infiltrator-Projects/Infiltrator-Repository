@@ -68,11 +68,8 @@
     "repo": "FORDLINK",
     "category": "Automotive",
     "description": "Ford diagnostics with a generic LINK standards baseline.",
-    "local_deb": "mirrored-packages/FORDLINK-0.1.1-linux-amd64.deb",
-    "release_tag": "v0.1.1",
-    "release_url": "https://github.com/Infiltrator-Projects/FORDLINK/releases/tag/v0.1.1",
-    "published_at": "2026-09-01T13:45:57Z",
-    "icon": "car"
+    "icon": "car",
+    "deb_regex": "^FORDLINK-.*-linux-amd64\\.deb$"
   },
   {
     "id": "audilink",
@@ -80,11 +77,8 @@
     "repo": "AUDILINK",
     "category": "Automotive",
     "description": "Audi diagnostics with a generic LINK standards baseline.",
-    "local_deb": "mirrored-packages/AUDILINK-0.1.1-linux-amd64.deb",
-    "release_tag": "v0.1.1",
-    "release_url": "https://github.com/Infiltrator-Projects/AUDILINK/releases/tag/v0.1.1",
-    "published_at": "2026-09-01T13:45:57Z",
-    "icon": "car"
+    "icon": "car",
+    "deb_regex": "^AUDILINK-.*-linux-amd64\\.deb$"
   },
   {
     "id": "bmwlink",
@@ -92,10 +86,7 @@
     "repo": "BMWLink",
     "category": "Automotive",
     "description": "BMW diagnostics with a generic LINK standards baseline.",
-    "local_deb": "mirrored-packages/BMWLINK-0.1.1-linux-amd64.deb",
-    "release_tag": "v0.1.1",
-    "release_url": "https://github.com/Infiltrator-Projects/BMWLink/releases/tag/v0.1.1",
-    "published_at": "2026-09-01T13:45:56Z",
-    "icon": "car"
+    "icon": "car",
+    "deb_regex": "^BMWLINK-.*-linux-amd64\\.deb$"
   }
 ]
