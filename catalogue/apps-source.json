@@ -88,5 +88,17 @@
     "description": "BMW diagnostics with a generic LINK standards baseline.",
     "icon": "car",
     "deb_regex": "^BMWLINK-.*-linux-amd64\\.deb$"
+  },
+  {
+    "id": "intune-zabbix-bridge",
+    "name": "Intune Zabbix Bridge",
+    "repo": "Intune-Zabbix-Bridge",
+    "category": "Infrastructure",
+    "description": "Microsoft Intune reboot telemetry bridge with native Zabbix Reboot Watch widget. Universal package; deployment credentials are supplied separately.",
+    "local_deb": "mirrored-packages/intune-zabbix-bridge_0.6.0_all.deb",
+    "release_tag": "v0.6.0",
+    "release_url": "https://github.com/Infiltrator-Projects/Intune-Zabbix-Bridge",
+    "published_at": "2026-09-02T04:47:42Z",
+    "icon": "network"
   }
 ]
