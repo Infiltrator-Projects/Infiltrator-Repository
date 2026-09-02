@@ -235,7 +235,7 @@ jobs:
           echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main' > /etc/apt/sources.list.d/infiltrator-e2e.list
           apt-get update
 
-          for pkg in linux-system-monitor calendar-plus linux-defragger infiltratorfs mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix; do
+          for pkg in linux-system-monitor calendar-plus linux-defragger infiltratorfs mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix intune-zabbix-bridge; do
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
           done
 
@@ -292,6 +292,23 @@ jobs:
           dpkg-deb --info "$deb" >/dev/null
           cd /
           rm -rf /tmp/infiltrator-wally-test
+          apt-get check
+
+          # Intune bridge: universal package is public; deployment config remains separate.
+          mkdir -p /tmp/infiltrator-intune-bridge-test
+          cd /tmp/infiltrator-intune-bridge-test
+          apt-get download intune-zabbix-bridge
+          deb="$(find . -maxdepth 1 -name 'intune-zabbix-bridge*.deb' -print -quit)"
+          test -n "$deb"
+          test "$(dpkg-deb -f "$deb" Package)" = intune-zabbix-bridge
+          test "$(dpkg-deb -f "$deb" Version)" = 0.6.0
+          mkdir extracted
+          dpkg-deb -x "$deb" extracted
+          test ! -e extracted/etc/intune-zabbix-bridge/bridge.env
+          test -x extracted/usr/lib/intune-zabbix-bridge/import-config
+          test -f extracted/usr/lib/systemd/system/intune-zabbix-bridge-import.path
+          cd /
+          rm -rf /tmp/infiltrator-intune-bridge-test
           apt-get check
 
           MINT_E2E
