@@ -3,15 +3,15 @@
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
-      "version": "0.7.101",
-      "release_sha": "af5de0749724fd6042d327408e7dfc04dc34fb95",
-      "release_published_at": "2026-08-30T21:01:41Z"
+      "version": "0.7.129",
+      "release_sha": "7abd106f4c00d204c8f340d6b48ea5bb573087d2",
+      "release_published_at": "2026-09-02T00:14:57Z"
     },
     {
       "repository": "Infiltrator-Projects/Jaglink",
-      "version": "0.2.53",
-      "release_sha": "c53dbcbaef13bbd8c42db96f644edb0f216a88cf",
-      "release_published_at": "2026-08-30T11:15:44Z"
+      "version": "0.2.58",
+      "release_sha": "7a1281573a05fa027bc12d9337c1495da5c7d4f1",
+      "release_published_at": "2026-09-02T00:11:08Z"
     }
   ]
 }
