@@ -293,6 +293,7 @@ jobs:
           cd /
           rm -rf /tmp/infiltrator-wally-test
           apt-get check
+
           MINT_E2E
 
       - name: Report Mint test result
