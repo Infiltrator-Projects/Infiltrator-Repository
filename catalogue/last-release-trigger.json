@@ -1,5 +1,5 @@
 {
-  "reason": "force immediate APT refresh for standardised LINK-family icon releases",
+  "reason": "force final APT refresh for corrected standardised LINK-family icon packages",
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
@@ -27,9 +27,9 @@
     },
     {
       "repository": "Infiltrator-Projects/BMWLink",
-      "version": "0.2.10",
-      "release_sha": "ebb2f6481805e53a0c070d32618c10ccec74d643",
-      "release_published_at": "2026-09-03T00:33:09Z"
+      "version": "0.2.11",
+      "release_sha": "67b906c4ac73da2ff4640acd1d1d6e7da62d9f7a",
+      "release_published_at": "2026-09-03T00:59:11Z"
     }
   ]
 }
