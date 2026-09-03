@@ -95,10 +95,10 @@
     "repo": "Intune-Zabbix-Bridge",
     "category": "Infrastructure",
     "description": "Microsoft Intune reboot telemetry bridge with native Zabbix Reboot Watch widget. Universal package; deployment credentials are supplied separately.",
-    "local_deb": "mirrored-packages/intune-zabbix-bridge_0.7.0_all.deb",
-    "release_tag": "v0.7.0",
-    "release_url": "https://github.com/Infiltrator-Projects/Intune-Zabbix-Bridge/releases/tag/v0.7.0",
-    "published_at": "2026-09-02T22:42:21Z",
+    "local_deb": "mirrored-packages/intune-zabbix-bridge_0.7.5_all.deb",
+    "release_tag": "v0.7.5",
+    "release_url": "https://github.com/Infiltrator-Projects/Intune-Zabbix-Bridge/releases/tag/v0.7.5",
+    "published_at": "2026-09-03T23:21:22Z",
     "icon": "network"
   }
 ]
