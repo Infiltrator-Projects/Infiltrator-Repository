@@ -1,0 +1,64 @@
+name: Sync private Intune release
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+  push:
+    paths:
+      - '.github/workflows/sync-private-intune.yml'
+      - 'scripts/sync-private-intune.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: private-intune-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      INTUNE_PRIVATE_TOKEN: ${{ secrets.INTUNE_PRIVATE_RELEASE_TOKEN || secrets.APT_REPOSITORY_DISPATCH_TOKEN }}
+    steps:
+      - name: Check out central repository
+        uses: actions/checkout@v4
+
+      - name: Install package inspection tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends dpkg-dev
+
+      - name: Pull and verify latest private Intune release
+        run: python3 scripts/sync-private-intune.py
+
+      - name: Commit mirror changes when needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add mirrored-packages/intune-zabbix-bridge_*_all.deb.b64.part-* \
+                  mirrored-packages/intune-zabbix-bridge_*_all.deb.sha256
+          if git diff --cached --quiet; then
+            echo 'Central Intune mirror is already current.'
+            exit 0
+          fi
+
+          version="$(python3 - <<'PY'
+          from pathlib import Path
+          import re
+          names = sorted(Path('mirrored-packages').glob('intune-zabbix-bridge_*_all.deb.sha256'))
+          versions = []
+          for path in names:
+              match = re.fullmatch(r'intune-zabbix-bridge_(.+)_all\.deb\.sha256', path.name)
+              if match:
+                  versions.append(match.group(1))
+          print(versions[-1] if versions else 'unknown')
+          PY
+          )"
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Mirror Intune Zabbix Bridge ${version} from private release"
+          git push origin HEAD:main
