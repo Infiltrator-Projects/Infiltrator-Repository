@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Materialise Intune package mirrors from verified local history and public exports."""
+"""Materialise private package mirrors from verified checked-in payloads."""
 
 from __future__ import annotations
 
+import base64
+import binascii
 import hashlib
 import json
 import re
@@ -22,6 +24,9 @@ SEED_OUTPUT = MIRROR / f"{PACKAGE}_{SEED_VERSION}_all.deb"
 SEED_PART_GLOB = f"{PACKAGE}_{SEED_VERSION}_all.deb.part-*"
 PUBLIC_EXPORT_MANIFEST = "https://infiltrator-projects.github.io/Intune-Zabbix-Bridge/manifest.json"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+ENCODED_NAME_RE = re.compile(
+    rf"^{re.escape(PACKAGE)}_(?P<version>[0-9][0-9A-Za-z.+:~_-]*)_all\.deb\.b64\.part-00$"
+)
 
 
 def deb_field(package: Path, field: str) -> str:
@@ -56,6 +61,70 @@ def materialise_seed() -> None:
     SEED_OUTPUT.write_bytes(payload)
     verify_deb(SEED_OUTPUT, SEED_VERSION)
     print(f"Materialised {SEED_OUTPUT.name} ({digest}) from {len(parts)} verified parts")
+
+
+def materialise_encoded_mirrors() -> None:
+    """Decode version-dynamic DEBs from text-safe checked-in base64 parts.
+
+    Each mirror requires:
+      intune-zabbix-bridge_VERSION_all.deb.b64.part-00 ...
+      intune-zabbix-bridge_VERSION_all.deb.sha256
+
+    The SHA file is authoritative and the decoded DEB metadata is checked before
+    the file is made visible to repository generation.
+    """
+    for first_part in sorted(MIRROR.glob(f"{PACKAGE}_*_all.deb.b64.part-00")):
+        match = ENCODED_NAME_RE.match(first_part.name)
+        if match is None:
+            raise SystemExit(f"Refusing malformed encoded mirror name: {first_part.name}")
+
+        version = match.group("version")
+        base = f"{PACKAGE}_{version}_all.deb"
+        parts = sorted(MIRROR.glob(f"{base}.b64.part-*"))
+        if not parts:
+            raise SystemExit(f"No encoded mirror parts found for {base}")
+
+        sha_path = MIRROR / f"{base}.sha256"
+        if not sha_path.is_file():
+            raise SystemExit(f"Missing SHA-256 file for encoded mirror {base}")
+        expected_sha256 = sha_path.read_text(encoding="ascii").strip().lower()
+        if not SHA256_RE.fullmatch(expected_sha256):
+            raise SystemExit(f"Invalid SHA-256 file for encoded mirror {base}")
+
+        encoded = "".join(part.read_text(encoding="ascii").strip() for part in parts)
+        try:
+            payload = base64.b64decode(encoded, validate=True)
+        except (binascii.Error, ValueError) as exc:
+            raise SystemExit(f"Invalid base64 for encoded mirror {base}: {exc}") from exc
+
+        actual_sha256 = hashlib.sha256(payload).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise SystemExit(
+                f"Refusing encoded mirror {base}: SHA-256 {actual_sha256} != {expected_sha256}"
+            )
+
+        target = MIRROR / base
+        temporary = MIRROR / f".{base}.decoded"
+        temporary.write_bytes(payload)
+        try:
+            verify_deb(temporary, version)
+            if target.exists():
+                existing_sha256 = hashlib.sha256(target.read_bytes()).hexdigest()
+                if existing_sha256 != expected_sha256:
+                    # A historical placeholder may exist in git; only replace it
+                    # after the encoded payload has passed every integrity check.
+                    target.write_bytes(payload)
+                else:
+                    temporary.unlink(missing_ok=True)
+            else:
+                temporary.replace(target)
+        finally:
+            temporary.unlink(missing_ok=True)
+
+        print(
+            f"Materialised encoded {base} ({expected_sha256}) "
+            f"from {len(parts)} text-safe parts"
+        )
 
 
 def public_request(url: str) -> urllib.request.Request:
@@ -153,6 +222,7 @@ def fetch_public_export() -> None:
 def main() -> None:
     MIRROR.mkdir(parents=True, exist_ok=True)
     materialise_seed()
+    materialise_encoded_mirrors()
     fetch_public_export()
 
 
