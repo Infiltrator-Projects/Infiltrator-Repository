@@ -1,4 +1,4 @@
-name: Sync private Intune release
+name: Sync Intune release
 
 on:
   workflow_dispatch:
@@ -13,44 +13,26 @@ permissions:
   contents: write
 
 concurrency:
-  group: private-intune-sync
+  group: intune-release-sync
   cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      INTUNE_PRIVATE_TOKEN: ${{ secrets.INTUNE_PRIVATE_RELEASE_TOKEN || secrets.APT_REPOSITORY_DISPATCH_TOKEN }}
     steps:
       - name: Check out central repository
         uses: actions/checkout@v4
 
-      - name: Check private-release credential
-        id: credential
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ -n "${INTUNE_PRIVATE_TOKEN:-}" ]]; then
-            echo 'available=true' >> "$GITHUB_OUTPUT"
-            echo 'Private Intune release credential is available.'
-          else
-            echo 'available=false' >> "$GITHUB_OUTPUT"
-            echo 'Private Intune release credential is not configured; leaving the verified public mirror unchanged.'
-          fi
-
       - name: Install package inspection tools
-        if: steps.credential.outputs.available == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends dpkg-dev
 
-      - name: Pull and verify latest private Intune release
-        if: steps.credential.outputs.available == 'true'
+      - name: Pull and verify latest public Intune release
         run: python3 scripts/sync-private-intune.py
 
       - name: Commit mirror changes when needed
-        if: steps.credential.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -76,5 +58,5 @@ jobs:
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m "Mirror Intune Zabbix Bridge ${version} from private release"
+          git commit -m "Mirror Intune Zabbix Bridge ${version} from public release"
           git push origin HEAD:main
