@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import datetime as dt
+import functools
 import gzip
 import hashlib
 import json
@@ -93,45 +94,76 @@ def human_description(value: str) -> str:
     return lines[0].strip() if lines else ""
 
 
+def compare_debian_versions(left: dict, right: dict) -> int:
+    """Sort release dictionaries newest-first using dpkg's version semantics."""
+    a = left["version"]
+    b = right["version"]
+    if a == b:
+        return 0
+    if subprocess.run(["dpkg", "--compare-versions", a, "gt", b], check=False).returncode == 0:
+        return -1
+    if subprocess.run(["dpkg", "--compare-versions", a, "lt", b], check=False).returncode == 0:
+        return 1
+    raise RuntimeError(f"Unable to order Debian versions {a!r} and {b!r}")
+
+
 def collect_local_app(app: dict) -> dict:
-    source = ROOT / app["local_deb"]
-    if not source.is_file():
-        raise RuntimeError(f"{app['name']}: mirrored DEB is missing: {source}")
+    if app.get("local_deb_glob"):
+        sources = [path for path in ROOT.glob(app["local_deb_glob"]) if path.is_file()]
+    else:
+        source = ROOT / app["local_deb"]
+        sources = [source] if source.is_file() else []
 
-    target = POOL / source.name
-    shutil.copy2(source, target)
-    digest = hashlib.sha256(target.read_bytes()).hexdigest()
-    version = deb_field(target, "Version")
+    if not sources:
+        selector = app.get("local_deb_glob") or app.get("local_deb") or "<unspecified>"
+        raise RuntimeError(f"{app['name']}: no mirrored DEB matches {selector}")
 
-    release = {
-        "package": deb_field(target, "Package"),
-        "version": version,
-        "architecture": deb_field(target, "Architecture"),
-        "depends": deb_field(target, "Depends", optional=True),
-        "homepage": deb_field(target, "Homepage", optional=True),
-        "section": deb_field(target, "Section", optional=True),
-        "maintainer": deb_field(target, "Maintainer", optional=True),
-        "package_description": human_description(deb_field(target, "Description", optional=True)),
-        "installed_size_kib": deb_field(target, "Installed-Size", optional=True),
-        "asset": source.name,
-        "download_size": target.stat().st_size,
-        "sha256": digest,
-        "release_tag": app.get("release_tag") or f"v{version}",
-        "release_url": app.get("release_url") or f"https://github.com/{OWNER}/{app['repo']}",
-        "published_at": app.get("published_at", ""),
-    }
+    releases = []
+    seen_versions: set[str] = set()
+    for source in sources:
+        version = deb_field(source, "Version")
+        if version in seen_versions:
+            raise RuntimeError(f"{app['name']}: duplicate mirrored Debian version {version}")
+        seen_versions.add(version)
+
+        target = POOL / source.name
+        shutil.copy2(source, target)
+        digest = hashlib.sha256(target.read_bytes()).hexdigest()
+        releases.append(
+            {
+                "package": deb_field(target, "Package"),
+                "version": version,
+                "architecture": deb_field(target, "Architecture"),
+                "depends": deb_field(target, "Depends", optional=True),
+                "homepage": deb_field(target, "Homepage", optional=True),
+                "section": deb_field(target, "Section", optional=True),
+                "maintainer": deb_field(target, "Maintainer", optional=True),
+                "package_description": human_description(deb_field(target, "Description", optional=True)),
+                "installed_size_kib": deb_field(target, "Installed-Size", optional=True),
+                "asset": source.name,
+                "download_size": target.stat().st_size,
+                "sha256": digest,
+                "release_tag": f"v{version}",
+                "release_url": f"https://github.com/{OWNER}/{app['repo']}/releases/tag/v{version}",
+                "published_at": "",
+            }
+        )
+
+    releases.sort(key=functools.cmp_to_key(compare_debian_versions))
+    releases = releases[:HISTORY_LIMIT]
+    latest = releases[0]
 
     item = dict(app)
-    item.update(release)
+    item.update(latest)
     item["source_url"] = f"https://github.com/{OWNER}/{app['repo']}"
-    item["history"] = [release]
-    for key in ("local_deb", "deb_regex", "release_tag", "release_url", "published_at"):
+    item["history"] = releases
+    for key in ("local_deb", "local_deb_glob", "deb_regex", "release_tag", "release_url", "published_at"):
         item.pop(key, None)
     return item
 
 
 def collect_app(app: dict) -> dict:
-    if app.get("local_deb"):
+    if app.get("local_deb") or app.get("local_deb_glob"):
         return collect_local_app(app)
 
     releases = request_json(
