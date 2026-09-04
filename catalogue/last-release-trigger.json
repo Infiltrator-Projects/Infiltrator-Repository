@@ -1,5 +1,5 @@
 {
-  "reason": "force final APT refresh for corrected standardised LINK-family icon packages",
+  "reason": "publish FORDLINK 0.2.21 after verified source release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
@@ -15,9 +15,9 @@
     },
     {
       "repository": "Infiltrator-Projects/FORDLINK",
-      "version": "0.2.12",
-      "release_sha": "8075340e11916801ab4d9a4821d1f526fc5f2d95",
-      "release_published_at": "2026-09-03T00:53:22Z"
+      "version": "0.2.21",
+      "release_sha": "9ba80982fcf878964d8ddfefb2dab717c39153cd",
+      "release_published_at": "2026-09-04T01:02:14Z"
     },
     {
       "repository": "Infiltrator-Projects/AUDILINK",
