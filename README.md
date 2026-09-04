@@ -82,7 +82,7 @@ The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kern
 
 ## Publication
 
-GitHub Actions publishes on pushes to `main`, on `application-release` dispatches, on manual request and every five minutes as a permission-independent safety net. Source release workflows attempt an immediate dispatch; the five-minute poll ensures a migrated or temporarily mis-scoped cross-repository token cannot leave APT stale. Scheduled runs refresh packages without re-downloading the multi-gigabyte Mint ISO; the heavier Mint lifecycle and signing self-tests run on code changes and manual runs.
+GitHub Actions publishes on pushes to `main`, on `application-release` dispatches, on manual request and every five minutes as a permission-independent safety net. Intune Zabbix Bridge is public and its release mirror is pulled and SHA-256/package-metadata verified without a PAT or cross-repository secret before publication. Scheduled runs refresh packages without re-downloading the multi-gigabyte Mint ISO; the heavier Mint lifecycle and signing self-tests run on code changes and manual runs.
 
 Live software centre:
 
