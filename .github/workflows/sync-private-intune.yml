@@ -9,6 +9,8 @@ on:
       - '.github/workflows/sync-private-intune.yml'
       - 'scripts/sync-private-intune.py'
 
+# Intune-Zabbix-Bridge is public: this workflow deliberately uses no PAT or
+# cross-repository Actions secret to read its release assets.
 permissions:
   contents: write
 
