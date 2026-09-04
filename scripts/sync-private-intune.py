@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Mirror the latest private Intune Debian release into Git-safe text parts.
+"""Mirror the latest public Intune Debian release into Git-safe text parts.
 
-The central public repository owns this pull so the private source repository does
-not need a cross-repository write token. The release asset digest and Debian
-metadata are verified before any mirror files are changed.
+Intune-Zabbix-Bridge is public, so the central repository can read and verify its
+release without a PAT, Actions secret or cross-repository write credential.
 """
 
 from __future__ import annotations
@@ -11,7 +10,6 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
-import os
 import re
 import subprocess
 import tempfile
@@ -28,25 +26,25 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 PART_CHARS = 8000
 
 
-def request(url: str, token: str, accept: str) -> urllib.request.Request:
+def request(url: str, accept: str) -> urllib.request.Request:
     return urllib.request.Request(
         url,
         headers={
             "Accept": accept,
-            "Authorization": f"Bearer {token}",
+            "Cache-Control": "no-cache",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "Infiltrator-Repository-Private-Intune-Sync",
+            "User-Agent": "Infiltrator-Repository-Intune-Sync",
         },
     )
 
 
-def read_json(url: str, token: str) -> dict:
+def read_json(url: str) -> dict:
     with urllib.request.urlopen(
-        request(url, token, "application/vnd.github+json"), timeout=60
+        request(url, "application/vnd.github+json"), timeout=60
     ) as response:
         value = json.load(response)
     if not isinstance(value, dict):
-        raise SystemExit("Private Intune release API did not return an object")
+        raise SystemExit("Intune release API did not return an object")
     return value
 
 
@@ -62,62 +60,55 @@ def verify_deb(path: Path, version: str) -> None:
     architecture = deb_field(path, "Architecture")
     if package != PACKAGE or actual_version != version or architecture != "all":
         raise SystemExit(
-            f"Refusing private release: got {package} {actual_version} {architecture}; "
+            f"Refusing release: got {package} {actual_version} {architecture}; "
             f"expected {PACKAGE} {version} all"
         )
 
 
 def main() -> int:
-    token = os.environ.get("INTUNE_PRIVATE_TOKEN", "").strip()
-    if not token:
-        raise SystemExit(
-            "INTUNE_PRIVATE_TOKEN is unavailable in the central repository; "
-            "cannot read the private Intune release"
-        )
-
     try:
-        release = read_json(LATEST_RELEASE_API, token)
+        release = read_json(LATEST_RELEASE_API)
     except urllib.error.HTTPError as exc:
         raise SystemExit(
-            f"Unable to read private Intune release (HTTP {exc.code})"
+            f"Unable to read public Intune release (HTTP {exc.code})"
         ) from exc
 
     if release.get("draft") or release.get("prerelease"):
-        raise SystemExit("Latest private Intune release is not an eligible stable release")
+        raise SystemExit("Latest Intune release is not an eligible stable release")
 
     tag = str(release.get("tag_name") or "")
     if not tag.startswith("v") or len(tag) < 2:
-        raise SystemExit(f"Invalid private Intune release tag: {tag!r}")
+        raise SystemExit(f"Invalid Intune release tag: {tag!r}")
     version = tag[1:]
     if any(ch in version for ch in "/\\\x00\r\n"):
-        raise SystemExit(f"Invalid private Intune release version: {version!r}")
+        raise SystemExit(f"Invalid Intune release version: {version!r}")
 
     filename = f"{PACKAGE}_{version}_all.deb"
     assets = [asset for asset in release.get("assets", []) if asset.get("name") == filename]
     if len(assets) != 1:
         raise SystemExit(
-            f"Private Intune release {tag} must contain exactly one {filename}; found {len(assets)}"
+            f"Intune release {tag} must contain exactly one {filename}; found {len(assets)}"
         )
 
     asset = assets[0]
     digest_value = str(asset.get("digest") or "")
     if not digest_value.startswith("sha256:"):
-        raise SystemExit(f"Private Intune release asset {filename} has no SHA-256 digest")
+        raise SystemExit(f"Intune release asset {filename} has no SHA-256 digest")
     expected_sha256 = digest_value.split(":", 1)[1].lower()
     if not SHA256_RE.fullmatch(expected_sha256):
-        raise SystemExit(f"Private Intune release asset {filename} has an invalid SHA-256 digest")
+        raise SystemExit(f"Intune release asset {filename} has an invalid SHA-256 digest")
 
-    asset_url = str(asset.get("url") or "")
-    expected_prefix = f"https://api.github.com/repos/{REPOSITORY}/releases/assets/"
+    asset_url = str(asset.get("browser_download_url") or "")
+    expected_prefix = f"https://github.com/{REPOSITORY}/releases/download/"
     if not asset_url.startswith(expected_prefix):
-        raise SystemExit(f"Refusing unexpected private Intune asset URL: {asset_url!r}")
+        raise SystemExit(f"Refusing unexpected Intune asset URL: {asset_url!r}")
 
-    with tempfile.TemporaryDirectory(prefix="intune-private-sync-") as tmpdir:
+    with tempfile.TemporaryDirectory(prefix="intune-public-sync-") as tmpdir:
         package_path = Path(tmpdir) / filename
         digest = hashlib.sha256()
         try:
             with urllib.request.urlopen(
-                request(asset_url, token, "application/octet-stream"), timeout=120
+                request(asset_url, "application/octet-stream"), timeout=120
             ) as response, package_path.open("wb") as output:
                 while True:
                     chunk = response.read(1024 * 1024)
@@ -127,13 +118,13 @@ def main() -> int:
                     output.write(chunk)
         except urllib.error.HTTPError as exc:
             raise SystemExit(
-                f"Unable to download private Intune release asset (HTTP {exc.code})"
+                f"Unable to download public Intune release asset (HTTP {exc.code})"
             ) from exc
 
         actual_sha256 = digest.hexdigest()
         if actual_sha256 != expected_sha256:
             raise SystemExit(
-                f"Refusing private Intune release {filename}: SHA-256 {actual_sha256} "
+                f"Refusing Intune release {filename}: SHA-256 {actual_sha256} "
                 f"!= GitHub digest {expected_sha256}"
             )
         verify_deb(package_path, version)
@@ -142,7 +133,7 @@ def main() -> int:
     encoded = base64.b64encode(payload).decode("ascii")
     parts = [encoded[offset : offset + PART_CHARS] for offset in range(0, len(encoded), PART_CHARS)]
     if not parts:
-        raise SystemExit("Private Intune release asset is empty")
+        raise SystemExit("Intune release asset is empty")
 
     MIRROR.mkdir(parents=True, exist_ok=True)
     prefix = f"{filename}.b64.part-"
@@ -164,7 +155,7 @@ def main() -> int:
         sha_path.write_text(sha_text, encoding="ascii")
 
     print(
-        f"Prepared verified private Intune mirror {filename} ({expected_sha256}) "
+        f"Prepared verified public Intune mirror {filename} ({expected_sha256}) "
         f"as {len(parts)} text-safe parts"
     )
     return 0
