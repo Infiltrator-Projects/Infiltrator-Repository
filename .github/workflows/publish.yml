@@ -41,8 +41,10 @@ jobs:
       - name: Materialise verified private package mirrors
         run: python3 scripts/materialize-private-mirrors.py
 
-      - name: Verify Software Centre setup commands
-        run: python3 tests/test_site_setup.py
+      - name: Verify repository source contracts
+        run: |
+          python3 tests/test_site_setup.py
+          python3 tests/test_private_mirror_policy.py
 
       - name: Read currently published Calendar Plus version
         id: previous-calendar
@@ -84,9 +86,14 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
+
           apps = json.loads(Path('public/catalogue/apps.json').read_text(encoding='utf-8'))
           app = next(a for a in apps if a.get('id') == 'intune-zabbix-bridge')
-          assert str(app.get('version')) == '0.7.5', app
+          version = str(app.get('version') or '')
+          assert version, app
+          mirror = Path(f'mirrored-packages/intune-zabbix-bridge_{version}_all.deb')
+          assert mirror.is_file(), (version, mirror)
+          assert app.get('asset') == mirror.name, app
           PY
 
       - name: Detect Calendar Plus publication change
