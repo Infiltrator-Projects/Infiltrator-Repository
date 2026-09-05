@@ -17,14 +17,15 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Serialize only the short Pages publication job. The longer Mint lifecycle test
+    # must not hold up later five-minute safety refreshes and create a queue.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     outputs:
       calendar_plus_changed: ${{ steps.release-delta.outputs.calendar_plus_changed }}
     environment:
