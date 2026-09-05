@@ -7,9 +7,10 @@ on:
     types: [application-release]
   workflow_dispatch:
   schedule:
-    # Hourly safety net for source repositories whose cross-repository dispatch token
-    # is temporarily unavailable after moves or permission changes.
-    - cron: '17 * * * *'
+    # Five-minute safety net for source repositories whose cross-repository dispatch token
+    # is temporarily unavailable. Package rebuilds reuse the published APT mirror first,
+    # so scheduled refreshes do not re-download unchanged GitHub release assets.
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: read
