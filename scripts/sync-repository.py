@@ -13,6 +13,8 @@ import re
 import shutil
 import subprocess
 import tempfile
+import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -24,6 +26,7 @@ OWNER = "Infiltrator-Projects"
 PRIMARY_SUITE = "alpha"
 LEGACY_SUITE = "stable"
 HISTORY_LIMIT = 5
+PUBLISHED_POOL_BASE = "https://infiltrator-projects.github.io/Infiltrator-Repository/pool/main"
 
 
 def github_headers() -> dict[str, str]:
@@ -44,8 +47,9 @@ def request_json(url: str):
         return json.load(response)
 
 
-def download(url: str, destination: Path) -> str:
-    request = urllib.request.Request(url, headers=github_headers())
+def download(url: str, destination: Path, headers: dict[str, str] | None = None) -> str:
+    request_headers = headers or {"User-Agent": "Infiltrator-Repository"}
+    request = urllib.request.Request(url, headers=request_headers)
     digest = hashlib.sha256()
     with urllib.request.urlopen(request, timeout=180) as response, destination.open("wb") as output:
         while True:
@@ -87,6 +91,35 @@ def verify_package(package: Path, asset: dict) -> str:
             f"{asset['name']}: SHA-256 mismatch; expected {expected}, downloaded {actual}"
         )
     return actual
+
+
+def materialize_release_asset(app: dict, release: dict, asset: dict, target: Path) -> str:
+    """Reuse the already-published APT mirror before touching GitHub release assets."""
+    expected = expected_sha256(asset)
+    mirror_name = urllib.parse.quote(asset["name"], safe="")
+    mirror_url = f"{PUBLISHED_POOL_BASE}/{mirror_name}"
+
+    try:
+        print(f"Reusing published mirror for {app['name']} {release['tag_name']} -> {target.name}")
+        mirrored_hash = download(mirror_url, target)
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        target.unlink(missing_ok=True)
+        print(f"Published mirror unavailable for {target.name}: {exc}")
+    else:
+        if mirrored_hash == expected:
+            return mirrored_hash
+        target.unlink(missing_ok=True)
+        print(
+            f"Published mirror digest mismatch for {target.name}; "
+            "falling back to the immutable GitHub release asset"
+        )
+
+    print(f"Downloading {app['name']} {release['tag_name']} from GitHub -> {target.name}")
+    streamed_hash = download(asset["browser_download_url"], target, headers=github_headers())
+    verified_hash = verify_package(target, asset)
+    if streamed_hash != verified_hash:
+        raise RuntimeError(f"{target.name}: internal SHA-256 verification disagreement")
+    return verified_hash
 
 
 def human_description(value: str) -> str:
@@ -191,11 +224,7 @@ def collect_app(app: dict) -> dict:
 
         asset = matching[0]
         target = POOL / asset["name"]
-        print(f"Downloading {app['name']} {release['tag_name']} -> {target.name}")
-        streamed_hash = download(asset["browser_download_url"], target)
-        verified_hash = verify_package(target, asset)
-        if streamed_hash != verified_hash:
-            raise RuntimeError(f"{target.name}: internal SHA-256 verification disagreement")
+        verified_hash = materialize_release_asset(app, release, asset, target)
 
         versions.append(
             {
