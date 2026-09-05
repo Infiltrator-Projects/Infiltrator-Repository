@@ -7,9 +7,9 @@ on:
     types: [application-release]
   workflow_dispatch:
   schedule:
-    # Safety net for source repositories whose cross-repository dispatch token
+    # Hourly safety net for source repositories whose cross-repository dispatch token
     # is temporarily unavailable after moves or permission changes.
-    - cron: '*/5 * * * *'
+    - cron: '17 * * * *'
 
 permissions:
   contents: read
@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
