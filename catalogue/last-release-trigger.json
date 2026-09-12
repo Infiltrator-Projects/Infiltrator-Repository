@@ -1,11 +1,11 @@
 {
-  "reason": "publish FORDLINK 0.2.21 after verified source release",
+  "reason": "publish MBLINK 0.7.195 after verified source release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/MBLINK",
-      "version": "0.7.154",
-      "release_sha": "ed490ee89bea3cf79c2329e754c1968dfe266fb1",
-      "release_published_at": "2026-09-03T00:40:44Z"
+      "version": "0.7.195",
+      "release_sha": "15133f06c8f3188dad95a1163b646e4e9c95292c",
+      "release_published_at": "2026-09-12T12:14:19Z"
     },
     {
       "repository": "Infiltrator-Projects/Jaglink",
