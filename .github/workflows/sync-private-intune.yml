@@ -14,6 +14,7 @@ on:
 # A workflow-file push also forces an immediate sync when a release needs publishing now.
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: intune-release-sync
@@ -36,6 +37,7 @@ jobs:
         run: python3 scripts/sync-private-intune.py
 
       - name: Commit mirror changes when needed
+        id: mirror
         shell: bash
         run: |
           set -euo pipefail
@@ -43,6 +45,7 @@ jobs:
                   mirrored-packages/intune-zabbix-bridge_*_all.deb.sha256
           if git diff --cached --quiet; then
             echo 'Central Intune mirror is already current.'
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -63,3 +66,15 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m "Mirror Intune Zabbix Bridge ${version} from public release"
           git push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+
+      # Commits created with GITHUB_TOKEN intentionally do not trigger another
+      # push workflow. Dispatch publication explicitly after the verified mirror
+      # has landed so Pages/APT cannot race the mirror commit and publish the
+      # previous Intune version.
+      - name: Publish updated APT repository
+        if: steps.mirror.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run publish.yml --ref main
