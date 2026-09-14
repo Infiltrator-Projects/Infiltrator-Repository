@@ -11,6 +11,7 @@ on:
 
 # Intune-Zabbix-Bridge is public: this workflow deliberately uses no PAT or
 # cross-repository Actions secret to read its release assets.
+# A workflow-file push also forces an immediate sync when a release needs publishing now.
 permissions:
   contents: write
 
