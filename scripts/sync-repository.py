@@ -177,7 +177,7 @@ def collect_local_app(app: dict) -> dict:
                 "download_size": target.stat().st_size,
                 "sha256": digest,
                 "release_tag": f"v{version}",
-                "release_url": f"https://github.com/{OWNER}/{app['repo']}/releases/tag/v{version}",
+                "release_url": f"https://github.com/{app.get('owner', OWNER)}/{app['repo']}/releases/tag/v{version}",
                 "published_at": "",
             }
         )
@@ -188,7 +188,7 @@ def collect_local_app(app: dict) -> dict:
 
     item = dict(app)
     item.update(latest)
-    item["source_url"] = f"https://github.com/{OWNER}/{app['repo']}"
+    item["source_url"] = f"https://github.com/{app.get('owner', OWNER)}/{app['repo']}"
     item["history"] = releases
     for key in ("local_deb", "local_deb_glob", "deb_regex", "release_tag", "release_url", "published_at"):
         item.pop(key, None)
@@ -200,7 +200,7 @@ def collect_app(app: dict) -> dict:
         return collect_local_app(app)
 
     releases = request_json(
-        f"https://api.github.com/repos/{OWNER}/{app['repo']}/releases?per_page={HISTORY_LIMIT}"
+        f"https://api.github.com/repos/{app.get('owner', OWNER)}/{app['repo']}/releases?per_page={HISTORY_LIMIT}"
     )
     eligible = [release for release in releases if not release.get("draft") and not release.get("prerelease")]
     if not eligible:
@@ -252,7 +252,7 @@ def collect_app(app: dict) -> dict:
     latest = versions[0]
     item = dict(app)
     item.update(latest)
-    item["source_url"] = f"https://github.com/{OWNER}/{app['repo']}"
+    item["source_url"] = f"https://github.com/{app.get('owner', OWNER)}/{app['repo']}"
     item["history"] = versions
     item.pop("deb_regex", None)
     return item

@@ -60,7 +60,8 @@
     "category": "Infrastructure",
     "description": "Zabbix NPS authentication event monitor and search module.",
     "deb_regex": "^nps-wheres-wally-zabbix_.*_all\\.deb$",
-    "icon": "network"
+    "icon": "network",
+    "owner": "St-Augustines-College-Kyabram"
   },
   {
     "id": "fordlink",
@@ -96,6 +97,7 @@
     "category": "Infrastructure",
     "description": "Microsoft Intune reboot telemetry bridge with native Zabbix Reboot Watch widget. Universal package; deployment credentials are supplied separately.",
     "local_deb_glob": "mirrored-packages/intune-zabbix-bridge_*_all.deb",
-    "icon": "network"
+    "icon": "network",
+    "owner": "St-Augustines-College-Kyabram"
   }
 ]

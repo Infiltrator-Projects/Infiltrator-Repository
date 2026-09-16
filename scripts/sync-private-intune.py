@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MIRROR = ROOT / "mirrored-packages"
 PACKAGE = "intune-zabbix-bridge"
-REPOSITORY = "Infiltrator-Projects/Intune-Zabbix-Bridge"
+REPOSITORY = "St-Augustines-College-Kyabram/Intune-Zabbix-Bridge"
 LATEST_RELEASE_API = f"https://api.github.com/repos/{REPOSITORY}/releases/latest"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 PART_CHARS = 8000
