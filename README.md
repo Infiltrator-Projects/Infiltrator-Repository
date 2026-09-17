@@ -78,7 +78,7 @@ A local helper is provided at `scripts/create-signing-key.sh`. It creates a dedi
 Release automation is built as a portable C++17 command-line tool
 (`scripts/repository-tool.cpp`). GitHub Actions compiles it with the system
 compiler and uses it for verified Intune mirroring and private-payload
-materialisation. It uses `curl`, `jq`, `sha256sum`, `base64`, and `dpkg-deb`
+materialisation. The tool consumes generic primitives from Infiltratr Common where the contract is product-neutral: output escaping and durable file publication belong to COMMON, while Debian/APT metadata, GitHub release discovery, retention, signing, mirroring and catalogue semantics remain local to this repository. The static Software Centre consumes COMMON's neutral web design adapter but keeps repository-specific status and package presentation locally. Pages artifact deployment is delegated to COMMON's reusable deployment action. It uses `curl`, `jq`, `sha256sum`, `base64`, and `dpkg-deb`
 from the runner rather than embedding protocol or Debian implementations.
 The production release path is C++17. The former Python publisher, mirror
 materialiser and Intune synchroniser have been removed rather than retained as
