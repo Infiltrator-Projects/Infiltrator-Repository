@@ -38,38 +38,30 @@ jobs:
       - name: Install repository tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg
+          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++
+
+      - name: Build C++17 release tool
+        run: |
+          mkdir -p build
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic scripts/repository-tool.cpp -o build/repository-tool
 
       - name: Materialise verified private package mirrors
-        run: python3 scripts/materialize-private-mirrors.py
+        run: build/repository-tool materialize
 
       - name: Verify repository source contracts
         run: |
           python3 tests/test_site_setup.py
           python3 tests/test_private_mirror_policy.py
-          python3 tests/test_retention.py
+          python3 tests/test_retention.py build/repository-tool
 
       - name: Read currently published Calendar Plus version
         id: previous-calendar
         shell: bash
         run: |
           set -euo pipefail
-          version="$(python3 - <<'PY'
-          import json
-          import urllib.error
-          import urllib.request
-
-          url = "https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json"
-          try:
-              with urllib.request.urlopen(url, timeout=20) as response:
-                  apps = json.load(response)
-          except (urllib.error.URLError, json.JSONDecodeError):
-              print("")
-          else:
-              print(next((str(app.get("version", "")) for app in apps
-                          if app.get("id") == "calendar-plus"), ""))
-          PY
-          )"
+          version="$(curl -fsSL --max-time 20 \
+            https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json \
+            | jq -r '.[] | select(.id == "calendar-plus") | (.version // "")' || true)"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           printf 'Previously published Calendar Plus version: %s\n' "${version:-<none>}"
 
@@ -80,24 +72,16 @@ jobs:
           APT_SIGNING_KEY_FINGERPRINT: ${{ secrets.APT_SIGNING_KEY_FINGERPRINT }}
           APT_SIGNING_PASSPHRASE: ${{ secrets.APT_SIGNING_PASSPHRASE }}
         run: |
-          python3 -m py_compile scripts/sync-repository.py scripts/materialize-private-mirrors.py
-          python3 scripts/sync-repository.py
+          build/repository-tool publish
           test -s public/dists/alpha/Release
           test -s public/dists/alpha/main/binary-amd64/Packages.gz
           test -s public/catalogue/apps.json
           test -s public/catalogue/repository.json
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          apps = json.loads(Path('public/catalogue/apps.json').read_text(encoding='utf-8'))
-          app = next(a for a in apps if a.get('id') == 'intune-zabbix-bridge')
-          version = str(app.get('version') or '')
-          assert version, app
-          mirror = Path(f'mirrored-packages/intune-zabbix-bridge_{version}_all.deb')
-          assert mirror.is_file(), (version, mirror)
-          assert app.get('asset') == mirror.name, app
-          PY
+          version="$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .version' public/catalogue/apps.json)"
+          test -n "$version"
+          mirror="mirrored-packages/intune-zabbix-bridge_${version}_all.deb"
+          test -f "$mirror"
+          test "$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .asset' public/catalogue/apps.json)" = "$(basename "$mirror")"
 
       - name: Detect Calendar Plus publication change
         id: release-delta
@@ -106,15 +90,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          current="$(python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          apps = json.loads(Path("public/catalogue/apps.json").read_text(encoding="utf-8"))
-          print(next((str(app.get("version", "")) for app in apps
-                      if app.get("id") == "calendar-plus"), ""))
-          PY
-          )"
+          current="$(jq -r '.[] | select(.id == "calendar-plus") | (.version // "")' public/catalogue/apps.json)"
           test -n "$current"
           changed=false
           if [[ "$current" != "${PREVIOUS_VERSION:-}" ]]; then
@@ -148,15 +124,20 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install GnuPG
+      - name: Install signing test tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends gnupg
+          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++
+
+      - name: Build C++17 release tool
+        run: |
+          mkdir -p build
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic scripts/repository-tool.cpp -o build/repository-tool
 
       - name: Exercise signing path with disposable key
         run: |
           python3 -m py_compile tests/test_signing.py
-          python3 tests/test_signing.py
+          python3 tests/test_signing.py build/repository-tool
 
   mint-e2e:
     runs-on: ubuntu-latest

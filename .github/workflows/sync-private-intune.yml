@@ -7,7 +7,7 @@ on:
   push:
     paths:
       - '.github/workflows/sync-private-intune.yml'
-      - 'scripts/sync-private-intune.py'
+      - 'scripts/repository-tool.cpp'
 
 # Intune-Zabbix-Bridge is public: this workflow deliberately uses no PAT or
 # cross-repository Actions secret to read its release assets.
@@ -31,10 +31,15 @@ jobs:
       - name: Install package inspection tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends dpkg-dev
+          sudo apt-get install -y --no-install-recommends dpkg-dev jq curl g++
+
+      - name: Build C++17 release tool
+        run: |
+          mkdir -p build
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic scripts/repository-tool.cpp -o build/repository-tool
 
       - name: Pull and verify latest public Intune release
-        run: python3 scripts/sync-private-intune.py
+        run: build/repository-tool sync-intune
 
       - name: Commit mirror changes when needed
         id: mirror
@@ -49,18 +54,9 @@ jobs:
             exit 0
           fi
 
-          version="$(python3 - <<'PY'
-          from pathlib import Path
-          import re
-          names = sorted(Path('mirrored-packages').glob('intune-zabbix-bridge_*_all.deb.sha256'))
-          versions = []
-          for path in names:
-              match = re.fullmatch(r'intune-zabbix-bridge_(.+)_all\.deb\.sha256', path.name)
-              if match:
-                  versions.append(match.group(1))
-          print(versions[-1] if versions else 'unknown')
-          PY
-          )"
+          version="$(find mirrored-packages -maxdepth 1 -name 'intune-zabbix-bridge_*_all.deb.sha256' -printf '%f\n' \
+            | sed -E 's/^intune-zabbix-bridge_(.*)_all\.deb\.sha256$/\1/' | sort | tail -n 1)"
+          version="${version:-unknown}"
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

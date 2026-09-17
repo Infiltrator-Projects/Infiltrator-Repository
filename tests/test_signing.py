@@ -1,112 +1,101 @@
 #!/usr/bin/env python3
-"""Exercise the repository signing path with a disposable CI-only OpenPGP key."""
+"""Exercise signing through the compiled C++ publisher."""
 from __future__ import annotations
 
 import base64
-import importlib.util
+import json
 import os
-import pathlib
+from pathlib import Path
 import subprocess
+import sys
 import tempfile
 
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-MODULE_PATH = ROOT / "scripts" / "sync-repository.py"
+ROOT = Path(__file__).resolve().parents[1]
+BINARY = Path(sys.argv[1] if len(sys.argv) > 1 else ROOT / "build" / "repository-tool").resolve()
+assert BINARY.is_file(), BINARY
 
-
-def run(args, *, env=None, input_data=None, capture=False):
+def run(args, *, env=None, input_data=None, capture=False, cwd=None):
     return subprocess.run(
-        args,
-        env=env,
-        input=input_data,
-        text=True,
-        check=True,
-        capture_output=capture,
+        args, env=env, input=input_data, text=True, check=True,
+        capture_output=capture, cwd=cwd
     )
 
+with tempfile.TemporaryDirectory(prefix="infiltrator-signing-") as td:
+    root = Path(td)
+    (root / "site").mkdir()
+    (root / "site" / "index.html").write_text("<!doctype html><title>fixture</title>\n")
+    (root / "catalogue").mkdir()
+    mirrors = root / "mirrors"
+    mirrors.mkdir()
 
-def main() -> int:
-    spec = importlib.util.spec_from_file_location("sync_repository", MODULE_PATH)
-    module = importlib.util.module_from_spec(spec)
-    assert spec.loader is not None
-    spec.loader.exec_module(module)
+    tree = root / "package"
+    (tree / "DEBIAN").mkdir(parents=True)
+    (tree / "DEBIAN" / "control").write_text(
+        "Package: signing-test\n"
+        "Version: 1.0\n"
+        "Architecture: amd64\n"
+        "Maintainer: Test <test@example.invalid>\n"
+        "Description: signing fixture\n"
+    )
+    package = mirrors / "signing-test_1.0_amd64.deb"
+    run(["dpkg-deb", "--build", "--root-owner-group", str(tree), str(package)])
 
-    with tempfile.TemporaryDirectory(prefix="infiltrator-signing-test-") as td:
-        temp = pathlib.Path(td)
-        gen_home = temp / "generator"
-        verify_home = temp / "verifier"
-        public = temp / "public"
-        gen_home.mkdir(mode=0o700)
-        verify_home.mkdir(mode=0o700)
+    (root / "catalogue" / "apps-source.json").write_text(json.dumps([{
+        "id": "signing-test",
+        "name": "Signing Test",
+        "repo": "signing-test",
+        "category": "Test",
+        "description": "C++ signing fixture.",
+        "local_deb_glob": "mirrors/*.deb",
+        "icon": "test",
+    }]))
 
-        for suite in ("alpha", "stable"):
-            directory = public / "dists" / suite
-            directory.mkdir(parents=True)
-            (directory / "Release").write_text(
-                "Origin: Infiltrator\n"
-                f"Suite: {suite}\n"
-                f"Codename: {suite}\n"
-                "Architectures: amd64\n"
-                "Components: main\n"
-            )
+    gen_home = root / "generator"
+    verify_home = root / "verifier"
+    gen_home.mkdir(mode=0o700)
+    verify_home.mkdir(mode=0o700)
+    gen_env = dict(os.environ)
+    gen_env["GNUPGHOME"] = str(gen_home)
 
-        gen_env = dict(os.environ)
-        gen_env["GNUPGHOME"] = str(gen_home)
-        params = """Key-Type: RSA
+    params = """Key-Type: RSA
 Key-Length: 3072
 Key-Usage: sign
-Name-Real: Infiltrator CI Signing Self-Test
+Name-Real: Infiltrator C++ Signing Self-Test
 Name-Email: ci-signing-test@example.invalid
 Expire-Date: 1d
 %no-protection
 %commit
 """
-        run(["gpg", "--batch", "--generate-key"], env=gen_env, input_data=params)
-        listed = run(
-            ["gpg", "--batch", "--with-colons", "--list-secret-keys"],
-            env=gen_env,
-            capture=True,
-        ).stdout.splitlines()
-        fingerprint = next(line.split(":")[9] for line in listed if line.startswith("fpr:"))
+    run(["gpg", "--batch", "--generate-key"], env=gen_env, input_data=params)
+    listed = run(
+        ["gpg", "--batch", "--with-colons", "--list-secret-keys"],
+        env=gen_env, capture=True
+    ).stdout.splitlines()
+    fingerprint = next(line.split(":")[9] for line in listed if line.startswith("fpr:"))
+    secret = subprocess.check_output(
+        ["gpg", "--batch", "--export-secret-keys", fingerprint],
+        env=gen_env,
+    )
 
-        secret = subprocess.check_output(
-            ["gpg", "--batch", "--export-secret-keys", fingerprint],
-            env=gen_env,
-        )
+    env = dict(os.environ)
+    env["REPOSITORY_ROOT"] = str(root)
+    env["APT_SIGNING_KEY_B64"] = base64.b64encode(secret).decode("ascii")
+    env["APT_SIGNING_KEY_FINGERPRINT"] = fingerprint
+    env.pop("APT_SIGNING_PASSPHRASE", None)
+    run([str(BINARY), "publish"], env=env, cwd=root)
 
-        old_public = module.PUBLIC
-        module.PUBLIC = public
-        try:
-            os.environ["APT_SIGNING_KEY_B64"] = base64.b64encode(secret).decode("ascii")
-            os.environ["APT_SIGNING_KEY_FINGERPRINT"] = fingerprint
-            os.environ.pop("APT_SIGNING_PASSPHRASE", None)
-            assert module.sign_repository(["alpha", "stable"]) is True
-        finally:
-            module.PUBLIC = old_public
-            os.environ.pop("APT_SIGNING_KEY_B64", None)
-            os.environ.pop("APT_SIGNING_KEY_FINGERPRINT", None)
+    repository = json.loads((root / "public" / "catalogue" / "repository.json").read_text())
+    assert repository["signed"] is True, repository
+    assert repository.get("generated_at"), repository
+    public_key = root / "public" / "repository-key.gpg"
+    assert public_key.stat().st_size > 0
 
-        assert (public / "repository-key.gpg").stat().st_size > 0
-        verify_env = dict(os.environ)
-        verify_env["GNUPGHOME"] = str(verify_home)
-        run(["gpg", "--batch", "--import", str(public / "repository-key.gpg")], env=verify_env)
+    verify_env = dict(os.environ)
+    verify_env["GNUPGHOME"] = str(verify_home)
+    run(["gpg", "--batch", "--import", str(public_key)], env=verify_env)
+    for suite in ("alpha", "stable"):
+        directory = root / "public" / "dists" / suite
+        run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
+        run(["gpg", "--batch", "--verify", str(directory / "Release.gpg"), str(directory / "Release")], env=verify_env)
 
-        for suite in ("alpha", "stable"):
-            directory = public / "dists" / suite
-            run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
-            run(
-                [
-                    "gpg",
-                    "--batch",
-                    "--verify",
-                    str(directory / "Release.gpg"),
-                    str(directory / "Release"),
-                ],
-                env=verify_env,
-            )
-
-    print("Repository signing self-test passed")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+print("PASS: compiled C++ publisher signs and verifies both APT suites")

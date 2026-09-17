@@ -8,6 +8,7 @@ Infiltrator Repository is the distribution layer for the Linux applications publ
 - Calendar Plus
 - Linux Defragger
 - InfiltratorFS
+- Infiltrator Calc
 - MBLINK
 - JAGLINK
 - FORDLINK
@@ -74,11 +75,32 @@ A local helper is provided at `scripts/create-signing-key.sh`. It creates a dedi
 
 ## Validation
 
+Release automation is built as a portable C++17 command-line tool
+(`scripts/repository-tool.cpp`). GitHub Actions compiles it with the system
+compiler and uses it for verified Intune mirroring and private-payload
+materialisation. It uses `curl`, `jq`, `sha256sum`, `base64`, and `dpkg-deb`
+from the runner rather than embedding protocol or Debian implementations.
+The production release path is C++17. The former Python publisher, mirror
+materialiser and Intune synchroniser have been removed rather than retained as
+a second implementation. Regression tests invoke the compiled C++ executable,
+so a green workflow validates the code that actually publishes the repository.
+
+The `publish` command performs release discovery, authenticated GitHub API
+access when `GITHUB_TOKEN` is available, published-mirror reuse, asset/hash
+validation, five-version retention, catalogue generation, package indexing,
+by-hash metadata, generated timestamps, and optional OpenPGP signing.
+`dpkg-scanpackages`, `apt-ftparchive`, `curl`, `jq`, and GnuPG remain
+distribution tools invoked by the C++ executable.
+
+`site/index.html` remains a static GitHub Pages application. It is copied into
+the generated Pages artifact; converting it into a server-side C++ page would
+break offline/static hosting and is neither necessary nor supported.
+
 Every non-scheduled publish runs the signing self-test. The heavier Mint lifecycle test runs only on manual workflow dispatch, after publication succeeds.
 
 The signing self-test creates a disposable CI-only OpenPGP key, signs both suites through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
 
-The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all eleven packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
+The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all twelve packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
 
 ## Runner placement
 
@@ -110,4 +132,3 @@ metadata + by-hash          ↓
                 ↓
         Linux Mint / APT
 ```
-
