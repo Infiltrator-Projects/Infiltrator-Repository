@@ -35,15 +35,23 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Check out pinned Infiltratr Common 1.18.0
+        uses: actions/checkout@v4
+        with:
+          repository: Infiltrator-Projects/Infiltrator-Libraries
+          ref: 4d069ff28d77f39a8d1ff0056691e1222767f6b5
+          path: _common
+
       - name: Install repository tools
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++
 
-      - name: Build C++17 release tool
+      - name: Build C++17 release tool with COMMON
         run: |
           mkdir -p build
-          g++ -std=c++17 -O2 -Wall -Wextra -pedantic scripts/repository-tool.cpp -o build/repository-tool
+          make -C _common BUILD_DIR="$GITHUB_WORKSPACE/build/common" all
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic -I"$GITHUB_WORKSPACE/_common/include" scripts/repository-tool.cpp "$GITHUB_WORKSPACE/build/common/libinfiltratr-common.a" -lm -ldl -o build/repository-tool
 
       - name: Materialise verified private package mirrors
         run: build/repository-tool materialize
@@ -77,6 +85,9 @@ jobs:
           test -s public/dists/alpha/main/binary-amd64/Packages.gz
           test -s public/catalogue/apps.json
           test -s public/catalogue/repository.json
+          mkdir -p public/assets
+          cp _common/design/infiltrator-web-v1.css public/assets/infiltrator-web-v1.css
+          test -s public/assets/infiltrator-web-v1.css
           version="$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .version' public/catalogue/apps.json)"
           test -n "$version"
           mirror="mirrored-packages/intune-zabbix-bridge_${version}_all.deb"
@@ -99,22 +110,12 @@ jobs:
           echo "calendar_plus_changed=$changed" >> "$GITHUB_OUTPUT"
           printf 'Calendar Plus catalogue version: %s (changed=%s)\n' "$current" "$changed"
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: github-pages-${{ github.run_attempt }}
-          path: public
-
-      - name: Deploy Pages
+      - name: Deploy Pages through pinned COMMON
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@4d069ff28d77f39a8d1ff0056691e1222767f6b5
         with:
-          artifact_name: github-pages-${{ github.run_attempt }}
+          path: public
+          artifact-name: github-pages-${{ github.run_attempt }}
 
   signing-self-test:
     runs-on: ubuntu-latest
@@ -123,6 +124,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Check out pinned Infiltratr Common 1.18.0
+        uses: actions/checkout@v4
+        with:
+          repository: Infiltrator-Projects/Infiltrator-Libraries
+          ref: 4d069ff28d77f39a8d1ff0056691e1222767f6b5
+          path: _common
 
       - name: Install signing test tools
         run: |
