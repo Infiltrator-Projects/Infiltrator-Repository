@@ -1,6 +1,12 @@
 {
-  "reason": "publish MBLINK 0.7.195 after verified source release",
+  "reason": "publish Infiltrator Calc 0.1.1 after verified source release",
   "releases": [
+    {
+      "repository": "Infiltrator-Projects/Infiltrator-Calc",
+      "version": "0.1.1",
+      "release_sha": "c5acc9a68b325737646c523e350cfb25b9357c07",
+      "release_published_at": "2026-09-17T11:58:15Z"
+    },
     {
       "repository": "Infiltrator-Projects/MBLINK",
       "version": "0.7.195",
