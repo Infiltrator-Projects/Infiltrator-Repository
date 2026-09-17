@@ -137,10 +137,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++
 
-      - name: Build C++17 release tool
+      - name: Build C++17 release tool with COMMON
         run: |
           mkdir -p build
-          g++ -std=c++17 -O2 -Wall -Wextra -pedantic scripts/repository-tool.cpp -o build/repository-tool
+          make -C _common BUILD_DIR="$GITHUB_WORKSPACE/build/common" all
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic -I"$GITHUB_WORKSPACE/_common/include" scripts/repository-tool.cpp "$GITHUB_WORKSPACE/build/common/libinfiltratr-common.a" -lm -ldl -o build/repository-tool
 
       - name: Exercise signing path with disposable key
         run: |
