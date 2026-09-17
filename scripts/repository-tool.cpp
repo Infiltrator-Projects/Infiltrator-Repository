@@ -517,6 +517,7 @@ static int sync_intune(const fs::path& root) {
     write(public_dir / "catalogue" / "apps.json", apps.str());
 
     for (const std::string suite : {"alpha", "stable"}) {
+      const std::string suite_label = suite == "alpha" ? "Alpha" : "Stable";
       const auto binary = public_dir / "dists" / suite / "main" / "binary-amd64";
       fs::create_directories(binary);
       const auto packages_text = command_output("cd " + quote(public_dir.string()) + " && dpkg-scanpackages --multiversion pool/main /dev/null");
@@ -527,7 +528,7 @@ static int sync_intune(const fs::path& root) {
       const auto temp = public_dir / (".Release-" + suite + ".tmp");
       const auto command = "cd " + quote(public_dir.string()) + " && apt-ftparchive "
         "-o APT::FTPArchive::Release::Origin=Infiltrator "
-        "-o APT::FTPArchive::Release::Label='Infiltrator " + suite + "' "
+        "-o APT::FTPArchive::Release::Label='Infiltrator " + suite_label + "' "
         "-o APT::FTPArchive::Release::Suite=" + suite + " -o APT::FTPArchive::Release::Codename=" + suite +
         " -o APT::FTPArchive::Release::Architectures=amd64 -o APT::FTPArchive::Release::Components=main "
         "-o APT::FTPArchive::Release::Description='Infiltrator Software Repository " + suite + "' release dists/" + suite;
