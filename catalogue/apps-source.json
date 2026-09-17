@@ -36,6 +36,15 @@
     "icon": "filesystem"
   },
   {
+    "id": "infiltrator-calc",
+    "name": "Infiltrator Calc",
+    "repo": "Infiltrator-Calc",
+    "category": "Productivity",
+    "description": "Native Infiltrator desktop calculator with a growing scientific, engineering and systems calculation engine.",
+    "deb_regex": "^infiltrator-calc_.*_amd64\\.deb$",
+    "icon": "calculator"
+  },
+  {
     "id": "mblink",
     "name": "MBLINK",
     "repo": "MBLINK",
