@@ -72,4 +72,9 @@ with tempfile.TemporaryDirectory(prefix="infiltrator-retention-") as td:
     packages = (root / "public" / "dists" / "alpha" / "main" / "binary-amd64" / "Packages").read_text()
     assert packages.count("Package: retention-test\n") == 5, packages
 
-print("PASS: compiled C++ publisher retains only the newest five Debian versions")
+    alpha_release = (root / "public" / "dists" / "alpha" / "Release").read_text()
+    stable_release = (root / "public" / "dists" / "stable" / "Release").read_text()
+    assert "Label: Infiltrator Alpha\n" in alpha_release, alpha_release
+    assert "Label: Infiltrator Stable\n" in stable_release, stable_release
+
+print("PASS: compiled C++ publisher retains five versions and preserves APT release labels")
