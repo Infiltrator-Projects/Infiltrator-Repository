@@ -6,7 +6,11 @@
 // runners as well as ordinary Debian-based development systems.
 #include <algorithm>
 #include <cstdlib>
+#include <cstring>
 #include <filesystem>
+#include <infiltratr/core.h>
+#include <infiltratr/escape.h>
+#include <infiltratr/posix.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -55,28 +59,36 @@ static std::string command_output(const std::string& command) {
   return value;
 }
 
-static std::string trim_eol(std::string value) {
-  while (!value.empty() && (value.back() == '\n' || value.back() == '\r')) value.pop_back();
-  return value;
+static std::string trim_eol(const std::string& value) {
+  std::vector<char> buffer(value.begin(), value.end());
+  buffer.push_back('\0');
+  infiltratr_trim_line_end(buffer.data());
+  return std::string(buffer.data());
+}
+
+static std::string common_escape(
+    const std::string& value,
+    bool (*encoder)(const char*, char*, size_t, size_t*)) {
+  size_t required = 0;
+  if (!encoder(value.c_str(), nullptr, 0, &required) || required == 0)
+    throw std::runtime_error("COMMON output escaping measurement failed");
+  std::vector<char> buffer(required);
+  if (!encoder(value.c_str(), buffer.data(), buffer.size(), nullptr))
+    throw std::runtime_error("COMMON output escaping failed");
+  return std::string(buffer.data());
 }
 
 static std::string url_encode_component(const std::string& value) {
-  std::ostringstream out;
-  out << std::uppercase << std::hex;
-  for (unsigned char c : value) {
-    if (std::isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
-      out << static_cast<char>(c);
-    } else {
-      out << '%' << std::setw(2) << std::setfill('0') << static_cast<int>(c);
-    }
-  }
-  return out.str();
+  return common_escape(value, infiltratr_escape_uri_component);
 }
 
 static void write(const fs::path& path, const std::string& value) {
-  std::ofstream output(path, std::ios::binary);
-  if (!output) throw std::runtime_error("unable to write " + path.string());
-  output << value;
+  const int error = infiltratr_atomic_file_write_bytes(
+      path.c_str(), INFILTRATR_ATOMIC_FILE_PRESERVE_PERMISSIONS,
+      value.data(), value.size());
+  if (error != 0)
+    throw std::runtime_error("COMMON atomic write failed for " + path.string() +
+                             ": " + std::strerror(error));
 }
 
 static std::string digest(const fs::path& file) {
@@ -111,16 +123,7 @@ static void check_deb(const fs::path& file, const std::string& version,
 }
 
 static std::string json_escape(const std::string& value) {
-    std::ostringstream out;
-    for (unsigned char c : value) {
-      if (c == '"' || c == '\\') out << '\\' << c;
-      else if (c == '\n') out << "\\n";
-      else if (c == '\r') out << "\\r";
-      else if (c == '\t') out << "\\t";
-      else if (c < 0x20) out << "\\u" << std::hex << std::setw(4) << std::setfill('0') << static_cast<int>(c);
-      else out << c;
-    }
-    return out.str();
+    return common_escape(value, infiltratr_escape_json);
   }
 
   static std::string tsv_unescape(const std::string& value) {
@@ -151,8 +154,7 @@ static std::string json_escape(const std::string& value) {
       throw std::runtime_error("unable to read DEB field " + field);
     }
     auto value = read(out); fs::remove(out);
-    while (!value.empty() && (value.back() == '\n' || value.back() == '\r')) value.pop_back();
-    return value;
+    return trim_eol(value);
   }
 
 static bool newer(const std::string& left, const std::string& right) {
