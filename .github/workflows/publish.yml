@@ -47,6 +47,7 @@ jobs:
         run: |
           python3 tests/test_site_setup.py
           python3 tests/test_private_mirror_policy.py
+          python3 tests/test_retention.py
 
       - name: Read currently published Calendar Plus version
         id: previous-calendar
@@ -336,3 +337,4 @@ jobs:
 
       - name: Report Mint test result
         run: echo 'Linux Mint 22.3 Cinnamon repository lifecycle test passed'
+

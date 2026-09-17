@@ -151,6 +151,11 @@ def collect_local_app(app: dict) -> dict:
         selector = app.get("local_deb_glob") or app.get("local_deb") or "<unspecified>"
         raise RuntimeError(f"{app['name']}: no mirrored DEB matches {selector}")
 
+    # Select retained versions before copying: dpkg-scanpackages indexes every
+    # file in POOL, not just the versions listed in the JSON catalogue.
+    candidates = [{"source": path, "version": deb_field(path, "Version")} for path in sources]
+    candidates.sort(key=functools.cmp_to_key(compare_debian_versions))
+    sources = [item["source"] for item in candidates[:HISTORY_LIMIT]]
     releases = []
     seen_versions: set[str] = set()
     for source in sources:

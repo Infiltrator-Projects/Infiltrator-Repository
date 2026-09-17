@@ -74,15 +74,19 @@ A local helper is provided at `scripts/create-signing-key.sh`. It creates a dedi
 
 ## Validation
 
-Every non-scheduled publish also runs two independent validation jobs.
+Every non-scheduled publish runs the signing self-test. The heavier Mint lifecycle test runs only on manual workflow dispatch, after publication succeeds.
 
 The signing self-test creates a disposable CI-only OpenPGP key, signs both suites through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
 
 The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all eleven packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
 
+## Runner placement
+
+Repository publication, signing checks and the Mint chroot test use GitHub-hosted `ubuntu-latest` runners. They do not occupy the organisation’s self-hosted Linux desktop runners. An idle desktop runner monitor does not mean repository publication has stopped; check this repository’s Actions runs.
+
 ## Publication
 
-GitHub Actions publishes on pushes to `main`, on `application-release` dispatches, on manual request and every five minutes as a permission-independent safety net. Intune Zabbix Bridge is public and its release mirror is pulled and SHA-256/package-metadata verified without a PAT or cross-repository secret before publication. Scheduled runs refresh packages without re-downloading the multi-gigabyte Mint ISO; the heavier Mint lifecycle and signing self-tests run on code changes and manual runs.
+GitHub Actions publishes on pushes to `main`, on `application-release` dispatches, on manual request and every five minutes as a permission-independent safety net. Intune Zabbix Bridge is public and its release mirror is pulled and SHA-256/package-metadata verified without a PAT or cross-repository secret before publication. Scheduled runs refresh packages without re-downloading the multi-gigabyte Mint ISO; the signing self-test runs on non-scheduled publication, while the Mint lifecycle test runs only on manual dispatch.
 
 Live software centre:
 
@@ -106,3 +110,4 @@ metadata + by-hash          ↓
                 ↓
         Linux Mint / APT
 ```
+
