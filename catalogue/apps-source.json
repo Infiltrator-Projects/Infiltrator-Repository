@@ -40,7 +40,7 @@
     "name": "Calculator",
     "repo": "Infiltrator-Calc",
     "category": "Productivity",
-    "description": "Native Infiltrator desktop calculator with a growing scientific, engineering and systems calculation engine.",
+    "description": "Native cross-platform calculator with Standard, Scientific and Programmer modes.",
     "deb_regex": "^infiltrator-calc_.*_amd64\\.deb$",
     "icon": "calculator"
   },
