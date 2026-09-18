@@ -23,5 +23,11 @@ assert 'dpkg --compare-versions' in tool
 assert 'if (result.size() > 5) result.resize(5);' in tool
 assert 'https://infiltrator-projects.github.io/Infiltrator-Repository/pool/main/' in tool
 assert 'GITHUB_TOKEN' in tool
+assert '#include <infiltratr/escape.h>' in tool
+assert '#include <infiltratr/posix.h>' in tool
+assert 'infiltratr_escape_json' in tool
+assert 'infiltratr_escape_uri_component' in tool
+assert 'infiltratr_atomic_file_write_bytes' in tool
+assert 'std::uppercase' not in tool, "URI escaping must come from COMMON, not a private encoder"
 
-print("Private mirror publication policy is version-dynamic.")
+print("Private mirror publication policy is version-dynamic and COMMON-backed.")
