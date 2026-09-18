@@ -104,11 +104,15 @@ jobs:
 
           calendar_version="$(jq -r '.[] | select(.id == "calendar") | .version' public/catalogue/apps.json)"
           test -n "$calendar_version"
-          calendar_transition="public/pool/main/calendar-plus_${calendar_version}_all.deb"
-          test -f "$calendar_transition"
-          test "$(dpkg-deb -f "$calendar_transition" Package)" = "calendar-plus"
-          test "$(dpkg-deb -f "$calendar_transition" Version)" = "$calendar_version"
-          test "$(dpkg-deb -f "$calendar_transition" Depends)" = "calendar (= $calendar_version)"
+          calendar_asset="$(jq -r '.[] | select(.id == "calendar") | .asset' public/catalogue/apps.json)"
+          test -n "$calendar_asset"
+          if [[ "$(dpkg-deb -f "public/pool/main/$calendar_asset" Package)" == "calendar" ]]; then
+            calendar_transition="public/pool/main/calendar-plus_${calendar_version}_all.deb"
+            test -f "$calendar_transition"
+            test "$(dpkg-deb -f "$calendar_transition" Package)" = "calendar-plus"
+            test "$(dpkg-deb -f "$calendar_transition" Version)" = "$calendar_version"
+            test "$(dpkg-deb -f "$calendar_transition" Depends)" = "calendar (= $calendar_version)"
+          fi
 
       - name: Detect Calendar publication change
         id: release-delta
