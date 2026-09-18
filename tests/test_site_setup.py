@@ -13,7 +13,7 @@ assert "infiltrator.list\\n" in block, "signed setup command must contain a real
 assert "sudo apt update" in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
 assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
-assert 'assets/infiltrator-web-v1.css?v=common-1.18.0' in site
+assert 'assets/infiltrator-web-v1.css?v=common-1.18.1' in site
 assert 'var(--infiltratr-text' in site
 assert 'var(--infiltratr-font-ui' in site
 assert "grep -RIlF" in block, "setup command must search for the pre-move repository URL"
