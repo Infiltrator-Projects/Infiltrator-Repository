@@ -62,7 +62,7 @@ jobs:
           python3 tests/test_private_mirror_policy.py
           python3 tests/test_retention.py build/repository-tool
 
-      - name: Read currently published Calendar Plus version
+      - name: Read currently published Calendar version
         id: previous-calendar
         shell: bash
         run: |
@@ -71,7 +71,7 @@ jobs:
             https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json \
             | jq -r '.[] | select(.id == "calendar-plus") | (.version // "")' || true)"
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          printf 'Previously published Calendar Plus version: %s\n' "${version:-<none>}"
+          printf 'Previously published Calendar version: %s\n' "${version:-<none>}"
 
       - name: Build and verify repository
         env:
@@ -102,7 +102,7 @@ jobs:
           test "$(dpkg-deb -f "$transition" Version)" = "$monitor_version"
           test "$(dpkg-deb -f "$transition" Depends)" = "system-monitor (= $monitor_version)"
 
-      - name: Detect Calendar Plus publication change
+      - name: Detect Calendar publication change
         id: release-delta
         env:
           PREVIOUS_VERSION: ${{ steps.previous-calendar.outputs.version }}
@@ -116,7 +116,7 @@ jobs:
             changed=true
           fi
           echo "calendar_plus_changed=$changed" >> "$GITHUB_OUTPUT"
-          printf 'Calendar Plus catalogue version: %s (changed=%s)\n' "$current" "$changed"
+          printf 'Calendar catalogue version: %s (changed=%s)\n' "$current" "$changed"
 
       - name: Deploy Pages through pinned COMMON
         id: deployment
