@@ -27,7 +27,7 @@ jobs:
       group: pages
       cancel-in-progress: false
     outputs:
-      calendar_plus_changed: ${{ steps.release-delta.outputs.calendar_plus_changed }}
+      calendar_changed: ${{ steps.release-delta.outputs.calendar_changed }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -69,7 +69,7 @@ jobs:
           set -euo pipefail
           version="$(curl -fsSL --max-time 20 \
             https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json \
-            | jq -r '.[] | select(.id == "calendar-plus") | (.version // "")' || true)"
+            | jq -r '.[] | select(.id == "calendar") | (.version // "")' || true)"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           printf 'Previously published Calendar version: %s\n' "${version:-<none>}"
 
@@ -102,6 +102,14 @@ jobs:
           test "$(dpkg-deb -f "$transition" Version)" = "$monitor_version"
           test "$(dpkg-deb -f "$transition" Depends)" = "system-monitor (= $monitor_version)"
 
+          calendar_version="$(jq -r '.[] | select(.id == "calendar") | .version' public/catalogue/apps.json)"
+          test -n "$calendar_version"
+          calendar_transition="public/pool/main/calendar-plus_${calendar_version}_all.deb"
+          test -f "$calendar_transition"
+          test "$(dpkg-deb -f "$calendar_transition" Package)" = "calendar-plus"
+          test "$(dpkg-deb -f "$calendar_transition" Version)" = "$calendar_version"
+          test "$(dpkg-deb -f "$calendar_transition" Depends)" = "calendar (= $calendar_version)"
+
       - name: Detect Calendar publication change
         id: release-delta
         env:
@@ -109,13 +117,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          current="$(jq -r '.[] | select(.id == "calendar-plus") | (.version // "")' public/catalogue/apps.json)"
+          current="$(jq -r '.[] | select(.id == "calendar") | (.version // "")' public/catalogue/apps.json)"
           test -n "$current"
           changed=false
           if [[ "$current" != "${PREVIOUS_VERSION:-}" ]]; then
             changed=true
           fi
-          echo "calendar_plus_changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "calendar_changed=$changed" >> "$GITHUB_OUTPUT"
           printf 'Calendar catalogue version: %s (changed=%s)\n' "$current" "$changed"
 
       - name: Deploy Pages through pinned COMMON

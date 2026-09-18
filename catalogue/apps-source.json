@@ -9,7 +9,7 @@
     "icon": "monitor"
   },
   {
-    "id": "calendar-plus",
+    "id": "calendar",
     "name": "Calendar",
     "repo": "Calendar",
     "category": "Productivity",
