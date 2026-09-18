@@ -20,7 +20,7 @@
   {
     "id": "defragger",
     "name": "Defragmenter",
-    "repo": "Defragger",
+    "repo": "Defragmenter",
     "category": "System",
     "description": "Direct filesystem analysis and layout optimisation tooling.",
     "deb_regex": "^linux-defragger_.*_amd64\\.deb$",
