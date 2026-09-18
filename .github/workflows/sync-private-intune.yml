@@ -28,6 +28,13 @@ jobs:
       - name: Check out central repository
         uses: actions/checkout@v4
 
+      - name: Check out pinned Infiltratr Common 1.18.0
+        uses: actions/checkout@v4
+        with:
+          repository: Infiltrator-Projects/Infiltrator-Libraries
+          ref: 4d069ff28d77f39a8d1ff0056691e1222767f6b5
+          path: _common
+
       - name: Install package inspection tools
         run: |
           sudo apt-get update
