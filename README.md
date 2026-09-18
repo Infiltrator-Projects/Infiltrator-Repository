@@ -1,14 +1,14 @@
-# Infiltrator Repository — Beta
+# Package Repository — Beta
 
-Infiltrator Repository is the distribution layer for the Linux applications published by **The-First-Infiltrator**. Each application remains independently developed and released in its own repository; this project turns approved GitHub Release packages into a normal APT source and a browsable software centre.
+Package Repository is the distribution layer for the Linux applications published by Shannon Smith. Each application remains independently developed and released in its own repository; this project turns approved GitHub Release packages into a normal APT source and a browsable software centre.
 
 ## Current applications
 
 - Linux System Monitor
-- Calendar Plus
-- Linux Defragger
+- Calendar
+- Defragmenter
 - InfiltratorFS
-- Infiltrator Calc
+- Calculator
 - MBLINK
 - JAGLINK
 - FORDLINK
@@ -16,7 +16,7 @@ Infiltrator Repository is the distribution layer for the Linux applications publ
 - BMWLINK
 - WHERE'S WALLY
 - Intune Zabbix Bridge
-- RunnerScope
+- Runner Monitor
 
 The allow-list lives in `catalogue/apps-source.json`. A package is published only when a release contains exactly the expected `.deb` asset.
 
@@ -79,7 +79,7 @@ A local helper is provided at `scripts/create-signing-key.sh`. It creates a dedi
 Release automation is built as a portable C++17 command-line tool
 (`scripts/repository-tool.cpp`). GitHub Actions compiles it with the system
 compiler and uses it for verified Intune mirroring and private-payload
-materialisation. The tool consumes generic primitives from Infiltratr Common where the contract is product-neutral: output escaping and durable file publication belong to COMMON, while Debian/APT metadata, GitHub release discovery, retention, signing, mirroring and catalogue semantics remain local to this repository. The static Software Centre consumes COMMON's neutral web design adapter but keeps repository-specific status and package presentation locally. Pages artifact deployment is delegated to COMMON's reusable deployment action. It uses `curl`, `jq`, `sha256sum`, `base64`, and `dpkg-deb`
+materialisation. The tool consumes generic primitives from Common where the contract is product-neutral: output escaping and durable file publication belong to Common, while Debian/APT metadata, GitHub release discovery, retention, signing, mirroring and catalogue semantics remain local to this repository. The static Software Centre consumes Common's neutral web design adapter but keeps repository-specific status and package presentation locally. Pages artifact deployment is delegated to Common's reusable deployment action. It uses `curl`, `jq`, `sha256sum`, `base64`, and `dpkg-deb`
 from the runner rather than embedding protocol or Debian implementations.
 The production release path is C++17. The former Python publisher, mirror
 materialiser and Intune synchroniser have been removed rather than retained as

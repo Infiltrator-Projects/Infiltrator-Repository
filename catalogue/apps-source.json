@@ -1,7 +1,7 @@
 [
   {
     "id": "system-monitor",
-    "name": "Linux System Monitor",
+    "name": "System Monitor",
     "repo": "System-Monitor",
     "category": "System",
     "description": "Native Linux system monitoring for Mint and other Debian-family desktops.",
@@ -10,7 +10,7 @@
   },
   {
     "id": "calendar-plus",
-    "name": "Calendar Plus",
+    "name": "Calendar",
     "repo": "Calendar-Plus",
     "category": "Productivity",
     "description": "Enhanced Cinnamon clock and calendar with multiple time and calendar systems.",
@@ -19,7 +19,7 @@
   },
   {
     "id": "defragger",
-    "name": "Linux Defragger",
+    "name": "Defragmenter",
     "repo": "Defragger",
     "category": "System",
     "description": "Direct filesystem analysis and layout optimisation tooling.",
@@ -37,7 +37,7 @@
   },
   {
     "id": "infiltrator-calc",
-    "name": "Infiltrator Calc",
+    "name": "Calculator",
     "repo": "Infiltrator-Calc",
     "category": "Productivity",
     "description": "Native Infiltrator desktop calculator with a growing scientific, engineering and systems calculation engine.",
@@ -101,7 +101,7 @@
   },
   {
     "id": "runnerscope",
-    "name": "RunnerScope",
+    "name": "Runner Monitor",
     "repo": "RunnerScope",
     "category": "Development",
     "description": "Native GitHub Actions self-hosted runner monitoring and local runner service health.",
