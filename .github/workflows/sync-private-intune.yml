@@ -28,11 +28,11 @@ jobs:
       - name: Check out central repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.18.1
+      - name: Check out pinned Infiltratr Common 1.19.2
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: dcfa6fee9e9263a0dce5c137054d4adf130c2f25
+          ref: 44409af17c89b6ece6b4bcb2c0c133213c695c23
           path: _common
 
       - name: Install package inspection tools

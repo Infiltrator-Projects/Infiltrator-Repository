@@ -35,11 +35,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.18.1
+      - name: Check out pinned Infiltratr Common 1.19.2
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: dcfa6fee9e9263a0dce5c137054d4adf130c2f25
+          ref: 44409af17c89b6ece6b4bcb2c0c133213c695c23
           path: _common
 
       - name: Install repository tools
@@ -112,7 +112,7 @@ jobs:
 
       - name: Deploy Pages through pinned COMMON
         id: deployment
-        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@dcfa6fee9e9263a0dce5c137054d4adf130c2f25
+        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@44409af17c89b6ece6b4bcb2c0c133213c695c23
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
@@ -125,11 +125,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.18.1
+      - name: Check out pinned Infiltratr Common 1.19.2
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: dcfa6fee9e9263a0dce5c137054d4adf130c2f25
+          ref: 44409af17c89b6ece6b4bcb2c0c133213c695c23
           path: _common
 
       - name: Install signing test tools
