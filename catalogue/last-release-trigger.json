@@ -1,11 +1,11 @@
 {
-  "reason": "publish JAGLINK 0.2.78 after verified source release",
+  "reason": "publish Calculator 0.1.20 after verified source release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Infiltrator-Calc",
-      "version": "0.1.2",
-      "release_sha": "5d09e25e6bff12a206179f0d88f6e88888310a98",
-      "release_published_at": "2026-09-17T22:26:15Z"
+      "version": "0.1.20",
+      "release_sha": "d9e74ff4ef0721157cd5f5ff260ce9bb36215f35",
+      "release_published_at": "2026-09-18T10:46:50Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
