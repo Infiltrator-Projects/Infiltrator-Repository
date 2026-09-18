@@ -38,10 +38,10 @@
   {
     "id": "infiltrator-calc",
     "name": "Calculator",
-    "repo": "Infiltrator-Calc",
+    "repo": "Calculator",
     "category": "Productivity",
     "description": "Native cross-platform calculator with Standard, Scientific and Programmer modes.",
-    "deb_regex": "^infiltrator-calc_.*_amd64\\.deb$",
+    "deb_regex": "^calculator_.*_amd64\\.deb$",
     "icon": "calculator"
   },
   {
