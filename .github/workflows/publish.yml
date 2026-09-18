@@ -94,6 +94,14 @@ jobs:
           test -f "$mirror"
           test "$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .asset' public/catalogue/apps.json)" = "$(basename "$mirror")"
 
+          monitor_version="$(jq -r '.[] | select(.id == "system-monitor") | .version' public/catalogue/apps.json)"
+          test -n "$monitor_version"
+          transition="public/pool/main/linux-system-monitor_${monitor_version}_all.deb"
+          test -f "$transition"
+          test "$(dpkg-deb -f "$transition" Package)" = "linux-system-monitor"
+          test "$(dpkg-deb -f "$transition" Version)" = "$monitor_version"
+          test "$(dpkg-deb -f "$transition" Depends)" = "system-monitor (= $monitor_version)"
+
       - name: Detect Calendar Plus publication change
         id: release-delta
         env:
@@ -248,7 +256,7 @@ jobs:
           echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' > /etc/apt/sources.list.d/infiltrator-e2e.list
           apt-get update
 
-          for pkg in linux-system-monitor calendar-plus linux-defragger infiltratorfs infiltrator-calc mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix intune-zabbix-bridge; do
+          for pkg in system-monitor linux-system-monitor calendar-plus linux-defragger infiltratorfs infiltrator-calc mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix intune-zabbix-bridge; do
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
           done
 
@@ -259,10 +267,18 @@ jobs:
 
           apt-get install -y --no-install-recommends "linux-system-monitor=$previous"
           test "$(dpkg-query -W -f='${Version}' linux-system-monitor)" = "$previous"
+          test -x /usr/bin/linux-system-monitor
+
           apt-get install -y --no-install-recommends "linux-system-monitor=$latest"
           test "$(dpkg-query -W -f='${Version}' linux-system-monitor)" = "$latest"
-          apt-get purge -y linux-system-monitor
+          test "$(dpkg-query -W -f='${Version}' system-monitor)" = "$latest"
+          test -x /usr/bin/system-monitor
+          test ! -e /usr/bin/linux-system-monitor
+          apt-get check
+
+          apt-get purge -y linux-system-monitor system-monitor
           ! dpkg-query -W linux-system-monitor >/dev/null 2>&1
+          ! dpkg-query -W system-monitor >/dev/null 2>&1
           apt-get check
 
           for pkg in calendar-plus linux-defragger infiltrator-calc mblink jaglink fordlink audilink bmwlink; do

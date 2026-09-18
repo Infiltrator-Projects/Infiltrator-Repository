@@ -475,6 +475,41 @@ static int sync_intune(const fs::path& root) {
     return packages;
   }
 
+static void create_system_monitor_transition(const fs::path& root,
+                                             const fs::path& public_dir,
+                                             const std::string& version) {
+  const fs::path staging = root / "build" / "system-monitor-transition";
+  fs::remove_all(staging);
+  fs::create_directories(staging / "DEBIAN");
+
+  std::ostringstream control;
+  control << "Package: linux-system-monitor\n"
+          << "Version: " << version << "\n"
+          << "Section: oldlibs\n"
+          << "Priority: optional\n"
+          << "Architecture: all\n"
+          << "Depends: system-monitor (= " << version << ")\n"
+          << "Maintainer: Shannon Smith <The-First-Infiltrator@users.noreply.github.com>\n"
+          << "Description: transitional package for System Monitor\n"
+          << " This empty package migrates installations from the previous package name.\n";
+  write(staging / "DEBIAN" / "control", control.str());
+
+  const fs::path target = public_dir / "pool" / "main" /
+      ("linux-system-monitor_" + version + "_all.deb");
+  fs::remove(target);
+  const std::string command =
+      "SOURCE_DATE_EPOCH=315532800 dpkg-deb -Zxz --build --root-owner-group " +
+      quote(staging.string()) + " " + quote(target.string());
+  if (run(command))
+    throw std::runtime_error("unable to build System Monitor transition package");
+
+  check_deb(target, version, "linux-system-monitor", "all");
+  const std::string expected_depends = "system-monitor (= " + version + ")";
+  if (deb_field(target, "Depends") != expected_depends)
+    throw std::runtime_error("System Monitor transition dependency is incorrect");
+  fs::remove_all(staging);
+}
+
   static int publish(const fs::path& root) {
     const fs::path public_dir = root / "public";
     fs::remove_all(public_dir);
@@ -501,6 +536,9 @@ static int sync_intune(const fs::path& root) {
         if (package.path != target) fs::copy_file(package.path, target, fs::copy_options::overwrite_existing);
         package.path = target; package.sha = digest(target);
       }
+      if (id == "system-monitor" &&
+          deb_field(packages.front().path, "Package") == "system-monitor")
+        create_system_monitor_transition(root, public_dir, packages.front().version);
       if (packages.size() > 5) packages.resize(5);
       package_version_count += packages.size();
       std::ostringstream history;

@@ -5,7 +5,7 @@
     "repo": "System-Monitor",
     "category": "System",
     "description": "Native Linux system monitoring for Mint and other Debian-family desktops.",
-    "deb_regex": "^linux-system-monitor_.*_amd64\\.deb$",
+    "deb_regex": "^(system-monitor|linux-system-monitor)_.*_amd64\\.deb$",
     "icon": "monitor"
   },
   {
