@@ -523,7 +523,7 @@ static void create_calendar_transition(const fs::path& root,
           << "Section: oldlibs\n"
           << "Priority: optional\n"
           << "Architecture: all\n"
-          << "Depends: calendar (= " << version << ")\n"
+          << "Depends: cinnamon-calendar (= " << version << ")\n"
           << "Maintainer: Shannon Smith <The-First-Infiltrator@users.noreply.github.com>\n"
           << "Description: transitional package for Calendar\n"
           << " This empty package migrates installations from the previous package name.\n";
@@ -539,7 +539,7 @@ static void create_calendar_transition(const fs::path& root,
     throw std::runtime_error("unable to build Calendar transition package");
 
   check_deb(target, version, "calendar-plus", "all");
-  const std::string expected_depends = "calendar (= " + version + ")";
+  const std::string expected_depends = "cinnamon-calendar (= " + version + ")";
   if (deb_field(target, "Depends") != expected_depends)
     throw std::runtime_error("Calendar transition dependency is incorrect");
   fs::remove_all(staging);
@@ -575,7 +575,7 @@ static void create_calendar_transition(const fs::path& root,
           deb_field(packages.front().path, "Package") == "system-monitor")
         create_system_monitor_transition(root, public_dir, packages.front().version);
       if (id == "calendar" &&
-          deb_field(packages.front().path, "Package") == "calendar")
+          deb_field(packages.front().path, "Package") == "cinnamon-calendar")
         create_calendar_transition(root, public_dir, packages.front().version);
       if (packages.size() > 5) packages.resize(5);
       package_version_count += packages.size();
