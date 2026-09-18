@@ -100,6 +100,15 @@
     "deb_regex": "^BMWLINK-.*-linux-amd64\\.deb$"
   },
   {
+    "id": "runnerscope",
+    "name": "RunnerScope",
+    "repo": "RunnerScope",
+    "category": "Development",
+    "description": "Native GitHub Actions self-hosted runner monitoring and local runner service health.",
+    "deb_regex": "^runnerscope_.*_amd64\\.deb$",
+    "icon": "monitor"
+  },
+  {
     "id": "intune-zabbix-bridge",
     "name": "Intune Zabbix Bridge",
     "repo": "Intune-Zabbix-Bridge",
