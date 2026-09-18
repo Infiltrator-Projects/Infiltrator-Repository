@@ -23,7 +23,7 @@ a{color:inherit}
 .brand{display:flex;align-items:center;gap:12px;font-family:var(--infiltratr-font-brand,"MB Corpo A Title Cond WEB",sans-serif);font-weight:400;letter-spacing:.02em}
 .brandmark{width:38px;height:38px;border:1px solid #35505f;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#17232c,#0f151a);color:var(--accent);box-shadow:inset 0 1px rgba(255,255,255,.04)}
 .badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.02)}
-.badge.alpha{border-color:#66558f;color:#dbcaff}.badge.good{color:var(--good)}.badge.warn{color:var(--warn)}
+.badge.beta{border-color:#66558f;color:#dbcaff}.badge.good{color:var(--good)}.badge.warn{color:var(--warn)}
 .hero{padding:54px 0 30px}
 .eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
 h1{font-family:var(--infiltratr-font-brand,"MB Corpo A Title Cond WEB",sans-serif);font-size:clamp(38px,6vw,64px);font-weight:400;line-height:1.02;letter-spacing:.01em;margin:9px 0 15px}
@@ -86,7 +86,7 @@ dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
 <div class="shell">
   <div class="topbar">
     <div class="brand"><span class="brandmark" aria-hidden="true">I</span><span>Infiltrator Software Centre</span></div>
-    <span class="badge alpha">ALPHA</span>
+    <span class="badge beta">BETA</span>
   </div>
 
   <header class="hero">
@@ -102,7 +102,7 @@ dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
 
   <main>
     <details class="setup">
-      <summary><span>Add this repository to Linux Mint</span><span class="badge" id="suiteBadge">alpha</span></summary>
+      <summary><span>Add this repository to Linux Mint</span><span class="badge" id="suiteBadge">beta</span></summary>
       <div class="setup-body">
         <p class="setup-note" id="setupNote">Loading current repository configuration…</p>
         <div class="command-wrap">
@@ -165,25 +165,26 @@ function copyText(text,label){
 function showToast(text){var t=document.getElementById("toast");t.textContent=text;t.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){t.classList.remove("show");},1800);}
 
 function setupCommand(){
-  var migrate="sudo grep -RIlF \'"+legacyBase+"\' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null | while IFS= read -r f; do sudo sed -i \'s#"+legacyBase+"#"+base+"#g\' \"$f\"; done\n";
+  var migrate="sudo grep -RIlF '"+legacyBase+"' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null | while IFS= read -r f; do sudo sed -i 's#"+legacyBase+"#"+base+"#g' \"$f\"; done\n"+
+    "sudo grep -RIlF '"+base+"' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null | while IFS= read -r f; do sudo sed -i -e 's# alpha main# beta main#g' -e 's# stable main# beta main#g' \"$f\"; done\n";
   if(repoInfo.signed){
     return migrate+"sudo install -d -m 0755 /etc/apt/keyrings\n"+
       "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\n"+
-      "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
+      "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
       "sudo apt update";
   }
-  return migrate+"echo 'deb [trusted=yes arch=amd64] "+base+" alpha main' | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list\n"+
+  return migrate+"echo 'deb [trusted=yes arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list\n"+
     "sudo apt update";
 }
 function updateRepoInfo(){
   document.getElementById("appStat").textContent=(repoInfo.app_count||apps.length)+" applications";
   document.getElementById("versionStat").textContent=(repoInfo.package_version_count||0)+" retained package versions";
   var trust=document.getElementById("trustStat");
-  trust.textContent=repoInfo.signed?"APT signed":"Unsigned alpha";
+  trust.textContent=repoInfo.signed?"APT signed":"Unsigned beta";
   trust.className="badge "+(repoInfo.signed?"good":"warn");
-  document.getElementById("suiteBadge").textContent=repoInfo.suite||"alpha";
+  document.getElementById("suiteBadge").textContent=repoInfo.suite||"beta";
   var note=document.getElementById("setupNote");
-  note.textContent=repoInfo.signed?"Packages and repository metadata are authenticated with the Infiltrator APT signing key.":"Alpha testing only: repository signing is not configured yet, so this source currently uses trusted=yes.";
+  note.textContent=repoInfo.signed?"Packages and repository metadata are authenticated with the Infiltrator APT signing key.":"Beta testing: repository signing is not configured yet, so this source currently uses trusted=yes.";
   note.className="setup-note"+(repoInfo.signed?"":" warning");
   document.getElementById("repoCommand").textContent=setupCommand();
 }

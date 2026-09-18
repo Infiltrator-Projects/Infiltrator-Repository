@@ -69,12 +69,13 @@ with tempfile.TemporaryDirectory(prefix="infiltrator-retention-") as td:
     assert set(pool_versions) == set(expected), pool_versions
     assert len(list(mirrors.glob("*.deb"))) == 7, "source history must remain intact"
 
-    packages = (root / "public" / "dists" / "alpha" / "main" / "binary-amd64" / "Packages").read_text()
+    packages = (root / "public" / "dists" / "beta" / "main" / "binary-amd64" / "Packages").read_text()
     assert packages.count("Package: retention-test\n") == 5, packages
 
+    beta_release = (root / "public" / "dists" / "beta" / "Release").read_text()
     alpha_release = (root / "public" / "dists" / "alpha" / "Release").read_text()
-    stable_release = (root / "public" / "dists" / "stable" / "Release").read_text()
+    assert "Label: Infiltrator Beta\n" in beta_release, beta_release
     assert "Label: Infiltrator Alpha\n" in alpha_release, alpha_release
-    assert "Label: Infiltrator Stable\n" in stable_release, stable_release
+    assert not (root / "public" / "dists" / "stable").exists(), "stable is reserved, not an alias"
 
-print("PASS: compiled C++ publisher retains five versions and preserves APT release labels")
+print("PASS: compiled C++ publisher retains five versions and publishes beta with alpha compatibility and reserves stable")

@@ -86,6 +86,9 @@ Expire-Date: 1d
 
     repository = json.loads((root / "public" / "catalogue" / "repository.json").read_text())
     assert repository["signed"] is True, repository
+    assert repository["suite"] == "beta", repository
+    assert repository["compatibility_suite"] == "alpha", repository
+    assert repository["stable_reserved"] is True, repository
     assert repository.get("generated_at"), repository
     public_key = root / "public" / "repository-key.gpg"
     assert public_key.stat().st_size > 0
@@ -93,9 +96,9 @@ Expire-Date: 1d
     verify_env = dict(os.environ)
     verify_env["GNUPGHOME"] = str(verify_home)
     run(["gpg", "--batch", "--import", str(public_key)], env=verify_env)
-    for suite in ("alpha", "stable"):
+    for suite in ("beta", "alpha"):
         directory = root / "public" / "dists" / suite
         run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
         run(["gpg", "--batch", "--verify", str(directory / "Release.gpg"), str(directory / "Release")], env=verify_env)
 
-print("PASS: compiled C++ publisher signs and verifies both APT suites")
+print("PASS: compiled C++ publisher signs and verifies beta plus alpha compatibility suites")

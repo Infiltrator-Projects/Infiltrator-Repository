@@ -518,8 +518,8 @@ static int sync_intune(const fs::path& root) {
     apps << "\n]\n";
     write(public_dir / "catalogue" / "apps.json", apps.str());
 
-    for (const std::string suite : {"alpha", "stable"}) {
-      const std::string suite_label = suite == "alpha" ? "Alpha" : "Stable";
+    for (const std::string suite : {"beta", "alpha"}) {
+      const std::string suite_label = suite == "beta" ? "Beta" : "Alpha";
       const auto binary = public_dir / "dists" / suite / "main" / "binary-amd64";
       fs::create_directories(binary);
       const auto packages_text = command_output("cd " + quote(public_dir.string()) + " && dpkg-scanpackages --multiversion pool/main /dev/null");
@@ -558,7 +558,7 @@ static int sync_intune(const fs::path& root) {
       const std::string pass = std::getenv("APT_SIGNING_PASSPHRASE") ? std::getenv("APT_SIGNING_PASSPHRASE") : "";
       const std::string common = "GNUPGHOME=" + quote(ghome.string()) + " gpg --batch --yes --pinentry-mode loopback " +
         (pass.empty() ? "" : "--passphrase \"$APT_SIGNING_PASSPHRASE\" ");
-      for (const std::string suite : {"alpha", "stable"}) {
+      for (const std::string suite : {"beta", "alpha"}) {
         const auto dir = public_dir / "dists" / suite;
         if (run(common + "--local-user " + quote(fingerprint) + " --clearsign --output " + quote((dir / "InRelease").string()) + " " + quote((dir / "Release").string())) ||
             run(common + "--local-user " + quote(fingerprint) + " --detach-sign --output " + quote((dir / "Release.gpg").string()) + " " + quote((dir / "Release").string())))
@@ -570,8 +570,9 @@ static int sync_intune(const fs::path& root) {
     }
     const auto generated_at = trim_eol(command_output("date -u +%Y-%m-%dT%H:%M:%SZ"));
     write(public_dir / "catalogue" / "repository.json",
-          "{\"name\":\"Infiltrator Software\",\"suite\":\"alpha\","
-          "\"legacy_suite\":\"stable\",\"legacy_suite_deprecated\":true,"
+          "{\"name\":\"Infiltrator Software\",\"suite\":\"beta\","
+          "\"compatibility_suite\":\"alpha\",\"compatibility_suite_deprecated\":true,"
+          "\"stable_reserved\":true,"
           "\"signed\":" + std::string(signed_repo ? "true" : "false") +
           ",\"history_limit\":5,\"app_count\":" +
           std::to_string(catalogue_items.size()) +

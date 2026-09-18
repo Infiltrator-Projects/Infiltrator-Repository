@@ -1,4 +1,4 @@
-# Infiltrator Repository — Alpha
+# Infiltrator Repository — Beta
 
 Infiltrator Repository is the distribution layer for the Linux applications published by **The-First-Infiltrator**. Each application remains independently developed and released in its own repository; this project turns approved GitHub Release packages into a normal APT source and a browsable software centre.
 
@@ -37,25 +37,25 @@ A missing latest package, ambiguous release asset or SHA-256 mismatch fails the 
 
 ## Add to Linux Mint
 
-The primary alpha suite is:
+The primary beta suite is:
 
 ```text
-deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main
+deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main
 ```
 
-For the current unsigned alpha, the setup command also repairs installations that still reference the pre-organisation GitHub Pages URL:
+For an unsigned beta publication, the setup command also repairs installations that still reference the pre-organisation GitHub Pages URL. The Software Centre setup command additionally migrates earlier `alpha` or temporary `stable` source entries to `beta`:
 
 ```bash
 OLD='https://the-first-infiltrator.github.io/Infiltrator-Repository'
 NEW='https://infiltrator-projects.github.io/Infiltrator-Repository'
 sudo grep -RIlF "$OLD" /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null \
   | while IFS= read -r f; do sudo sed -i "s#$OLD#$NEW#g" "$f"; done
-echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository alpha main' \
-  | sudo tee /etc/apt/sources.list.d/infiltrator-alpha.list
+echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' \
+  | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list
 sudo apt update
 ```
 
-The old `stable` path is currently published as a temporary compatibility alias so early alpha testers do not break immediately. New installations should use `alpha`. The compatibility alias can be removed once alpha clients have migrated.
+The former `alpha` path remains published as a temporary compatibility alias so existing alpha testers continue to receive packages while they migrate. New installations should use `beta`. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.
 
 ## Signing readiness
 
@@ -69,7 +69,7 @@ The publisher supports optional GitHub Actions secrets:
 
 When configured, the build creates `InRelease`, `Release.gpg` and `repository-key.gpg`. The web software centre automatically changes its installation instructions from `trusted=yes` to a dedicated `signed-by=` keyring.
 
-Until those secrets are deliberately configured, the site clearly identifies the repository as an unsigned alpha.
+Until those secrets are deliberately configured, the site clearly identifies the repository as an unsigned beta.
 
 A local helper is provided at `scripts/create-signing-key.sh`. It creates a dedicated two-year APT signing key outside the repository and writes the two values that must be added as GitHub Actions secrets. The private key output must never be committed to Git.
 
@@ -96,9 +96,9 @@ distribution tools invoked by the C++ executable.
 the generated Pages artifact; converting it into a server-side C++ page would
 break offline/static hosting and is neither necessary nor supported.
 
-Every non-scheduled publish runs the signing self-test. The heavier Mint lifecycle test runs only on manual workflow dispatch, after publication succeeds.
+Every non-scheduled publish runs the signing self-test. The heavier Mint lifecycle test runs on manual workflow dispatch, or on an explicitly tagged promotion push containing `[mint-e2e]`, after publication succeeds.
 
-The signing self-test creates a disposable CI-only OpenPGP key, signs both suites through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
+The signing self-test creates a disposable CI-only OpenPGP key, signs the primary `beta` suite and temporary `alpha` compatibility suite through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
 
 The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all twelve packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
 
