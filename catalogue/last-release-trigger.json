@@ -1,5 +1,5 @@
 {
-  "reason": "publish Infiltrator Calc 0.1.2 after verified source release",
+  "reason": "publish JAGLINK 0.2.78 after verified source release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Infiltrator-Calc",
@@ -15,9 +15,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Jaglink",
-      "version": "0.2.62",
-      "release_sha": "811b337f67c7602f75b442c7c96b976c8854992b",
-      "release_published_at": "2026-09-02T05:37:32Z"
+      "version": "0.2.78",
+      "release_sha": "c8c58589c792a535fbfe82769f01f8c95c05ef90",
+      "release_published_at": "2026-09-18T08:40:58Z"
     },
     {
       "repository": "Infiltrator-Projects/FORDLINK",
