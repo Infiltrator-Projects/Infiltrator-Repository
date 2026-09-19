@@ -13,6 +13,8 @@
 #include <infiltratr/posix.h>
 #include <fstream>
 #include <iostream>
+#include <map>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -475,6 +477,282 @@ static int sync_intune(const fs::path& root) {
     return packages;
   }
 
+
+struct SoftwareManagerIcon {
+  fs::path source;
+  std::string extension;
+};
+
+static bool supported_icon_extension(const fs::path& path) {
+  const std::string ext = path.extension().string();
+  return ext == ".svg" || ext == ".png" || ext == ".xpm";
+}
+
+static fs::path resolve_desktop_icon(const fs::path& extracted,
+                                     const std::string& icon_name) {
+  if (icon_name.empty()) return {};
+  fs::path requested(icon_name);
+  if (requested.is_absolute()) {
+    const fs::path candidate =
+        extracted / requested.relative_path();
+    if (fs::is_regular_file(candidate) && supported_icon_extension(candidate))
+      return candidate;
+  }
+
+  for (const std::string ext : {".svg", ".png", ".xpm"}) {
+    const fs::path pixmap =
+        extracted / "usr/share/pixmaps" / (icon_name + ext);
+    if (fs::is_regular_file(pixmap)) return pixmap;
+  }
+
+  const fs::path icon_root = extracted / "usr/share/icons";
+  if (!fs::is_directory(icon_root)) return {};
+  std::vector<fs::path> matches;
+  for (const auto& entry : fs::recursive_directory_iterator(icon_root)) {
+    if (!entry.is_regular_file()) continue;
+    const fs::path path = entry.path();
+    if (!supported_icon_extension(path)) continue;
+    if (path.stem() == icon_name) matches.push_back(path);
+  }
+  if (matches.empty()) return {};
+  std::sort(matches.begin(), matches.end(),
+            [](const fs::path& left, const fs::path& right) {
+              const auto rank = [](const fs::path& path) {
+                if (path.extension() == ".svg") return 3;
+                if (path.extension() == ".png") return 2;
+                return 1;
+              };
+              const int left_rank = rank(left);
+              const int right_rank = rank(right);
+              if (left_rank != right_rank) return left_rank > right_rank;
+              std::error_code left_error, right_error;
+              const auto left_size = fs::file_size(left, left_error);
+              const auto right_size = fs::file_size(right, right_error);
+              if (!left_error && !right_error && left_size != right_size)
+                return left_size > right_size;
+              return left.string() < right.string();
+            });
+  return matches.front();
+}
+
+static fs::path discover_package_icon(const fs::path& extracted,
+                                      const std::string& package_name) {
+  for (const std::string ext : {".svg", ".png", ".xpm"}) {
+    const fs::path ready =
+        extracted / "usr/share/app-install/icons" / (package_name + ext);
+    if (fs::is_regular_file(ready)) return ready;
+  }
+
+  const fs::path applications = extracted / "usr/share/applications";
+  if (fs::is_directory(applications)) {
+    std::vector<fs::path> desktop_files;
+    for (const auto& entry : fs::directory_iterator(applications)) {
+      if (entry.is_regular_file() && entry.path().extension() == ".desktop")
+        desktop_files.push_back(entry.path());
+    }
+    std::sort(desktop_files.begin(), desktop_files.end());
+    for (const auto& desktop : desktop_files) {
+      std::istringstream lines(read(desktop));
+      std::string line;
+      while (std::getline(lines, line)) {
+        if (line.rfind("Icon=", 0U) != 0U) continue;
+        const std::string icon_name = trim_eol(line.substr(5U));
+        const fs::path resolved = resolve_desktop_icon(extracted, icon_name);
+        if (!resolved.empty()) return resolved;
+      }
+    }
+  }
+
+  const fs::path icon_root = extracted / "usr/share/icons";
+  if (fs::is_directory(icon_root)) {
+    std::vector<fs::path> candidates;
+    for (const auto& entry : fs::recursive_directory_iterator(icon_root)) {
+      if (!entry.is_regular_file()) continue;
+      const fs::path path = entry.path();
+      if (!supported_icon_extension(path)) continue;
+      if (path.filename().string().find("-symbolic") != std::string::npos)
+        continue;
+      candidates.push_back(path);
+    }
+    if (!candidates.empty()) {
+      std::sort(candidates.begin(), candidates.end(),
+                [](const fs::path& left, const fs::path& right) {
+                  std::error_code left_error, right_error;
+                  const auto left_size = fs::file_size(left, left_error);
+                  const auto right_size = fs::file_size(right, right_error);
+                  if (!left_error && !right_error && left_size != right_size)
+                    return left_size > right_size;
+                  return left.string() < right.string();
+                });
+      return candidates.front();
+    }
+  }
+  return {};
+}
+
+static std::string first_dependency_name(const std::string& depends) {
+  if (depends.empty()) return {};
+  std::string token;
+  for (char character : depends) {
+    if (std::isalnum(static_cast<unsigned char>(character)) ||
+        character == '+' || character == '-' || character == '.') {
+      token += character;
+      continue;
+    }
+    if (!token.empty()) break;
+  }
+  return token;
+}
+
+static void create_software_manager_data_package(const fs::path& root,
+                                                 const fs::path& public_dir) {
+  const fs::path staging = root / "build" / "app-install-data-ssmithnet";
+  const fs::path extracted = root / "build" / "app-install-icon-source";
+  fs::remove_all(staging);
+  fs::remove_all(extracted);
+  fs::create_directories(staging / "DEBIAN");
+  fs::create_directories(staging / "usr/share/app-install/icons");
+
+  std::map<std::string, SoftwareManagerIcon> icons;
+  std::map<std::string, std::string> dependencies;
+  std::set<std::string> seen_packages;
+
+  std::vector<fs::path> debs;
+  const fs::path pool = public_dir / "pool" / "main";
+  for (const auto& entry : fs::directory_iterator(pool)) {
+    if (entry.is_regular_file() && entry.path().extension() == ".deb")
+      debs.push_back(entry.path());
+  }
+  std::sort(debs.begin(), debs.end());
+
+  for (const auto& deb : debs) {
+    const std::string package_name = deb_field(deb, "Package");
+    if (!seen_packages.insert(package_name).second) continue;
+
+    const std::string depends = deb_field(deb, "Depends");
+    if (!depends.empty())
+      dependencies[package_name] = first_dependency_name(depends);
+
+    fs::remove_all(extracted);
+    fs::create_directories(extracted);
+    if (run("dpkg-deb -x " + quote(deb.string()) + " " +
+            quote(extracted.string())))
+      throw std::runtime_error(
+          "unable to extract icon source from " + package_name);
+
+    const fs::path icon = discover_package_icon(extracted, package_name);
+    if (!icon.empty())
+      icons[package_name] = {icon, icon.extension().string()};
+  }
+
+  bool added = true;
+  while (added) {
+    added = false;
+    for (const auto& [package_name, dependency] : dependencies) {
+      if (icons.count(package_name) != 0U) continue;
+      const auto found = icons.find(dependency);
+      if (found == icons.end()) continue;
+      icons[package_name] = found->second;
+      added = true;
+    }
+  }
+
+  std::size_t installed_icons = 0U;
+  for (const auto& [package_name, icon] : icons) {
+    if (!fs::is_regular_file(icon.source)) {
+      // Direct sources lived in the temporary extraction tree. Re-extract the
+      // package that owns this icon so the source path is materialised again.
+      fs::path owner_deb;
+      for (const auto& deb : debs) {
+        if (deb_field(deb, "Package") == package_name) {
+          owner_deb = deb;
+          break;
+        }
+      }
+      if (owner_deb.empty()) continue;
+      fs::remove_all(extracted);
+      fs::create_directories(extracted);
+      if (run("dpkg-deb -x " + quote(owner_deb.string()) + " " +
+              quote(extracted.string())))
+        continue;
+      const fs::path refreshed =
+          discover_package_icon(extracted, package_name);
+      if (refreshed.empty()) continue;
+      const fs::path target =
+          staging / "usr/share/app-install/icons" /
+          (package_name + refreshed.extension().string());
+      fs::copy_file(refreshed, target, fs::copy_options::overwrite_existing);
+      ++installed_icons;
+      continue;
+    }
+    const fs::path target =
+        staging / "usr/share/app-install/icons" /
+        (package_name + icon.extension);
+    fs::copy_file(icon.source, target, fs::copy_options::overwrite_existing);
+    ++installed_icons;
+  }
+
+  // Transition packages have no files of their own. Copy aliases from the
+  // dependency's installed alias after all direct application icons exist.
+  for (const auto& [package_name, dependency] : dependencies) {
+    bool already_present = false;
+    for (const std::string ext : {".svg", ".png", ".xpm"}) {
+      if (fs::is_regular_file(
+              staging / "usr/share/app-install/icons" /
+              (package_name + ext))) {
+        already_present = true;
+        break;
+      }
+    }
+    if (already_present) continue;
+    for (const std::string ext : {".svg", ".png", ".xpm"}) {
+      const fs::path source =
+          staging / "usr/share/app-install/icons" / (dependency + ext);
+      if (!fs::is_regular_file(source)) continue;
+      fs::copy_file(
+          source,
+          staging / "usr/share/app-install/icons" / (package_name + ext),
+          fs::copy_options::overwrite_existing);
+      ++installed_icons;
+      break;
+    }
+  }
+
+  const char* run_number = std::getenv("GITHUB_RUN_NUMBER");
+  std::string version = "1.0.0";
+  if (run_number != nullptr && *run_number != '\0') {
+    version = "1.0." + std::string(run_number);
+  }
+
+  std::ostringstream control;
+  control << "Package: app-install-data-ssmithnet\n"
+          << "Version: " << version << "\n"
+          << "Section: misc\n"
+          << "Priority: optional\n"
+          << "Architecture: all\n"
+          << "Conflicts: infiltrator-app-install-data\n"
+          << "Replaces: infiltrator-app-install-data\n"
+          << "Provides: infiltrator-app-install-data\n"
+          << "Maintainer: Shannon Smith <The-First-Infiltrator@users.noreply.github.com>\n"
+          << "Description: Linux Mint Software Manager icon data for Shannon Smith applications\n"
+          << " Static package-name icon aliases used by Linux Mint Software Manager.\n"
+          << " No service, daemon, executable or background helper is installed.\n";
+  write(staging / "DEBIAN" / "control", control.str());
+
+  const fs::path target = pool /
+      ("app-install-data-ssmithnet_" + version + "_all.deb");
+  const std::string command =
+      "SOURCE_DATE_EPOCH=315532800 dpkg-deb -Zxz --build --root-owner-group " +
+      quote(staging.string()) + " " + quote(target.string());
+  if (run(command))
+    throw std::runtime_error("unable to build Software Manager icon data package");
+  check_deb(target, version, "app-install-data-ssmithnet", "all");
+  std::cout << "Published " << installed_icons
+            << " Linux Mint Software Manager package-name icon aliases\n";
+  fs::remove_all(staging);
+  fs::remove_all(extracted);
+}
+
 static void create_transition_package(const fs::path& root,
                                       const fs::path& public_dir,
                                       const std::string& old_package,
@@ -594,6 +872,8 @@ static void create_transition_package(const fs::path& root,
       latest += ",\"icon\":\"" + json_escape(v[8]) + "\",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
       catalogue_items.push_back(std::move(latest));
     }
+
+    create_software_manager_data_package(root, public_dir);
 
     std::ostringstream apps; apps << "[\n";
     for (size_t i=0; i<catalogue_items.size(); ++i) apps << (i ? ",\n" : "") << "  " << catalogue_items[i];

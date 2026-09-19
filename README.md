@@ -62,7 +62,11 @@ sudo grep -RIlF "$OLD" /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null
 echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' \
   | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list
 sudo apt update
+sudo apt install -y app-install-data-ssmithnet
 ```
+
+`app-install-data-ssmithnet` contains only static package-name icon aliases for Linux Mint Software Manager. It installs no executable, daemon, service or background helper. It also replaces the short-lived `infiltrator-app-install-data` package if that earlier metadata package is still installed.
+
 
 
 The former `alpha` path remains published as a temporary compatibility alias so existing alpha testers continue to receive packages while they migrate. New installations should use `beta`. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.

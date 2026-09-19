@@ -171,10 +171,12 @@ function setupCommand(){
     return migrate+"sudo install -d -m 0755 /etc/apt/keyrings\n"+
       "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\n"+
       "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
-      "sudo apt update";
+      "sudo apt update\n"+
+      "sudo apt install -y app-install-data-ssmithnet";
   }
   return migrate+"echo 'deb [trusted=yes arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list\n"+
-    "sudo apt update";
+    "sudo apt update\n"+
+    "sudo apt install -y app-install-data-ssmithnet";
 }
 function updateRepoInfo(){
   document.getElementById("appStat").textContent=(repoInfo.app_count||apps.length)+" applications";
