@@ -95,23 +95,67 @@ jobs:
           test "$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .asset' public/catalogue/apps.json)" = "$(basename "$mirror")"
 
           monitor_version="$(jq -r '.[] | select(.id == "system-monitor") | .version' public/catalogue/apps.json)"
+          monitor_asset="$(jq -r '.[] | select(.id == "system-monitor") | .asset' public/catalogue/apps.json)"
           test -n "$monitor_version"
-          transition="public/pool/main/linux-system-monitor_${monitor_version}_all.deb"
-          test -f "$transition"
-          test "$(dpkg-deb -f "$transition" Package)" = "linux-system-monitor"
-          test "$(dpkg-deb -f "$transition" Version)" = "$monitor_version"
-          test "$(dpkg-deb -f "$transition" Depends)" = "system-monitor (= $monitor_version)"
+          test -n "$monitor_asset"
+          monitor_package="$(dpkg-deb -f "public/pool/main/$monitor_asset" Package)"
+          if [[ "$monitor_package" == "system-monitor" ]]; then
+            transition="public/pool/main/linux-system-monitor_${monitor_version}_all.deb"
+            test -f "$transition"
+            test "$(dpkg-deb -f "$transition" Package)" = "linux-system-monitor"
+            test "$(dpkg-deb -f "$transition" Depends)" = "system-monitor (= $monitor_version)"
+          elif [[ "$monitor_package" == "infiltrator-system-monitor" ]]; then
+            for old in system-monitor linux-system-monitor; do
+              transition="public/pool/main/${old}_${monitor_version}_all.deb"
+              test -f "$transition"
+              test "$(dpkg-deb -f "$transition" Package)" = "$old"
+              test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-system-monitor (= $monitor_version)"
+            done
+          else
+            echo "Unexpected System Monitor package identity: $monitor_package" >&2
+            exit 1
+          fi
 
           calendar_version="$(jq -r '.[] | select(.id == "calendar") | .version' public/catalogue/apps.json)"
-          test -n "$calendar_version"
           calendar_asset="$(jq -r '.[] | select(.id == "calendar") | .asset' public/catalogue/apps.json)"
+          test -n "$calendar_version"
           test -n "$calendar_asset"
-          if [[ "$(dpkg-deb -f "public/pool/main/$calendar_asset" Package)" == "cinnamon-calendar" ]]; then
+          calendar_package="$(dpkg-deb -f "public/pool/main/$calendar_asset" Package)"
+          if [[ "$calendar_package" == "cinnamon-calendar" ]]; then
             calendar_transition="public/pool/main/calendar-plus_${calendar_version}_all.deb"
             test -f "$calendar_transition"
             test "$(dpkg-deb -f "$calendar_transition" Package)" = "calendar-plus"
-            test "$(dpkg-deb -f "$calendar_transition" Version)" = "$calendar_version"
             test "$(dpkg-deb -f "$calendar_transition" Depends)" = "cinnamon-calendar (= $calendar_version)"
+          elif [[ "$calendar_package" == "infiltrator-calendar" ]]; then
+            for old in calendar-plus cinnamon-calendar; do
+              calendar_transition="public/pool/main/${old}_${calendar_version}_all.deb"
+              test -f "$calendar_transition"
+              test "$(dpkg-deb -f "$calendar_transition" Package)" = "$old"
+              test "$(dpkg-deb -f "$calendar_transition" Depends)" = "infiltrator-calendar (= $calendar_version)"
+            done
+          else
+            echo "Unexpected Calendar package identity: $calendar_package" >&2
+            exit 1
+          fi
+
+          defragger_version="$(jq -r '.[] | select(.id == "defragger") | .version' public/catalogue/apps.json)"
+          defragger_asset="$(jq -r '.[] | select(.id == "defragger") | .asset' public/catalogue/apps.json)"
+          test -n "$defragger_version"
+          test -n "$defragger_asset"
+          if [[ "$(dpkg-deb -f "public/pool/main/$defragger_asset" Package)" == "infiltrator-defragmenter" ]]; then
+            transition="public/pool/main/linux-defragger_${defragger_version}_all.deb"
+            test -f "$transition"
+            test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-defragmenter (= $defragger_version)"
+          fi
+
+          runner_version="$(jq -r '.[] | select(.id == "runnerscope") | .version' public/catalogue/apps.json)"
+          runner_asset="$(jq -r '.[] | select(.id == "runnerscope") | .asset' public/catalogue/apps.json)"
+          test -n "$runner_version"
+          test -n "$runner_asset"
+          if [[ "$(dpkg-deb -f "public/pool/main/$runner_asset" Package)" == "infiltrator-runner-monitor" ]]; then
+            transition="public/pool/main/runnerscope_${runner_version}_all.deb"
+            test -f "$transition"
+            test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-runner-monitor (= $runner_version)"
           fi
 
       - name: Detect Calendar publication change
