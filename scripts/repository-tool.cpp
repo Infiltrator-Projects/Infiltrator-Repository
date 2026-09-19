@@ -594,8 +594,11 @@ static void create_app_install_data_package(const fs::path& root,
         packages.erase(
             std::remove_if(packages.begin(), packages.end(),
                            [](const Package& package) {
-                             return deb_field(package.path, "Package") !=
-                                    "infiltrator-calendar";
+                             if (deb_field(package.path, "Package") ==
+                                 "infiltrator-calendar")
+                               return false;
+                             fs::remove(package.path);
+                             return true;
                            }),
             packages.end());
       }

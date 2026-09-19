@@ -122,9 +122,11 @@ jobs:
           test -n "$calendar_asset"
           calendar_package="$(dpkg-deb -f "public/pool/main/$calendar_asset" Package)"
           test "$calendar_package" = "infiltrator-calendar"
-          ! find public/pool/main -maxdepth 1 -type f \
-              \( -name 'calendar-plus_*.deb' -o -name 'cinnamon-calendar_*.deb' \) \
-              -print -quit | grep -q .
+          for candidate in public/pool/main/*.deb; do
+            package_name="$(dpkg-deb -f "$candidate" Package)"
+            test "$package_name" != "calendar-plus"
+            test "$package_name" != "cinnamon-calendar"
+          done
 
           calculator_version="$(jq -r '.[] | select(.id == "infiltrator-calc") | .version' public/catalogue/apps.json)"
           calculator_asset="$(jq -r '.[] | select(.id == "infiltrator-calc") | .asset' public/catalogue/apps.json)"
