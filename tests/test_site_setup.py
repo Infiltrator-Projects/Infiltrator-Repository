@@ -28,6 +28,8 @@ assert 'setAttribute("aria-pressed"' in site
 assert "activeCategory=cat;buildFilters()" not in site
 assert "Repository configuration could not be verified. Setup copying is disabled." in site
 assert "function appIcon(a)" in site and "a.icon_url" in site
-assert ':iconSvg(a.icon);}' in site, "appIcon fallback must call iconSvg rather than recurse"\nassert ':appIcon(a);}' not in site, "appIcon must not recursively call itself"\nassert "calculator:" in site
+assert ':iconSvg(a.icon);}' in site, "appIcon fallback must call iconSvg rather than recurse"
+assert ':appIcon(a);}' not in site, "appIcon must not recursively call itself"
+assert "calculator:" in site
 
 print("Software Centre setup, accessibility and family-source regression tests passed")
