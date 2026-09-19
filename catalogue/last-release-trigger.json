@@ -1,11 +1,11 @@
 {
-  "reason": "publish Calculator 0.1.22 after verified source release",
+  "reason": "publish Calculator 0.1.37 after verified source release",
   "releases": [
     {
-      "repository": "Infiltrator-Projects/Infiltrator-Calc",
-      "version": "0.1.22",
-      "release_sha": "40cc4a98b082a6f8f79e07d6a238257dc325ed07",
-      "release_published_at": "2026-09-18T11:46:31Z"
+      "repository": "Infiltrator-Projects/Calculator",
+      "version": "0.1.37",
+      "release_sha": "8139cb6ca2009413ee760c7c8f6865eccad76e93",
+      "release_published_at": "2026-09-19T14:00:36Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
