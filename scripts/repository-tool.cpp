@@ -567,11 +567,10 @@ static void create_transition_package(const fs::path& root,
                                     packages.front().version, "System Monitor");
         }
       }
-      if (id == "infiltrator-calc" &&
-          current_package == "infiltrator-calculator")
-        create_transition_package(root, public_dir,
-                                  "infiltrator-calc", "infiltrator-calculator",
-                                  packages.front().version, "Calculator");
+      // Calculator intentionally has one public APT identity.  The renamed
+      // package itself carries Breaks/Replaces/Provides for old installations;
+      // do not emit an empty infiltrator-calc transition package because Mint
+      // Software Manager exposes transition packages as duplicate applications.
       if (id == "defragger" &&
           current_package == "infiltrator-defragmenter")
         create_transition_package(root, public_dir,

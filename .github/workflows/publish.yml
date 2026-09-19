@@ -132,12 +132,11 @@ jobs:
           calculator_asset="$(jq -r '.[] | select(.id == "infiltrator-calc") | .asset' public/catalogue/apps.json)"
           test -n "$calculator_version"
           test -n "$calculator_asset"
-          if [[ "$(dpkg-deb -f "public/pool/main/$calculator_asset" Package)" == "infiltrator-calculator" ]]; then
-            transition="public/pool/main/infiltrator-calc_${calculator_version}_all.deb"
-            test -f "$transition"
-            test "$(dpkg-deb -f "$transition" Package)" = "infiltrator-calc"
-            test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-calculator (= $calculator_version)"
-          fi
+          test "$(dpkg-deb -f "public/pool/main/$calculator_asset" Package)" = "infiltrator-calculator"
+          for candidate in public/pool/main/*.deb; do
+            package_name="$(dpkg-deb -f "$candidate" Package)"
+            test "$package_name" != "infiltrator-calc"
+          done
 
           defragger_version="$(jq -r '.[] | select(.id == "defragger") | .version' public/catalogue/apps.json)"
           defragger_asset="$(jq -r '.[] | select(.id == "defragger") | .asset' public/catalogue/apps.json)"
@@ -313,7 +312,7 @@ jobs:
           echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' > /etc/apt/sources.list.d/infiltrator-e2e.list
           apt-get update
 
-          for pkg in system-monitor linux-system-monitor infiltrator-calendar linux-defragger infiltratorfs infiltrator-calc mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix intune-zabbix-bridge; do
+          for pkg in system-monitor linux-system-monitor infiltrator-calendar linux-defragger infiltratorfs infiltrator-calculator mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix intune-zabbix-bridge; do
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
           done
 
@@ -338,7 +337,7 @@ jobs:
           ! dpkg-query -W system-monitor >/dev/null 2>&1
           apt-get check
 
-          for pkg in infiltrator-calendar linux-defragger infiltrator-calc mblink jaglink fordlink audilink bmwlink; do
+          for pkg in infiltrator-calendar linux-defragger infiltrator-calculator mblink jaglink fordlink audilink bmwlink; do
             apt-get install -y --no-install-recommends "$pkg"
             dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
             apt-get check
