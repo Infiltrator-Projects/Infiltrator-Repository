@@ -138,6 +138,17 @@ jobs:
             exit 1
           fi
 
+          calculator_version="$(jq -r '.[] | select(.id == "infiltrator-calc") | .version' public/catalogue/apps.json)"
+          calculator_asset="$(jq -r '.[] | select(.id == "infiltrator-calc") | .asset' public/catalogue/apps.json)"
+          test -n "$calculator_version"
+          test -n "$calculator_asset"
+          if [[ "$(dpkg-deb -f "public/pool/main/$calculator_asset" Package)" == "infiltrator-calculator" ]]; then
+            transition="public/pool/main/infiltrator-calc_${calculator_version}_all.deb"
+            test -f "$transition"
+            test "$(dpkg-deb -f "$transition" Package)" = "infiltrator-calc"
+            test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-calculator (= $calculator_version)"
+          fi
+
           defragger_version="$(jq -r '.[] | select(.id == "defragger") | .version' public/catalogue/apps.json)"
           defragger_asset="$(jq -r '.[] | select(.id == "defragger") | .asset' public/catalogue/apps.json)"
           test -n "$defragger_version"
