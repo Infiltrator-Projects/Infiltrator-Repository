@@ -3,111 +3,79 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Software Centre — Linux packages published by Shannon Smith.">
-<title>Software Centre</title>
-<link rel="stylesheet" href="assets/infiltrator-web-v1.css?v=common-1.19.2">
+<meta name="theme-color" content="#090b0f">
+<meta name="color-scheme" content="dark">
+<title>Software Centre · ssmithnet.net</title>
+<meta name="description" content="Software Centre — verified Linux packages published by Shannon Smith.">
+<link rel="canonical" href="https://infiltrator-projects.github.io/Infiltrator-Repository/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Software Centre · ssmithnet.net">
+<meta property="og:description" content="Verified Linux packages published by Shannon Smith.">
+<meta property="og:url" content="https://infiltrator-projects.github.io/Infiltrator-Repository/">
+<link rel="stylesheet" href="assets/infiltrator-web-v1.css?v=common-1.19.3">
+<link rel="stylesheet" href="assets/site.css?v=family-20260919">
+<link rel="stylesheet" href="assets/site-overrides.css?v=family-20260919">
 <style>
-:root{
-  color-scheme:dark;
-  --bg:#0b0e12;--bg2:#10151b;--panel:var(--infiltratr-panel,#151b22);--panel2:#1b222b;--line:var(--infiltratr-border,#2b3541);
-  --text:var(--infiltratr-text,#f4f7f9);--muted:var(--infiltratr-muted,#a7b1bc);--accent:#72d6ff;--accent2:#9ce7ff;--good:var(--infiltratr-success,#79e39b);
-  --warn:var(--infiltratr-warning,#e7c66d);--danger:var(--infiltratr-fault,#ff9d9d);--shadow:0 18px 48px rgba(0,0,0,.28);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at 15% -10%,#172633 0,transparent 36%),linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font:15px/1.5 var(--infiltratr-font-ui,"MB Corpo S Title WEB",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);min-height:100vh}
-button,input{font:inherit}
-a{color:inherit}
-.shell{max-width:1180px;margin:auto;padding:0 24px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:28px}
-.brand{display:flex;align-items:center;gap:12px;font-family:var(--infiltratr-font-brand,"MB Corpo A Title Cond WEB",sans-serif);font-weight:400;letter-spacing:.02em}
-.brandmark{width:38px;height:38px;border:1px solid #35505f;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#17232c,#0f151a);color:var(--accent);box-shadow:inset 0 1px rgba(255,255,255,.04)}
-.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.02)}
-.badge.beta{border-color:#66558f;color:#dbcaff}.badge.good{color:var(--good)}.badge.warn{color:var(--warn)}
-.hero{padding:54px 0 30px}
-.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
-h1{font-family:var(--infiltratr-font-brand,"MB Corpo A Title Cond WEB",sans-serif);font-size:clamp(38px,6vw,64px);font-weight:400;line-height:1.02;letter-spacing:.01em;margin:9px 0 15px}
-.lead{max-width:760px;color:var(--muted);font-size:18px;margin:0}
-.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.setup{border:1px solid var(--line);border-radius:17px;background:rgba(21,27,34,.86);box-shadow:var(--shadow);margin:10px 0 28px;overflow:hidden}
-.setup summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 19px;font-weight:700;list-style:none}
-.setup summary::-webkit-details-marker{display:none}
-.setup summary:after{content:"＋";font-size:19px;color:var(--muted)}
-.setup[open] summary:after{content:"−"}
-.setup-body{padding:0 19px 19px;border-top:1px solid var(--line)}
-.setup-note{color:var(--muted);margin:15px 0 12px}.setup-note.warning{color:var(--warn)}
-.command-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}
-.command{display:block;background:#080b0f;border:1px solid var(--line);border-radius:10px;padding:11px 12px;overflow:auto;white-space:pre-wrap;word-break:break-word;color:#dfe9ef;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
-.btn{border:1px solid var(--line);border-radius:10px;background:#171e26;color:var(--text);padding:9px 12px;cursor:pointer;transition:.15s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-weight:650}
-.btn:hover{border-color:#476070;background:#1d2731;transform:translateY(-1px)}
-.btn:focus-visible,input:focus-visible{outline:3px solid rgba(114,214,255,.35);outline-offset:2px}
-.btn.primary{background:#dff6ff;color:#071017;border-color:#dff6ff}
-.btn.primary:hover{background:white;border-color:white}
-.btn.small{padding:7px 9px;font-size:13px}
-.toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:0 0 16px}
-.search{position:relative;flex:1;max-width:520px}
-.search input{width:100%;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px 12px 42px}
-.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;color:var(--muted)}
-.result-count{color:var(--muted);white-space:nowrap}
-.filters{display:flex;gap:8px;overflow:auto;padding:0 0 17px;scrollbar-width:thin}
-.filter{white-space:nowrap;border:1px solid var(--line);background:rgba(21,27,34,.72);color:var(--muted);border-radius:999px;padding:7px 11px;cursor:pointer}
-.filter.active{background:#dff6ff;color:#071017;border-color:#dff6ff;font-weight:750}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:15px}
-.card{border:1px solid var(--line);border-radius:17px;background:linear-gradient(180deg,rgba(27,34,43,.95),rgba(20,26,33,.95));padding:19px;display:flex;flex-direction:column;min-height:290px;box-shadow:0 12px 28px rgba(0,0,0,.12);transition:.18s ease}
-.card:hover{transform:translateY(-2px);border-color:#40505f;box-shadow:var(--shadow)}
-.card-head{display:flex;gap:14px;align-items:flex-start}
-.app-icon{width:48px;height:48px;flex:0 0 48px;border-radius:13px;display:grid;place-items:center;background:#0f171e;border:1px solid #30404d;color:var(--accent)}
-.app-icon svg{width:26px;height:26px}
-.card-titles{min-width:0;flex:1}.category{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:800}
-.card h2{font-size:21px;line-height:1.2;margin:4px 0 0;letter-spacing:-.02em}
-.version{color:var(--good);font:12px ui-monospace,SFMono-Regular,Consolas,monospace;margin-top:5px}
-.desc{color:var(--muted);margin:16px 0;flex:1}
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.chip{font-size:11px;color:#c3ced6;border:1px solid var(--line);border-radius:7px;padding:4px 7px;background:#10161c}
-.actions{display:flex;gap:8px;align-items:center}.actions .source{margin-left:auto}
-.empty{grid-column:1/-1;border:1px dashed var(--line);border-radius:17px;padding:35px;text-align:center;color:var(--muted)}
-footer{color:var(--muted);padding:44px 0 58px;font-size:13px}
-dialog{border:1px solid var(--line);border-radius:18px;background:#121820;color:var(--text);width:min(760px,calc(100vw - 28px));max-height:88vh;padding:0;box-shadow:0 30px 100px rgba(0,0,0,.6)}
-dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
-.modal-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px}
-.modal-head .app-icon{width:52px;height:52px;flex-basis:52px}.modal-title{flex:1}.modal-title h2{margin:1px 0 4px;font-size:25px}.close{border:0;background:transparent;color:var(--muted);font-size:25px;cursor:pointer;padding:0 4px}
-.modal-body{padding:20px 22px;overflow:auto}.modal-desc{color:var(--muted);margin-top:0}
-.install-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:17px 0}
-.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:16px 0}
-.info{padding:11px 12px;border-bottom:1px solid var(--line)}.info:nth-child(odd){border-right:1px solid var(--line)}.info:nth-last-child(-n+2){border-bottom:0}
-.info-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.info-value{margin-top:3px;word-break:break-word}
-.depends{border:1px solid var(--line);background:#0b0f13;padding:10px;border-radius:10px;font:12px ui-monospace,monospace;color:#c8d2d9;word-break:break-word}
-.history{width:100%;border-collapse:collapse;margin-top:9px}.history th,.history td{text-align:left;border-bottom:1px solid var(--line);padding:9px 6px}.history th{font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:.07em}.history a{text-decoration:none;color:var(--accent)}
-.modal-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,18px);opacity:0;background:#eefaff;color:#071017;border-radius:10px;padding:10px 14px;font-weight:750;box-shadow:var(--shadow);transition:.2s;pointer-events:none;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:650px){.shell{padding:0 16px}.topbar{padding-top:18px}.hero{padding-top:36px}.toolbar{align-items:stretch;flex-direction:column}.search{max-width:none}.result-count{font-size:13px}.grid{grid-template-columns:1fr}.command-wrap,.install-row{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.info:nth-child(odd){border-right:0}.info:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.info:last-child{border-bottom:0}.actions{flex-wrap:wrap}.actions .source{margin-left:0}}
+.repository-hero{padding:64px 0 34px;border-bottom:1px solid var(--line-soft)}
+.repository-hero .eyebrow{font:700 10px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.repository-hero h1{font:400 clamp(42px,5vw,62px)/1.04 var(--display);letter-spacing:-.018em;margin:14px 0 18px}
+.repository-hero .lead{margin:0;max-width:780px}.stats{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font:700 11px var(--sans);color:var(--muted);background:rgba(255,255,255,.02)}
+.badge.beta{border-color:var(--wood-strong);color:#d9c29d}.badge.good{color:var(--green)}.badge.warn{color:var(--infiltratr-warning,#e7c66d)}
+main{padding:28px 0 34px}.setup{border-top:1px solid var(--wood-strong);border-bottom:1px solid var(--line);margin:0 0 34px}
+.setup summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;font-weight:700;list-style:none}.setup summary::-webkit-details-marker{display:none}.setup summary:after{content:"＋";font-size:19px;color:var(--muted)}.setup[open] summary:after{content:"−"}
+.setup-body{padding:0 0 22px}.setup-note{color:var(--muted);margin:0 0 14px}.setup-note.warning{color:var(--infiltratr-warning,#e7c66d)}
+.command-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}.btn.small{padding:7px 9px;font-size:13px}
+.toolbar{display:flex;gap:18px;align-items:center;justify-content:space-between;margin:0 0 18px}.search{position:relative;flex:1;max-width:560px}
+.search input{width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--infiltratr-control-radius);padding:12px 14px 12px 42px}.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;color:var(--muted)}
+.result-count{color:var(--quiet);white-space:nowrap;font-size:13px}.filters{display:flex;gap:8px;overflow:auto;padding:0 0 20px;scrollbar-width:thin}.filter{white-space:nowrap;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:7px 11px;cursor:pointer;font:700 12px var(--sans)}
+.filter.active{color:var(--text);border-color:var(--accent);box-shadow:inset 0 -1px var(--accent)}.catalogue-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.catalogue-card{min-height:286px;display:flex;flex-direction:column}.catalogue-card:hover{border-color:rgba(114,220,255,.45)}.card-head{display:flex;gap:14px;align-items:flex-start}
+.app-icon{width:48px;height:48px;flex:0 0 48px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;background:rgba(8,11,15,.6);color:var(--accent);overflow:hidden}.app-icon svg{width:26px;height:26px}.app-icon img{width:100%;height:100%;object-fit:contain;padding:5px}
+.card-titles{min-width:0;flex:1}.category{font:700 9.5px var(--sans);text-transform:uppercase;letter-spacing:.12em;color:var(--accent)}.catalogue-card h2{font:400 27px/1.08 var(--display);margin:4px 0 0}.version{color:var(--green);font:12px ui-monospace,SFMono-Regular,Consolas,monospace;margin-top:5px}
+.desc{margin:16px 0;flex:1}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:17px}.chip{font:700 10px var(--sans);color:var(--muted);border:1px solid var(--line-soft);border-radius:999px;padding:4px 7px}
+.actions{display:flex;gap:8px;align-items:center}.actions .source{margin-left:auto}.empty{grid-column:1/-1;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:34px 0;text-align:center;color:var(--muted)}
+dialog{border:1px solid var(--line);border-radius:var(--radius);background:#0d1218;color:var(--text);width:min(760px,calc(100vw - 28px));max-height:88vh;padding:0;box-shadow:0 30px 100px rgba(0,0,0,.6)}dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
+.modal-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px}.modal-head .app-icon{width:52px;height:52px;flex-basis:52px}.modal-title{flex:1}.modal-title h2{font:400 30px var(--display);margin:1px 0 4px}.close{border:0;background:transparent;color:var(--muted);font-size:25px;cursor:pointer;padding:0 4px}
+.modal-body{padding:20px 22px;overflow:auto}.modal-desc{color:var(--muted);margin-top:0}.install-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:17px 0}.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--infiltratr-small-radius);overflow:hidden;margin:16px 0}
+.info{padding:11px 12px;border-bottom:1px solid var(--line)}.info:nth-child(odd){border-right:1px solid var(--line)}.info:nth-last-child(-n+2){border-bottom:0}.info-label{font:700 9px var(--sans);text-transform:uppercase;letter-spacing:.1em;color:var(--quiet)}.info-value{margin-top:3px;word-break:break-word}
+.depends{border:1px solid var(--line);background:rgba(8,11,15,.65);padding:10px;border-radius:var(--infiltratr-small-radius);font:12px ui-monospace,monospace;color:var(--muted);word-break:break-word}.history{width:100%;border-collapse:collapse;margin-top:9px}.history th,.history td{text-align:left;border-bottom:1px solid var(--line);padding:9px 6px}.history th{font:700 9px var(--sans);text-transform:uppercase;color:var(--quiet);letter-spacing:.08em}.history a{color:var(--accent)}
+.modal-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,18px);opacity:0;background:var(--text);color:var(--bg);border-radius:var(--infiltratr-small-radius);padding:10px 14px;font-weight:700;box-shadow:0 18px 48px rgba(0,0,0,.28);transition:.2s;pointer-events:none;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:680px){.repository-hero{padding:42px 0 28px}.toolbar{align-items:stretch;flex-direction:column}.search{max-width:none}.catalogue-grid{grid-template-columns:1fr}.command-wrap,.install-row{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.info:nth-child(odd){border-right:0}.info:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.info:last-child{border-bottom:0}.actions{flex-wrap:wrap}.actions .source{margin-left:0}}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <div class="shell">
-  <div class="topbar">
-    <div class="brand"><span class="brandmark" aria-hidden="true">S</span><span>Software Centre</span></div>
-    <span class="badge beta">BETA</span>
-  </div>
-
-  <header class="hero">
-    <div class="eyebrow">The First Infiltrator</div>
+  <nav aria-label="Primary">
+    <a class="brand" href="https://ssmithnet.net/index.html">ssmith<span>net</span>.net</a>
+    <div class="navlinks">
+      <a href="https://ssmithnet.net/index.html">Home</a>
+      <a href="https://ssmithnet.net/workbench.html">Workbench</a>
+      <a href="https://ssmithnet.net/garage.html">Garage</a>
+      <a href="https://ssmithnet.net/archive.html">Archive</a>
+      <a class="active" aria-current="page" href="https://infiltrator-projects.github.io/Infiltrator-Repository/">Software Centre</a>
+    </div>
+  </nav>
+  <header class="repository-hero">
+    <div class="eyebrow">The First Infiltrator · Package Repository</div>
     <h1>Linux software, from one repository.</h1>
     <p class="lead">Browse the current Infiltrator Linux applications, inspect versions and dependencies, and install them through normal APT on Linux Mint.</p>
     <div class="stats">
       <span class="badge" id="appStat">Loading applications…</span>
       <span class="badge" id="versionStat">Loading versions…</span>
       <span class="badge warn" id="trustStat">Checking repository trust…</span>
+      <span class="badge beta">BETA</span>
     </div>
   </header>
-
-  <main>
+  <main id="main">
     <details class="setup">
       <summary><span>Add this repository to Linux Mint</span><span class="badge" id="suiteBadge">beta</span></summary>
       <div class="setup-body">
         <p class="setup-note" id="setupNote">Loading current repository configuration…</p>
         <div class="command-wrap">
           <code class="command" id="repoCommand"></code>
-          <button class="btn small" id="copyRepo">Copy setup</button>
+          <button class="btn small" id="copyRepo" disabled>Copy setup</button>
         </div>
       </div>
     </details>
@@ -120,15 +88,13 @@ dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
       <div class="result-count" id="resultCount"></div>
     </div>
     <div class="filters" id="filters" aria-label="Application categories"></div>
-    <section class="grid" id="apps" aria-live="polite"><div class="empty">Loading current catalogue…</div></section>
+    <section class="catalogue-grid" id="apps" aria-live="polite"><div class="empty">Loading current catalogue…</div></section>
   </main>
 
-  <footer>
-    Part of <a href="https://ssmithnet.net/workbench.html#repository">ssmithnet.net Workbench</a>. Generated from verified GitHub Release packages; source projects remain independent and authoritative.
-  </footer>
+  <footer><div class="footerline"><span>© Shannon Smith · ssmithnet.net</span><span>Software Centre · verified APT catalogue</span></div></footer>
 </div>
 
-<dialog id="details">
+<dialog id="details" aria-labelledby="modalName">
   <div class="modal-head">
     <div class="app-icon" id="modalIcon"></div>
     <div class="modal-title"><div class="category" id="modalCategory"></div><h2 id="modalName"></h2><div class="version" id="modalVersion"></div></div>
@@ -140,7 +106,7 @@ dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
 
 <script>
 "use strict";
-var apps=[], repoInfo={}, activeCategory="All", query="";
+var apps=[], repoInfo=null, repoReady=false, activeCategory="All", query="";
 var base="https://infiltrator-projects.github.io/Infiltrator-Repository";
 var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";
 
@@ -155,28 +121,31 @@ function iconSvg(kind){
     disk:'<ellipse cx="12" cy="6" rx="8" ry="3"></ellipse><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path>',
     filesystem:'<path d="M3 7h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path><path d="M3 7V5a2 2 0 0 1 2-2h5l2 2"></path>',
     car:'<path d="M5 16h14l-1.4-5.2A2.5 2.5 0 0 0 15.2 9H8.8a2.5 2.5 0 0 0-2.4 1.8L5 16Z"></path><path d="M3 16h18v3H3zM6 19v2M18 19v2M7 13h.01M17 13h.01"></path>',
-    network:'<circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="19" r="2"></circle><path d="M12 7v4M5 17v-3h14v3M12 11H5"></path>'
+    network:'<circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="19" r="2"></circle><path d="M12 7v4M5 17v-3h14v3M12 11H5"></path>',
+    calculator:'<rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2M8 18h2M14 18h2"></path>'
   };
   return '<svg '+common+'>'+(p[kind]||p.monitor)+'</svg>';
 }
+function appIcon(a){return a.icon_url?'<img src="'+esc(a.icon_url)+'" alt="" aria-hidden="true">':appIcon(a);}
 function copyText(text,label){
   navigator.clipboard.writeText(text).then(function(){showToast(label||"Copied");}).catch(function(){showToast("Copy failed — select the command manually");});
 }
 function showToast(text){var t=document.getElementById("toast");t.textContent=text;t.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(function(){t.classList.remove("show");},1800);}
 
 function setupCommand(){
-  var migrate="sudo grep -RIlF '"+legacyBase+"' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null | while IFS= read -r f; do sudo sed -i 's#"+legacyBase+"#"+base+"#g' \"$f\"; done\n"+
-    "sudo grep -RIlF '"+base+"' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null | while IFS= read -r f; do sudo sed -i -e 's# alpha main# beta main#g' -e 's# stable main# beta main#g' \"$f\"; done\n";
+  if(!repoReady||!repoInfo)return "";
+  var clean="for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list; do [ -f \"$f\" ] || continue; sudo sed -i -e '\\#"+legacyBase+"#d' -e '\\#"+base+"#d' \"$f\"; done\n";
   if(repoInfo.signed){
-    return migrate+"sudo install -d -m 0755 /etc/apt/keyrings\n"+
+    return clean+"sudo install -d -m 0755 /etc/apt/keyrings\n"+
       "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\n"+
       "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
       "sudo apt update";
   }
-  return migrate+"echo 'deb [trusted=yes arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list\n"+
+  return clean+"echo 'deb [trusted=yes arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list\n"+
     "sudo apt update";
 }
 function updateRepoInfo(){
+  if(!repoInfo)return;
   document.getElementById("appStat").textContent=(repoInfo.app_count||apps.length)+" applications";
   document.getElementById("versionStat").textContent=(repoInfo.package_version_count||0)+" retained package versions";
   var trust=document.getElementById("trustStat");
@@ -187,13 +156,15 @@ function updateRepoInfo(){
   note.textContent=repoInfo.signed?"Packages and repository metadata are authenticated with the Infiltrator APT signing key.":"Beta testing: repository signing is not configured yet, so this source currently uses trusted=yes.";
   note.className="setup-note"+(repoInfo.signed?"":" warning");
   document.getElementById("repoCommand").textContent=setupCommand();
+  document.getElementById("copyRepo").disabled=false;
 }
 function buildFilters(){
   var cats=["All"].concat(Array.from(new Set(apps.map(function(a){return a.category;}))).sort());
   var root=document.getElementById("filters");root.innerHTML="";
   cats.forEach(function(cat){
     var b=document.createElement("button");b.className="filter"+(cat===activeCategory?" active":"");b.textContent=cat;
-    b.addEventListener("click",function(){activeCategory=cat;buildFilters();render();});root.appendChild(b);
+    b.setAttribute("aria-pressed",cat===activeCategory?"true":"false");
+    b.addEventListener("click",function(){activeCategory=cat;Array.from(root.querySelectorAll(".filter")).forEach(function(button){var selected=button.textContent===activeCategory;button.classList.toggle("active",selected);button.setAttribute("aria-pressed",selected?"true":"false");});render();});root.appendChild(b);
   });
 }
 function matches(a){
@@ -203,9 +174,9 @@ function matches(a){
   return hay.indexOf(query)>=0;
 }
 function card(a){
-  var article=document.createElement("article");article.className="card";
+  var article=document.createElement("article");article.className="card catalogue-card";
   article.innerHTML=
-    '<div class="card-head"><div class="app-icon">'+iconSvg(a.icon)+'</div><div class="card-titles">'+
+    '<div class="card-head"><div class="app-icon">'+appIcon(a)+'</div><div class="card-titles">'+
     '<div class="category">'+esc(a.category)+'</div><h2>'+esc(a.name)+'</h2><div class="version">'+esc(a.version)+'</div></div></div>'+
     '<p class="desc">'+esc(a.description)+'</p>'+
     '<div class="chips"><span class="chip">'+esc(a.architecture)+'</span><span class="chip">'+fmtBytes(a.download_size)+'</span><span class="chip">'+esc(a.package)+'</span></div>'+
@@ -222,7 +193,7 @@ function render(){
   visible.forEach(function(a){root.appendChild(card(a));});
 }
 function showDetails(a,installFirst){
-  document.getElementById("modalIcon").innerHTML=iconSvg(a.icon);
+  document.getElementById("modalIcon").innerHTML=appIcon(a);
   document.getElementById("modalCategory").textContent=a.category;
   document.getElementById("modalName").textContent=a.name;
   document.getElementById("modalVersion").textContent="Version "+a.version;
@@ -250,16 +221,23 @@ function showDetails(a,installFirst){
 document.getElementById("closeModal").addEventListener("click",function(){document.getElementById("details").close();});
 document.getElementById("details").addEventListener("click",function(e){if(e.target===this)this.close();});
 document.getElementById("search").addEventListener("input",function(e){query=e.target.value.trim().toLowerCase();render();});
-document.getElementById("copyRepo").addEventListener("click",function(){copyText(setupCommand(),"Repository setup copied");});
+document.getElementById("copyRepo").addEventListener("click",function(){if(repoReady)copyText(setupCommand(),"Repository setup copied");});
 
 Promise.all([
   fetch("catalogue/apps.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("apps "+r.status);return r.json();}),
   fetch("catalogue/repository.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error("repo "+r.status);return r.json();})
 ]).then(function(data){
-  apps=data[0];repoInfo=data[1];updateRepoInfo();buildFilters();render();
+  apps=data[0];repoInfo=data[1];repoReady=true;updateRepoInfo();buildFilters();render();
 }).catch(function(err){
+  repoReady=false;repoInfo=null;
   document.getElementById("apps").innerHTML='<div class="empty">Catalogue unavailable. Check the latest repository deployment.</div>';
   document.getElementById("resultCount").textContent="";
+  document.getElementById("appStat").textContent="Catalogue unavailable";
+  document.getElementById("versionStat").textContent="Versions unavailable";
+  var trust=document.getElementById("trustStat");trust.textContent="Repository status unavailable";trust.className="badge warn";
+  document.getElementById("setupNote").textContent="Repository configuration could not be verified. Setup copying is disabled.";
+  document.getElementById("repoCommand").textContent="";
+  document.getElementById("copyRepo").disabled=true;
   console.error(err);
 });
 </script>

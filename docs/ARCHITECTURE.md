@@ -61,3 +61,11 @@ Application repositories own application source, versioning and release artifact
 ## Source of truth
 
 The C++ tool plus catalogue configuration and tests define publication behaviour. Generated repository/site output is an artifact, not hand-maintained policy.
+
+## Independent release identity
+
+Each catalogue entry declares an expected Debian package-name regular expression and architecture independently of the downloaded package. For GitHub releases, the canonical `v<version>` release tag supplies the expected Debian version. The publisher validates Package, Version and Architecture against those independent values after SHA-256 verification and before the package enters resolved repository state.
+
+## Website family boundary
+
+The Software Centre consumes an immutable snapshot of the `ssmithnet.net` website family during publication. The pinned snapshot supplies the three Corpo font assets, shared site CSS, graphics and the cross-site output acceptance test. Package Repository retains its own catalogue layout and behaviour. Common 1.19.3 remains the product-neutral layer beneath both sites.

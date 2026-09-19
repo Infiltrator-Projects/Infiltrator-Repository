@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression test for copy/paste-safe repository setup commands."""
+"""Regression tests for safe, state-aware Software Centre setup commands."""
 from pathlib import Path
 
 site = Path("site/index.html").read_text(encoding="utf-8")
@@ -8,19 +8,26 @@ end = site.index("function updateRepoInfo()", start)
 block = site[start:end]
 
 assert "\\\\n" not in block, "setupCommand() contains a double-escaped newline"
-assert "infiltrator-beta.list\\n" in block, "unsigned beta setup command must contain a real JS newline escape"
-assert "infiltrator.list\\n" in block, "signed setup command must contain a real JS newline escape"
+assert "infiltrator-beta.list\\n" in block
+assert "infiltrator.list\\n" in block
 assert "sudo apt update" in block
 assert "infiltrator-app-install-data" not in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
 assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
-assert 'assets/infiltrator-web-v1.css?v=common-1.19.2' in site
-assert 'var(--infiltratr-text' in site
-assert 'var(--infiltratr-font-ui' in site
-assert "grep -RIlF" in block, "setup command must search for the pre-move repository URL"
-assert "sed -i" in block and "legacyBase" in block, "setup command must migrate legacy repository sources"
-assert " beta main" in block, "setup command must select the beta suite"
-assert " alpha main" in block and " stable main" in block, "setup command must migrate prior alpha/stable suites"
-assert 'return migrate+"echo \'deb [trusted=yes arch=amd64]' in block, "unsigned beta setup must run migration before writing the source"
+assert "assets/infiltrator-web-v1.css?v=common-1.19.3" in site
+assert "assets/site.css?v=family-20260919" in site
+assert "assets/site-overrides.css?v=family-20260919" in site
+assert "if(!repoReady||!repoInfo)return" in block
+assert 'id="copyRepo" disabled' in site
+assert "\\#\"+legacyBase+\"#d" in block
+assert "\\#\"+base+\"#d" in block
+assert "s# alpha main# beta main#g" not in block
+assert "s# stable main# beta main#g" not in block
+assert 'aria-labelledby="modalName"' in site
+assert 'setAttribute("aria-pressed"' in site
+assert "activeCategory=cat;buildFilters()" not in site
+assert "Repository configuration could not be verified. Setup copying is disabled." in site
+assert "function appIcon(a)" in site and "a.icon_url" in site
+assert "calculator:" in site
 
-print("Software Centre setup-command regression test passed")
+print("Software Centre setup, accessibility and family-source regression tests passed")

@@ -35,12 +35,22 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.19.2
+      - name: Check out pinned Infiltratr Common 1.19.3
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: 44409af17c89b6ece6b4bcb2c0c133213c695c23
+          ref: de7251ce12ed176048df1bad05ef7e4d0db7e9ec
           path: _common
+
+      - name: Check out pinned ssmithnet.net website family
+        uses: actions/checkout@v4
+        with:
+          repository: Infiltrator-Projects/ssmithnet.net
+          ref: 7a8d2ec5ab0f2ace3444b01ae3bf0ed853d77962
+          path: _family
+
+      - name: Verify website family pin
+        run: test "$(git -C _family rev-parse HEAD)" = "7a8d2ec5ab0f2ace3444b01ae3bf0ed853d77962"
 
       - name: Install repository tools
         run: |
@@ -61,6 +71,7 @@ jobs:
           python3 tests/test_site_setup.py
           python3 tests/test_private_mirror_policy.py
           python3 tests/test_retention.py build/repository-tool
+          python3 tests/test_release_identity.py build/repository-tool
 
       - name: Read currently published Calendar version
         id: previous-calendar
@@ -85,9 +96,17 @@ jobs:
           test -s public/dists/beta/main/binary-amd64/Packages.gz
           test -s public/catalogue/apps.json
           test -s public/catalogue/repository.json
+          rm -rf public/assets
           mkdir -p public/assets
+          cp -a _family/assets/. public/assets/
           cp _common/design/infiltrator-web-v1.css public/assets/infiltrator-web-v1.css
           test -s public/assets/infiltrator-web-v1.css
+          test -s public/assets/site.css
+          test -s public/assets/site-overrides.css
+          test -s public/assets/fonts/mb-corpo-a-cond-regular.woff2
+          test -s public/assets/fonts/mb-corpo-s-regular.woff2
+          test -s public/assets/fonts/mb-corpo-s-bold.woff2
+          python3 _family/tests/check_web_family.py public
           version="$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .version' public/catalogue/apps.json)"
           test -n "$version"
           mirror="mirrored-packages/intune-zabbix-bridge_${version}_all.deb"
@@ -176,7 +195,7 @@ jobs:
 
       - name: Deploy Pages through pinned COMMON
         id: deployment
-        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@44409af17c89b6ece6b4bcb2c0c133213c695c23
+        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@de7251ce12ed176048df1bad05ef7e4d0db7e9ec
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
@@ -189,11 +208,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.19.2
+      - name: Check out pinned Infiltratr Common 1.19.3
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: 44409af17c89b6ece6b4bcb2c0c133213c695c23
+          ref: de7251ce12ed176048df1bad05ef7e4d0db7e9ec
           path: _common
 
       - name: Install signing test tools

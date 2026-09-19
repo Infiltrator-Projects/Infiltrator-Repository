@@ -38,3 +38,9 @@ The software centre is presentation over resolved repository state. It must not 
 ## Quality rule
 
 A change is acceptable when it improves correctness, resilience, inspectability, security or maintainability. Replacing a stable Debian mechanism with a fashionable framework is not an improvement by itself.
+
+## Website family
+
+The Software Centre belongs visually and navigationally to `ssmithnet.net`. It therefore uses the same loaded Corpo typography, wordmark, primary navigation, footer, dark blue-black/cyan/warm-separator language, focus treatment and reduced-motion behaviour. Catalogue cards, search, filters and package dialogs remain repository-specific tools within that family rather than a second design system.
+
+Application identity comes from the application package where possible. During publication the current verified DEB is inspected for a standard application icon and that asset is published with the catalogue. A small built-in line symbol is a fallback only when a package has no suitable GUI icon.

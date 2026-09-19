@@ -6,7 +6,9 @@
     "category": "System",
     "description": "Native Linux system monitoring for Mint and other Debian-family desktops.",
     "deb_regex": "^(infiltrator-system-monitor|system-monitor|linux-system-monitor)_.*_amd64\\.deb$",
-    "icon": "monitor"
+    "icon": "monitor",
+    "expected_package_regex": "^(infiltrator-system-monitor|system-monitor|linux-system-monitor)$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "calendar",
@@ -15,7 +17,9 @@
     "category": "Productivity",
     "description": "Enhanced Cinnamon clock and calendar with multiple time and calendar systems.",
     "deb_regex": "^calendar_.*_amd64\\.deb$",
-    "icon": "calendar"
+    "icon": "calendar",
+    "expected_package_regex": "^infiltrator-calendar$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "defragger",
@@ -24,7 +28,9 @@
     "category": "System",
     "description": "Direct filesystem analysis and layout optimisation tooling.",
     "deb_regex": "^(Defragmenter-.*-amd64\\.deb|linux-defragger_.*_amd64\\.deb)$",
-    "icon": "disk"
+    "icon": "disk",
+    "expected_package_regex": "^(infiltrator-defragmenter|linux-defragger)$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "infiltratorfs",
@@ -33,7 +39,9 @@
     "category": "Filesystems",
     "description": "Experimental native Infiltrator filesystem implementation and tools.",
     "deb_regex": "^infiltratorfs_.*_amd64\\.deb$",
-    "icon": "filesystem"
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltratorfs$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "infiltrator-calc",
@@ -42,7 +50,9 @@
     "category": "Productivity",
     "description": "Native cross-platform calculator with Standard, Scientific and Programmer modes.",
     "deb_regex": "^calculator_.*_amd64\\.deb$",
-    "icon": "calculator"
+    "icon": "calculator",
+    "expected_package_regex": "^infiltrator-calculator$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "mblink",
@@ -51,7 +61,9 @@
     "category": "Automotive",
     "description": "Mercedes-Benz diagnostics and vehicle-data application family.",
     "deb_regex": "^MBLINK-.*-linux-amd64\\.deb$",
-    "icon": "car"
+    "icon": "car",
+    "expected_package_regex": "^mblink$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "jaglink",
@@ -60,7 +72,9 @@
     "category": "Automotive",
     "description": "Jaguar diagnostics and vehicle-data application family.",
     "deb_regex": "^JAGLINK-.*-linux-amd64\\.deb$",
-    "icon": "car"
+    "icon": "car",
+    "expected_package_regex": "^jaglink$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "wheres-wally",
@@ -70,7 +84,9 @@
     "description": "Zabbix NPS authentication event monitor and search module.",
     "deb_regex": "^nps-wheres-wally-zabbix_.*_all\\.deb$",
     "icon": "network",
-    "owner": "St-Augustines-College-Kyabram"
+    "owner": "St-Augustines-College-Kyabram",
+    "expected_package_regex": "^nps-wheres-wally-zabbix$",
+    "expected_architecture": "all"
   },
   {
     "id": "fordlink",
@@ -79,7 +95,9 @@
     "category": "Automotive",
     "description": "Ford diagnostics with a generic LINK standards baseline.",
     "icon": "car",
-    "deb_regex": "^FORDLINK-.*-linux-amd64\\.deb$"
+    "deb_regex": "^FORDLINK-.*-linux-amd64\\.deb$",
+    "expected_package_regex": "^fordlink$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "audilink",
@@ -88,7 +106,9 @@
     "category": "Automotive",
     "description": "Audi diagnostics with a generic LINK standards baseline.",
     "icon": "car",
-    "deb_regex": "^AUDILINK-.*-linux-amd64\\.deb$"
+    "deb_regex": "^AUDILINK-.*-linux-amd64\\.deb$",
+    "expected_package_regex": "^audilink$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "bmwlink",
@@ -97,7 +117,9 @@
     "category": "Automotive",
     "description": "BMW diagnostics with a generic LINK standards baseline.",
     "icon": "car",
-    "deb_regex": "^BMWLINK-.*-linux-amd64\\.deb$"
+    "deb_regex": "^BMWLINK-.*-linux-amd64\\.deb$",
+    "expected_package_regex": "^bmwlink$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "runnerscope",
@@ -106,7 +128,9 @@
     "category": "Development",
     "description": "Native GitHub Actions self-hosted runner monitoring and local runner service health.",
     "deb_regex": "^runnerscope_.*_amd64\\.deb$",
-    "icon": "monitor"
+    "icon": "monitor",
+    "expected_package_regex": "^(infiltrator-runner-monitor|runnerscope)$",
+    "expected_architecture": "amd64"
   },
   {
     "id": "intune-zabbix-bridge",
@@ -116,6 +140,8 @@
     "description": "Microsoft Intune reboot telemetry bridge with native Zabbix Reboot Watch widget. Universal package; deployment credentials are supplied separately.",
     "local_deb_glob": "mirrored-packages/intune-zabbix-bridge_*_all.deb",
     "icon": "network",
-    "owner": "St-Augustines-College-Kyabram"
+    "owner": "St-Augustines-College-Kyabram",
+    "expected_package_regex": "^intune-zabbix-bridge$",
+    "expected_architecture": "all"
   }
 ]

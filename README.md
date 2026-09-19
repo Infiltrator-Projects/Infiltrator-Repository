@@ -12,7 +12,7 @@ The project values deterministic, explainable publication over novelty. A new de
 
 ## Current applications
 
-- Linux System Monitor
+- System Monitor
 - Calendar
 - Defragmenter
 - InfiltratorFS
@@ -52,13 +52,15 @@ The primary beta suite is:
 deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main
 ```
 
-For an unsigned beta publication, the setup command also repairs installations that still reference the pre-organisation GitHub Pages URL. The Software Centre setup command additionally migrates earlier `alpha` or temporary `stable` source entries to `beta`:
+The Software Centre setup command normalises earlier repository entries without editing unrelated APT sources. It removes only lines that reference either the pre-organisation or current Infiltrator repository URL, then writes exactly one current beta entry. This makes repeated setup safe and prevents unsigned-to-signed transitions from leaving conflicting APT options:
 
 ```bash
 OLD='https://the-first-infiltrator.github.io/Infiltrator-Repository'
 NEW='https://infiltrator-projects.github.io/Infiltrator-Repository'
-sudo grep -RIlF "$OLD" /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null \
-  | while IFS= read -r f; do sudo sed -i "s#$OLD#$NEW#g" "$f"; done
+for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list; do
+  [ -f "$f" ] || continue
+  sudo sed -i -e "\\#$OLD#d" -e "\\#$NEW#d" "$f"
+done
 echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' \
   | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list
 sudo apt update
@@ -142,3 +144,9 @@ metadata + by-hash          ↓
                 ↓
         Linux Mint / APT
 ```
+
+## Website family contract
+
+The Software Centre is the distribution surface of the same website family as `ssmithnet.net`. Publication pins the family source at `ssmithnet.net` commit `7a8d2ec5ab0f2ace3444b01ae3bf0ed853d77962` and copies its self-contained typography, graphics and interaction layer into the Pages artifact. The shared acceptance test from that same immutable commit checks canonical metadata, landmarks, navigation, local assets and the three real Corpo font files.
+
+Infiltratr Common 1.19.3 (`de7251ce12ed176048df1bad05ef7e4d0db7e9ec`) remains the lower-level neutral design/infrastructure dependency. Package Repository owns catalogue behaviour, APT setup and package presentation. Application icons are extracted from the verified current DEB when the package contains a standard application icon, so a released icon update follows the package rather than a separate website illustration map; the compact built-in symbols are only a fallback for packages without a GUI icon.

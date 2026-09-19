@@ -34,3 +34,12 @@ A publication is valid only when the exact workflow source completes package dis
 ## Regression rule
 
 Any failure that allowed wrong version selection, bad metadata, incorrect retention or inconsistent site/repository state should gain a permanent regression test.
+
+## Forensic consistency regressions
+
+Publication now exercises the defects reproduced in the 19 September 2026 joint review:
+
+- `tests/test_release_identity.py` builds disposable Debian fixtures and proves that the production validator accepts the intended Package/Version/Architecture tuple while rejecting independently wrong package name, release version and architecture.
+- `tests/test_site_setup.py` requires setup copying to remain disabled until repository metadata is verified, requires line-scoped cleanup of Infiltrator APT entries rather than whole-file suite rewriting, checks signed/unsigned canonical paths, keyboard-selection semantics and the package-icon path.
+- the pinned `ssmithnet.net/tests/check_web_family.py` runs against the completed Pages tree and requires canonical/Open Graph metadata, the shared navigation/landmarks and three real local Corpo WOFF2 assets.
+- package publication extracts an application icon from the verified current DEB when available; the catalogue references that published file and falls back to a built-in symbol only for packages without one.

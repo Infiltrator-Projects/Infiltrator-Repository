@@ -157,6 +157,27 @@ static std::string json_escape(const std::string& value) {
     return trim_eol(value);
   }
 
+static void check_deb_expected(const fs::path& file,
+                               const std::string& expected_version,
+                               const std::string& expected_package_regex,
+                               const std::string& expected_architecture) {
+  const auto package = deb_field(file, "Package");
+  try {
+    if (!std::regex_match(package, std::regex(expected_package_regex)))
+      throw std::runtime_error("unexpected DEB Package in " + file.string() + ": " + package);
+  } catch (const std::regex_error&) {
+    throw std::runtime_error("invalid expected package regex: " + expected_package_regex);
+  }
+  check_deb(file, expected_version, package, expected_architecture);
+}
+
+static std::string release_version(const std::string& tag) {
+  if (tag.size() < 2 || tag.front() != 'v' ||
+      tag.find_first_of("/\\\r\n") != std::string::npos)
+    throw std::runtime_error("release tag is not a canonical v<version> identity: " + tag);
+  return tag.substr(1);
+}
+
 static bool newer(const std::string& left, const std::string& right) {
     const int status = run("dpkg --compare-versions " + quote(left) + " gt " + quote(right));
     return status == 0;
@@ -410,7 +431,9 @@ static int sync_intune(const fs::path& root) {
 }
 
   static std::vector<Package> remote_packages(const fs::path& root, const std::string& owner,
-                                              const std::string& repo, const std::string& rx_text) {
+                                              const std::string& repo, const std::string& rx_text,
+                                              const std::string& expected_package_regex,
+                                              const std::string& expected_architecture) {
     const fs::path json = root / (".releases-" + repo + ".json");
     const auto api = "https://api.github.com/repos/" + owner + "/" + repo + "/releases?per_page=5";
     if (run("curl -fsSL --retry 5 " + github_headers() + " " + quote(api) +
@@ -466,8 +489,8 @@ static int sync_intune(const fs::path& root) {
           throw std::runtime_error("SHA-256 mismatch for " + p.asset);
         }
       }
-      p.version = deb_field(p.path, "Version");
-      check_deb(p.path, p.version, deb_field(p.path, "Package"), deb_field(p.path, "Architecture"));
+      p.version = release_version(p.release_tag);
+      check_deb_expected(p.path, p.version, expected_package_regex, expected_architecture);
       packages.push_back(std::move(p));
     }
     if (packages.empty()) throw std::runtime_error(repo + ": no usable packages found");
@@ -513,6 +536,52 @@ static void create_transition_package(const fs::path& root,
   fs::remove_all(staging);
 }
 
+static std::string publish_package_icon(const fs::path& root,
+                                        const fs::path& public_dir,
+                                        const std::string& id,
+                                        const fs::path& package) {
+  if (!std::regex_match(id, std::regex("^[A-Za-z0-9._-]+$")))
+    throw std::runtime_error("unsafe catalogue id for icon publication: " + id);
+  const fs::path staging = root / "build" / ("catalogue-icon-" + id);
+  fs::remove_all(staging);
+  fs::create_directories(staging);
+  if (run("dpkg-deb -x " + quote(package.string()) + " " + quote(staging.string())))
+    throw std::runtime_error("unable to extract icon from " + package.string());
+
+  fs::path best;
+  int best_kind = -1;
+  std::uintmax_t best_size = 0;
+  for (const auto& entry : fs::recursive_directory_iterator(
+           staging, fs::directory_options::skip_permission_denied)) {
+    if (!entry.is_regular_file()) continue;
+    const auto path = entry.path();
+    const auto generic = path.generic_string();
+    const auto ext = path.extension().string();
+    const bool icon_tree = generic.find("/usr/share/icons/") != std::string::npos &&
+                           generic.find("/apps/") != std::string::npos;
+    const bool pixmap = generic.find("/usr/share/pixmaps/") != std::string::npos;
+    if (!icon_tree && !pixmap) continue;
+    const int kind = ext == ".svg" ? 2 : ext == ".png" ? 1 : -1;
+    if (kind < 0) continue;
+    std::error_code ec;
+    const auto size = fs::file_size(path, ec);
+    const auto usable_size = ec ? std::uintmax_t{0} : size;
+    if (kind > best_kind || (kind == best_kind && usable_size > best_size)) {
+      best = path; best_kind = kind; best_size = usable_size;
+    }
+  }
+  if (best.empty()) {
+    fs::remove_all(staging);
+    return {};
+  }
+  const auto icons = public_dir / "catalogue" / "icons";
+  fs::create_directories(icons);
+  const auto target = icons / (id + best.extension().string());
+  fs::copy_file(best, target, fs::copy_options::overwrite_existing);
+  fs::remove_all(staging);
+  return "catalogue/icons/" + target.filename().string();
+}
+
   static int publish(const fs::path& root) {
     const fs::path public_dir = root / "public";
     fs::remove_all(public_dir);
@@ -521,18 +590,26 @@ static void create_transition_package(const fs::path& root,
     fs::copy_file(root / "site" / "index.html", public_dir / "index.html");
     write(public_dir / ".nojekyll", "");
 
-    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\")] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
+    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\")] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
     std::istringstream app_lines(source);
     std::vector<std::string> catalogue_items;
     size_t package_version_count = 0;
     std::string line;
     while (std::getline(app_lines, line)) {
-      std::istringstream f(line); std::vector<std::string> v(9);
+      std::istringstream f(line); std::vector<std::string> v(11);
       for (auto& value : v) std::getline(f, value, '\t');
       const auto& id=v[0]; const auto& name=v[1]; const auto& repo=v[2]; const auto& category=v[3];
       for (auto& value : v) value = tsv_unescape(value);
       const auto& description=v[4]; const auto& regex_text=v[5]; const auto& local_glob=v[6]; const auto& owner=v[7];
-      auto packages = local_glob.empty() ? remote_packages(root, owner, repo, regex_text) : local_packages(root, local_glob);
+      const auto& expected_package_regex=v[9]; const auto& expected_architecture=v[10];
+      if (expected_package_regex.empty() || expected_architecture.empty())
+        throw std::runtime_error(name + ": expected package identity is not configured");
+      auto packages = local_glob.empty()
+        ? remote_packages(root, owner, repo, regex_text, expected_package_regex, expected_architecture)
+        : local_packages(root, local_glob);
+      if (!local_glob.empty())
+        for (const auto& package : packages)
+          check_deb_expected(package.path, package.version, expected_package_regex, expected_architecture);
       if (id == "calendar") {
         packages.erase(
             std::remove_if(packages.begin(), packages.end(),
@@ -590,7 +667,10 @@ static void create_transition_package(const fs::path& root,
       }
       auto latest = metadata_json(packages.front(), id, name, repo, owner, category, description);
       latest.pop_back();
-      latest += ",\"icon\":\"" + json_escape(v[8]) + "\",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
+      const auto icon_url = publish_package_icon(root, public_dir, id, packages.front().path);
+      latest += ",\"icon\":\"" + json_escape(v[8]) + "\"";
+      if (!icon_url.empty()) latest += ",\"icon_url\":\"" + json_escape(icon_url) + "\"";
+      latest += ",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
       catalogue_items.push_back(std::move(latest));
     }
 
@@ -664,7 +744,16 @@ static void create_transition_package(const fs::path& root,
   }
 int main(int argc, char** argv) {
   try {
-    if (argc != 2) { std::cerr << "usage: repository-tool <materialize|sync-intune|publish>\n"; return 2; }
+    if (argc >= 2 && std::string(argv[1]) == "validate-deb") {
+      if (argc != 6) {
+        std::cerr << "usage: repository-tool validate-deb FILE RELEASE_TAG PACKAGE_REGEX ARCHITECTURE\n";
+        return 2;
+      }
+      const auto version = release_version(argv[3]);
+      check_deb_expected(fs::path(argv[2]), version, argv[4], argv[5]);
+      return 0;
+    }
+    if (argc != 2) { std::cerr << "usage: repository-tool <materialize|sync-intune|publish|validate-deb>\n"; return 2; }
     fs::path root;
     if (const char* configured = std::getenv("REPOSITORY_ROOT"); configured && *configured) {
       root = fs::absolute(configured);
