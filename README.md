@@ -4,7 +4,7 @@ Package Repository is the distribution layer for the Linux applications publishe
 
 ## Engineering ethos
 
-What does it take to turn independently released software into a normal, inspectable APT source without making publication depend on opaque repository services? Package Repository owns the rules that discover, verify, retain and publish approved release artifacts.
+What does it take to build a normal, inspectable APT source from first principles without making publication depend on opaque repository services? Package Repository owns the rules that discover, verify, retain and publish approved release artifacts.
 
 APT, Debian metadata and GitHub releases define external interfaces the repository must interoperate with; they do not own this project's publication policy. Repository state, package selection, retention, catalogue generation, verification and release materialisation remain first-party behaviour. Small external command-line tools may provide replaceable mechanisms, while the semantics that decide what is published stay in this source tree and are regression-tested.
 
