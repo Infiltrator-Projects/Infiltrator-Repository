@@ -478,9 +478,23 @@ static int sync_intune(const fs::path& root) {
   }
 
 
-struct SoftwareManagerIcon {
-  fs::path source;
-  std::string extension;
+
+struct DesktopMetadata {
+  std::string id;
+  std::string name;
+  std::string summary;
+  std::string icon;
+  std::string categories;
+};
+
+struct Dep11Component {
+  std::string package;
+  std::string id;
+  std::string name;
+  std::string summary;
+  std::string categories;
+  std::string launchable;
+  std::string icon_name;
 };
 
 static bool supported_icon_extension(const fs::path& path) {
@@ -493,8 +507,7 @@ static fs::path resolve_desktop_icon(const fs::path& extracted,
   if (icon_name.empty()) return {};
   fs::path requested(icon_name);
   if (requested.is_absolute()) {
-    const fs::path candidate =
-        extracted / requested.relative_path();
+    const fs::path candidate = extracted / requested.relative_path();
     if (fs::is_regular_file(candidate) && supported_icon_extension(candidate))
       return candidate;
   }
@@ -535,6 +548,50 @@ static fs::path resolve_desktop_icon(const fs::path& extracted,
   return matches.front();
 }
 
+static DesktopMetadata discover_desktop_metadata(const fs::path& extracted) {
+  DesktopMetadata result;
+  const fs::path applications = extracted / "usr/share/applications";
+  if (!fs::is_directory(applications)) return result;
+
+  std::vector<fs::path> desktop_files;
+  for (const auto& entry : fs::directory_iterator(applications)) {
+    if (entry.is_regular_file() && entry.path().extension() == ".desktop")
+      desktop_files.push_back(entry.path());
+  }
+  std::sort(desktop_files.begin(), desktop_files.end());
+  for (const auto& desktop : desktop_files) {
+    DesktopMetadata candidate;
+    candidate.id = desktop.filename().string();
+    std::istringstream lines(read(desktop));
+    std::string line;
+    bool in_desktop_entry = false;
+    while (std::getline(lines, line)) {
+      line = trim_eol(line);
+      if (line == "[Desktop Entry]") {
+        in_desktop_entry = true;
+        continue;
+      }
+      if (!line.empty() && line.front() == '[') {
+        in_desktop_entry = false;
+        continue;
+      }
+      if (!in_desktop_entry) continue;
+      const auto assign = [&](const char* key, std::string& destination) {
+        const std::string prefix = std::string(key) + "=";
+        if (line.rfind(prefix, 0U) == 0U && destination.empty())
+          destination = line.substr(prefix.size());
+      };
+      assign("Name", candidate.name);
+      assign("Comment", candidate.summary);
+      assign("Icon", candidate.icon);
+      assign("Categories", candidate.categories);
+    }
+    if (!candidate.name.empty() || !candidate.icon.empty()) return candidate;
+    if (result.id.empty()) result = candidate;
+  }
+  return result;
+}
+
 static fs::path discover_package_icon(const fs::path& extracted,
                                       const std::string& package_name) {
   for (const std::string ext : {".svg", ".png", ".xpm"}) {
@@ -543,24 +600,10 @@ static fs::path discover_package_icon(const fs::path& extracted,
     if (fs::is_regular_file(ready)) return ready;
   }
 
-  const fs::path applications = extracted / "usr/share/applications";
-  if (fs::is_directory(applications)) {
-    std::vector<fs::path> desktop_files;
-    for (const auto& entry : fs::directory_iterator(applications)) {
-      if (entry.is_regular_file() && entry.path().extension() == ".desktop")
-        desktop_files.push_back(entry.path());
-    }
-    std::sort(desktop_files.begin(), desktop_files.end());
-    for (const auto& desktop : desktop_files) {
-      std::istringstream lines(read(desktop));
-      std::string line;
-      while (std::getline(lines, line)) {
-        if (line.rfind("Icon=", 0U) != 0U) continue;
-        const std::string icon_name = trim_eol(line.substr(5U));
-        const fs::path resolved = resolve_desktop_icon(extracted, icon_name);
-        if (!resolved.empty()) return resolved;
-      }
-    }
+  const DesktopMetadata desktop = discover_desktop_metadata(extracted);
+  if (!desktop.icon.empty()) {
+    const fs::path resolved = resolve_desktop_icon(extracted, desktop.icon);
+    if (!resolved.empty()) return resolved;
   }
 
   const fs::path icon_root = extracted / "usr/share/icons";
@@ -587,6 +630,18 @@ static fs::path discover_package_icon(const fs::path& extracted,
       return candidates.front();
     }
   }
+
+  const fs::path pixmaps = extracted / "usr/share/pixmaps";
+  if (fs::is_directory(pixmaps)) {
+    std::vector<fs::path> candidates;
+    for (const auto& entry : fs::directory_iterator(pixmaps))
+      if (entry.is_regular_file() && supported_icon_extension(entry.path()))
+        candidates.push_back(entry.path());
+    if (!candidates.empty()) {
+      std::sort(candidates.begin(), candidates.end());
+      return candidates.front();
+    }
+  }
   return {};
 }
 
@@ -604,154 +659,245 @@ static std::string first_dependency_name(const std::string& depends) {
   return token;
 }
 
-static void create_software_manager_data_package(const fs::path& root,
-                                                 const fs::path& public_dir) {
-  const fs::path staging = root / "build" / "app-install-data-ssmithnet";
-  const fs::path extracted = root / "build" / "app-install-icon-source";
-  fs::remove_all(staging);
-  fs::remove_all(extracted);
-  fs::create_directories(staging / "DEBIAN");
-  fs::create_directories(staging / "usr/share/app-install/icons");
+static std::string first_description_line(const fs::path& deb) {
+  const std::string description = deb_field(deb, "Description", true);
+  const auto newline = description.find('\n');
+  return description.substr(0, newline);
+}
 
-  std::map<std::string, SoftwareManagerIcon> icons;
-  std::map<std::string, std::string> dependencies;
-  std::set<std::string> seen_packages;
-
-  std::vector<fs::path> debs;
-  const fs::path pool = public_dir / "pool" / "main";
-  for (const auto& entry : fs::directory_iterator(pool)) {
-    if (entry.is_regular_file() && entry.path().extension() == ".deb")
-      debs.push_back(entry.path());
+static std::string yaml_quote(const std::string& value) {
+  std::string result = "\"";
+  for (unsigned char character : value) {
+    switch (character) {
+      case '\\': result += "\\\\"; break;
+      case '"': result += "\\\""; break;
+      case '\n': result += "\\n"; break;
+      case '\r': break;
+      case '\t': result += "\\t"; break;
+      default:
+        if (character >= 0x20U) result += static_cast<char>(character);
+        else result += ' ';
+        break;
+    }
   }
-  std::sort(debs.begin(), debs.end());
+  result += '"';
+  return result;
+}
 
-  for (const auto& deb : debs) {
-    const std::string package_name = deb_field(deb, "Package");
-    if (!seen_packages.insert(package_name).second) continue;
+static std::vector<std::string> split_categories(const std::string& value) {
+  std::vector<std::string> categories;
+  std::istringstream input(value);
+  std::string category;
+  while (std::getline(input, category, ';')) {
+    if (!category.empty()) categories.push_back(category);
+  }
+  if (categories.empty()) categories.push_back("Utility");
+  return categories;
+}
 
-    const std::string depends = deb_field(deb, "Depends");
-    if (!depends.empty())
-      dependencies[package_name] = first_dependency_name(depends);
+static void render_dep11_icon(const fs::path& source, const fs::path& target,
+                              unsigned size) {
+  fs::create_directories(target.parent_path());
+  const std::string geometry = std::to_string(size) + "x" + std::to_string(size);
+  const std::string command =
+      "convert " + quote(source.string()) +
+      " -background none -resize " + geometry +
+      " -gravity center -extent " + geometry + " " + quote(target.string());
+  if (!run(command)) return;
+
+  if (source.extension() == ".svg") {
+    const std::string fallback =
+        "rsvg-convert --width " + std::to_string(size) +
+        " --height " + std::to_string(size) + " " +
+        quote(source.string()) + " -o " + quote(target.string());
+    if (!run(fallback)) return;
+  }
+  throw std::runtime_error("unable to render DEP-11 icon " + source.string());
+}
+
+static void build_icon_archive(const fs::path& icon_directory,
+                               const fs::path& target) {
+  fs::create_directories(target.parent_path());
+  const std::string target_text = target.string();
+  if (target_text.size() < 3U ||
+      target_text.substr(target_text.size() - 3U) != ".gz")
+    throw std::runtime_error("DEP-11 icon archive must end in .gz");
+  const fs::path uncompressed = target_text.substr(0U, target_text.size() - 3U);
+  if (run("tar --sort=name --mtime='@315532800' --owner=0 --group=0 "
+          "--numeric-owner -C " + quote(icon_directory.string()) +
+          " -cf " + quote(uncompressed.string()) + " ."))
+    throw std::runtime_error("unable to build DEP-11 icon archive " +
+                             target.string());
+  if (run("gzip -9 -n -f " + quote(uncompressed.string())))
+    throw std::runtime_error("unable to compress DEP-11 icon archive " +
+                             target.string());
+}
+
+static void create_dep11_metadata(const fs::path& root,
+                                  const fs::path& public_dir,
+                                  const std::string& suite) {
+  const fs::path pool = public_dir / "pool" / "main";
+  const fs::path work = root / "build" / ("dep11-" + suite);
+  const fs::path extracted = work / "extracted";
+  const fs::path icons = work / "icons";
+  fs::remove_all(work);
+  for (unsigned size : {48U, 64U, 128U})
+    fs::create_directories(icons / (std::to_string(size) + "x" +
+                                    std::to_string(size)));
+
+  struct DebChoice {
+    fs::path path;
+    std::string version;
+  };
+  std::map<std::string, DebChoice> latest;
+  std::map<std::string, std::string> dependencies;
+
+  for (const auto& entry : fs::directory_iterator(pool)) {
+    if (!entry.is_regular_file() || entry.path().extension() != ".deb") continue;
+    const std::string package = deb_field(entry.path(), "Package");
+    const std::string version = deb_field(entry.path(), "Version");
+    const auto found = latest.find(package);
+    if (found == latest.end() || newer(version, found->second.version))
+      latest[package] = {entry.path(), version};
+  }
+
+  std::map<std::string, Dep11Component> components;
+  for (const auto& [package, choice] : latest) {
+    const std::string depends = deb_field(choice.path, "Depends", true);
+    if (!depends.empty()) dependencies[package] = first_dependency_name(depends);
 
     fs::remove_all(extracted);
     fs::create_directories(extracted);
-    if (run("dpkg-deb -x " + quote(deb.string()) + " " +
+    if (run("dpkg-deb -x " + quote(choice.path.string()) + " " +
             quote(extracted.string())))
-      throw std::runtime_error(
-          "unable to extract icon source from " + package_name);
+      throw std::runtime_error("unable to extract " + package +
+                               " while generating DEP-11 metadata");
 
-    const fs::path icon = discover_package_icon(extracted, package_name);
-    if (!icon.empty())
-      icons[package_name] = {icon, icon.extension().string()};
+    const fs::path icon = discover_package_icon(extracted, package);
+    if (icon.empty()) continue;
+    const DesktopMetadata desktop = discover_desktop_metadata(extracted);
+
+    const std::string icon_name = package + ".png";
+    for (unsigned size : {48U, 64U, 128U}) {
+      const std::string directory =
+          std::to_string(size) + "x" + std::to_string(size);
+      render_dep11_icon(icon, icons / directory / icon_name, size);
+    }
+
+    std::string name = desktop.name;
+    std::string summary = desktop.summary;
+    const std::string package_summary = first_description_line(choice.path);
+    if (name.empty()) name = package_summary.empty() ? package : package_summary;
+    if (summary.empty()) summary = package_summary.empty() ? name : package_summary;
+
+    Dep11Component component;
+    component.package = package;
+    component.id = desktop.id.empty() ? package + ".desktop" : desktop.id;
+    component.name = name;
+    component.summary = summary;
+    component.categories = desktop.categories;
+    component.launchable = desktop.id;
+    component.icon_name = icon_name;
+    components[package] = std::move(component);
   }
 
   bool added = true;
   while (added) {
     added = false;
-    for (const auto& [package_name, dependency] : dependencies) {
-      if (icons.count(package_name) != 0U) continue;
-      const auto found = icons.find(dependency);
-      if (found == icons.end()) continue;
-      icons[package_name] = found->second;
+    for (const auto& [package, dependency] : dependencies) {
+      if (components.count(package) != 0U) continue;
+      const auto source = components.find(dependency);
+      if (source == components.end()) continue;
+
+      Dep11Component alias = source->second;
+      alias.package = package;
+      alias.id = package + ".desktop";
+      alias.launchable.clear();
+      alias.icon_name = package + ".png";
+      for (unsigned size : {48U, 64U, 128U}) {
+        const std::string directory =
+            std::to_string(size) + "x" + std::to_string(size);
+        const fs::path source_icon =
+            icons / directory / source->second.icon_name;
+        const fs::path alias_icon = icons / directory / alias.icon_name;
+        if (fs::is_regular_file(source_icon))
+          fs::copy_file(source_icon, alias_icon,
+                        fs::copy_options::overwrite_existing);
+      }
+      components[package] = std::move(alias);
       added = true;
     }
   }
 
-  std::size_t installed_icons = 0U;
-  for (const auto& [package_name, icon] : icons) {
-    if (!fs::is_regular_file(icon.source)) {
-      // Direct sources lived in the temporary extraction tree. Re-extract the
-      // package that owns this icon so the source path is materialised again.
-      fs::path owner_deb;
-      for (const auto& deb : debs) {
-        if (deb_field(deb, "Package") == package_name) {
-          owner_deb = deb;
-          break;
-        }
-      }
-      if (owner_deb.empty()) continue;
-      fs::remove_all(extracted);
-      fs::create_directories(extracted);
-      if (run("dpkg-deb -x " + quote(owner_deb.string()) + " " +
-              quote(extracted.string())))
-        continue;
-      const fs::path refreshed =
-          discover_package_icon(extracted, package_name);
-      if (refreshed.empty()) continue;
-      const fs::path target =
-          staging / "usr/share/app-install/icons" /
-          (package_name + refreshed.extension().string());
-      fs::copy_file(refreshed, target, fs::copy_options::overwrite_existing);
-      ++installed_icons;
-      continue;
-    }
-    const fs::path target =
-        staging / "usr/share/app-install/icons" /
-        (package_name + icon.extension);
-    fs::copy_file(icon.source, target, fs::copy_options::overwrite_existing);
-    ++installed_icons;
+  const fs::path dep11 =
+      public_dir / "dists" / suite / "main" / "dep11";
+  fs::create_directories(dep11);
+
+  std::ostringstream yaml;
+  yaml << "---\n"
+       << "File: DEP-11\n"
+       << "Version: '1.0'\n"
+       << "Origin: " << yaml_quote("infiltrator-" + suite + "-main") << "\n"
+       << "Priority: 10\n";
+  for (const auto& [package, component] : components) {
+    (void)package;
+    yaml << "---\n"
+         << "Type: desktop-application\n"
+         << "ID: " << yaml_quote(component.id) << "\n"
+         << "Package: " << yaml_quote(component.package) << "\n"
+         << "Name:\n"
+         << "  C: " << yaml_quote(component.name) << "\n"
+         << "Summary:\n"
+         << "  C: " << yaml_quote(component.summary) << "\n"
+         << "Categories:\n";
+    for (const auto& category : split_categories(component.categories))
+      yaml << "  - " << yaml_quote(category) << "\n";
+    yaml << "Icon:\n"
+         << "  cached:\n";
+    for (unsigned size : {48U, 64U, 128U})
+      yaml << "    - name: " << yaml_quote(component.icon_name) << "\n"
+           << "      width: " << size << "\n"
+           << "      height: " << size << "\n";
+    if (!component.launchable.empty())
+      yaml << "Launchable:\n"
+           << "  desktop-id:\n"
+           << "    - " << yaml_quote(component.launchable) << "\n";
   }
 
-  // Transition packages have no files of their own. Copy aliases from the
-  // dependency's installed alias after all direct application icons exist.
-  for (const auto& [package_name, dependency] : dependencies) {
-    bool already_present = false;
-    for (const std::string ext : {".svg", ".png", ".xpm"}) {
-      if (fs::is_regular_file(
-              staging / "usr/share/app-install/icons" /
-              (package_name + ext))) {
-        already_present = true;
-        break;
-      }
-    }
-    if (already_present) continue;
-    for (const std::string ext : {".svg", ".png", ".xpm"}) {
-      const fs::path source =
-          staging / "usr/share/app-install/icons" / (dependency + ext);
-      if (!fs::is_regular_file(source)) continue;
-      fs::copy_file(
-          source,
-          staging / "usr/share/app-install/icons" / (package_name + ext),
-          fs::copy_options::overwrite_existing);
-      ++installed_icons;
-      break;
-    }
+  const fs::path components_yaml = dep11 / "Components-amd64.yml";
+  write(components_yaml, yaml.str());
+  if (run("gzip -9 -n -c " + quote(components_yaml.string()) + " > " +
+          quote((components_yaml.string() + ".gz"))))
+    throw std::runtime_error("unable to compress DEP-11 metadata with gzip");
+  if (run("xz -9 -c " + quote(components_yaml.string()) + " > " +
+          quote((components_yaml.string() + ".xz"))))
+    throw std::runtime_error("unable to compress DEP-11 metadata with xz");
+
+  for (unsigned size : {48U, 64U, 128U}) {
+    const std::string directory =
+        std::to_string(size) + "x" + std::to_string(size);
+    build_icon_archive(icons / directory,
+                       dep11 / ("icons-" + directory + ".tar.gz"));
   }
 
-  const char* run_number = std::getenv("GITHUB_RUN_NUMBER");
-  std::string version = "1.0.0";
-  if (run_number != nullptr && *run_number != '\0') {
-    version = "1.0." + std::string(run_number);
+  const fs::path by_hash = dep11 / "by-hash" / "SHA256";
+  fs::create_directories(by_hash);
+  for (const auto& file : {
+           fs::path(components_yaml.string() + ".gz"),
+           fs::path(components_yaml.string() + ".xz"),
+           dep11 / "icons-48x48.tar.gz",
+           dep11 / "icons-64x64.tar.gz",
+           dep11 / "icons-128x128.tar.gz"}) {
+    fs::copy_file(file, by_hash / digest(file),
+                  fs::copy_options::overwrite_existing);
   }
 
-  std::ostringstream control;
-  control << "Package: app-install-data-ssmithnet\n"
-          << "Version: " << version << "\n"
-          << "Section: misc\n"
-          << "Priority: optional\n"
-          << "Architecture: all\n"
-          << "Conflicts: infiltrator-app-install-data\n"
-          << "Replaces: infiltrator-app-install-data\n"
-          << "Provides: infiltrator-app-install-data\n"
-          << "Maintainer: Shannon Smith <The-First-Infiltrator@users.noreply.github.com>\n"
-          << "Description: Linux Mint Software Manager icon data for Shannon Smith applications\n"
-          << " Static package-name icon aliases used by Linux Mint Software Manager.\n"
-          << " No service, daemon, executable or background helper is installed.\n";
-  write(staging / "DEBIAN" / "control", control.str());
-
-  const fs::path target = pool /
-      ("app-install-data-ssmithnet_" + version + "_all.deb");
-  const std::string command =
-      "SOURCE_DATE_EPOCH=315532800 dpkg-deb -Zxz --build --root-owner-group " +
-      quote(staging.string()) + " " + quote(target.string());
-  if (run(command))
-    throw std::runtime_error("unable to build Software Manager icon data package");
-  check_deb(target, version, "app-install-data-ssmithnet", "all");
-  std::cout << "Published " << installed_icons
-            << " Linux Mint Software Manager package-name icon aliases\n";
-  fs::remove_all(staging);
-  fs::remove_all(extracted);
+  fs::remove(components_yaml);
+  fs::remove_all(work);
+  std::cout << "Published " << components.size()
+            << " DEP-11 components for " << suite << '\n';
 }
+
 
 static void create_transition_package(const fs::path& root,
                                       const fs::path& public_dir,
@@ -873,8 +1019,6 @@ static void create_transition_package(const fs::path& root,
       catalogue_items.push_back(std::move(latest));
     }
 
-    create_software_manager_data_package(root, public_dir);
-
     std::ostringstream apps; apps << "[\n";
     for (size_t i=0; i<catalogue_items.size(); ++i) apps << (i ? ",\n" : "") << "  " << catalogue_items[i];
     apps << "\n]\n";
@@ -888,6 +1032,7 @@ static void create_transition_package(const fs::path& root,
       write(binary / "Packages", packages_text);
       if (run("gzip -9 -n -c " + quote((binary / "Packages").string()) + " > " + quote((binary / "Packages.gz").string())))
         throw std::runtime_error("gzip failed");
+      create_dep11_metadata(root, public_dir, suite);
       const auto release = public_dir / "dists" / suite / "Release";
       const auto temp = public_dir / (".Release-" + suite + ".tmp");
       const auto command = "cd " + quote(public_dir.string()) + " && apt-ftparchive "

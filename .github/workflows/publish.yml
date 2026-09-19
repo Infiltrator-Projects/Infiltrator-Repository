@@ -45,7 +45,7 @@ jobs:
       - name: Install repository tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++
+          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++ imagemagick librsvg2-bin xz-utils
 
       - name: Build C++17 release tool with COMMON
         run: |
@@ -148,13 +148,21 @@ jobs:
             test -f "$transition"
             test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-defragmenter (= $defragger_version)"
           fi
-          app_install_data="$(find public/pool/main -maxdepth 1 -type f -name 'app-install-data-ssmithnet_*_all.deb' -print -quit)"
-          test -n "$app_install_data"
-          test "$(dpkg-deb -f "$app_install_data" Package)" = "app-install-data-ssmithnet"
-          test "$(dpkg-deb -f "$app_install_data" Architecture)" = "all"
-          dpkg-deb -c "$app_install_data" > /tmp/app-install-data-contents.txt
-          for icon in infiltrator-defragmenter infiltrator-calendar infiltrator-system-monitor infiltrator-calculator infiltrator-runner-monitor; do
-            grep -Eq "./usr/share/app-install/icons/${icon}\.(svg|png|xpm)$" /tmp/app-install-data-contents.txt
+          test -z "$(find public/pool/main -maxdepth 1 -type f -name 'app-install-data-ssmithnet_*_all.deb' -print -quit)"
+          test -z "$(find public/pool/main -maxdepth 1 -type f -name 'infiltrator-app-install-data_*_all.deb' -print -quit)"
+          for suite in beta alpha; do
+            dep11="public/dists/$suite/main/dep11"
+            test -s "$dep11/Components-amd64.yml.gz"
+            test -s "$dep11/Components-amd64.yml.xz"
+            test -s "$dep11/icons-48x48.tar.gz"
+            test -s "$dep11/icons-64x64.tar.gz"
+            test -s "$dep11/icons-128x128.tar.gz"
+            gzip -cd "$dep11/Components-amd64.yml.gz" | grep -q 'Package: "infiltrator-system-monitor"'
+            gzip -cd "$dep11/Components-amd64.yml.gz" | grep -q 'Package: "infiltrator-calendar"'
+            tar -tzf "$dep11/icons-64x64.tar.gz" | grep -q 'infiltrator-system-monitor.png'
+            tar -tzf "$dep11/icons-64x64.tar.gz" | grep -q 'infiltrator-calendar.png'
+            grep -q 'main/dep11/Components-amd64.yml.gz' "public/dists/$suite/Release"
+            grep -q 'main/dep11/icons-64x64.tar.gz' "public/dists/$suite/Release"
           done
 
           runner_version="$(jq -r '.[] | select(.id == "runnerscope") | .version' public/catalogue/apps.json)"
@@ -208,7 +216,7 @@ jobs:
       - name: Install signing test tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++
+          sudo apt-get install -y --no-install-recommends dpkg-dev apt-utils gnupg jq curl g++ imagemagick librsvg2-bin xz-utils
 
       - name: Build C++17 release tool with COMMON
         run: |
