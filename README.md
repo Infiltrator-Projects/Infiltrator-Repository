@@ -1,6 +1,6 @@
 # Package Repository — Beta
 
-**Project copyright:** © 2000–2026 Shannon Smith
+**Project copyright:** © 2000-2026 Shannon Smith
 
 Package Repository is the distribution layer for the Linux applications published by Shannon Smith. Each application remains independently developed and released in its own repository; this project turns approved GitHub Release packages into a normal APT source and a browsable software centre.
 
