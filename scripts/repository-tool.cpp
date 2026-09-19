@@ -669,7 +669,11 @@ static std::string publish_package_icon(const fs::path& root,
       latest.pop_back();
       const auto icon_url = publish_package_icon(root, public_dir, id, packages.front().path);
       latest += ",\"icon\":\"" + json_escape(v[8]) + "\"";
-      if (!icon_url.empty()) latest += ",\"icon_url\":\"" + json_escape(icon_url) + "\"";
+      if (!icon_url.empty()) {
+        latest += ",\"icon_url\":\"" + json_escape(icon_url) + "\"";
+        latest += ",\"icon_sha256\":\"" +
+                  digest(public_dir / fs::path(icon_url)) + "\"";
+      }
       latest += ",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
       catalogue_items.push_back(std::move(latest));
     }
