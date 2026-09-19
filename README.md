@@ -2,6 +2,14 @@
 
 Package Repository is the distribution layer for the Linux applications published by Shannon Smith. Each application remains independently developed and released in its own repository; this project turns approved GitHub Release packages into a normal APT source and a browsable software centre.
 
+## Engineering ethos
+
+What does it take to turn independently released software into a normal, inspectable APT source without making publication depend on opaque repository services? Package Repository owns the rules that discover, verify, retain and publish approved release artifacts.
+
+APT, Debian metadata and GitHub releases define external interfaces the repository must interoperate with; they do not own this project's publication policy. Repository state, package selection, retention, catalogue generation, verification and release materialisation remain first-party behaviour. Small external command-line tools may provide replaceable mechanisms, while the semantics that decide what is published stay in this source tree and are regression-tested.
+
+The project values deterministic, explainable publication over novelty. A new dependency or workflow is adopted only when it improves correctness, resilience, security or maintainability without surrendering the repository's source of truth.
+
 ## Current applications
 
 - Linux System Monitor
