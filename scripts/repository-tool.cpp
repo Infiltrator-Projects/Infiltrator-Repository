@@ -654,11 +654,10 @@ static void create_app_install_data_package(const fs::path& root,
       latest += ",\"icon\":\"" + json_escape(v[8]) + "\",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
       catalogue_items.push_back(std::move(latest));
     }
-    if (defragger_package_path.empty() || defragger_package_version.empty())
-      throw std::runtime_error(
-          "Defragmenter package is required to build Linux Mint app-install metadata");
-    create_app_install_data_package(
-        root, public_dir, defragger_package_path, defragger_package_version);
+    if (!defragger_package_path.empty() && !defragger_package_version.empty()) {
+      create_app_install_data_package(
+          root, public_dir, defragger_package_path, defragger_package_version);
+    }
 
     std::ostringstream apps; apps << "[\n";
     for (size_t i=0; i<catalogue_items.size(); ++i) apps << (i ? ",\n" : "") << "  " << catalogue_items[i];
