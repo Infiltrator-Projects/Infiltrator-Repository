@@ -46,6 +46,8 @@ with tempfile.TemporaryDirectory(prefix="infiltrator-retention-") as td:
         "description": "C++ retention fixture.",
         "local_deb_glob": "mirrors/*.deb",
         "icon": "test",
+        "expected_package_regex": "^retention-test$",
+        "expected_architecture": "amd64",
     }]))
 
     env = dict(os.environ)

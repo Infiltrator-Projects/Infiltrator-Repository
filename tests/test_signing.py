@@ -48,6 +48,8 @@ with tempfile.TemporaryDirectory(prefix="infiltrator-signing-") as td:
         "description": "C++ signing fixture.",
         "local_deb_glob": "mirrors/*.deb",
         "icon": "test",
+        "expected_package_regex": "^signing-test$",
+        "expected_architecture": "amd64",
     }]))
 
     gen_home = root / "generator"
