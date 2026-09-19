@@ -18,7 +18,7 @@
     "description": "Enhanced Cinnamon clock and calendar with multiple time and calendar systems.",
     "deb_regex": "^calendar_.*_amd64\\.deb$",
     "icon": "calendar",
-    "expected_package_regex": "^infiltrator-calendar$",
+    "expected_package_regex": "^(infiltrator-calendar|cinnamon-calendar|calendar-plus)$",
     "expected_architecture": "amd64"
   },
   {
