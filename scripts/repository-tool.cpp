@@ -516,7 +516,9 @@ static void create_transition_package(const fs::path& root,
 static void create_app_install_data_package(const fs::path& root,
                                             const fs::path& public_dir,
                                             const fs::path& defragger_deb,
-                                            const std::string& version) {
+                                            const std::string& defragger_version,
+                                            const fs::path& calendar_deb,
+                                            const std::string& calendar_version) {
   const fs::path staging = root / "build" / "infiltrator-app-install-data";
   const fs::path extracted = root / "build" / "infiltrator-app-install-source";
   fs::remove_all(staging);
@@ -524,6 +526,7 @@ static void create_app_install_data_package(const fs::path& root,
   fs::create_directories(staging / "DEBIAN");
   fs::create_directories(staging / "usr/share/app-install/icons");
   fs::create_directories(staging / "usr/share/icons/hicolor/128x128/apps");
+  fs::create_directories(staging / "usr/share/icons/hicolor/256x256/apps");
 
   if (run("dpkg-deb -x " + quote(defragger_deb.string()) + " " +
           quote(extracted.string()))) {
@@ -541,6 +544,29 @@ static void create_app_install_data_package(const fs::path& root,
       staging / "usr/share/icons/hicolor/128x128/apps/infiltrator-defragmenter.png";
   fs::copy_file(source_icon, app_install_icon, fs::copy_options::overwrite_existing);
   fs::copy_file(source_icon, theme_alias, fs::copy_options::overwrite_existing);
+
+  fs::remove_all(extracted);
+  if (run("dpkg-deb -x " + quote(calendar_deb.string()) + " " +
+          quote(extracted.string()))) {
+    throw std::runtime_error("unable to extract Calendar icon source");
+  }
+  const fs::path calendar_source_icon =
+      extracted / "usr/share/icons/hicolor/256x256/apps/infiltratr-calendar.png";
+  if (!fs::is_regular_file(calendar_source_icon))
+    throw std::runtime_error(
+        "Calendar release is missing its canonical 256x256 application icon");
+
+  const fs::path calendar_app_install_icon =
+      staging / "usr/share/app-install/icons/infiltrator-calendar.png";
+  const fs::path calendar_theme_alias =
+      staging / "usr/share/icons/hicolor/256x256/apps/infiltrator-calendar.png";
+  fs::copy_file(calendar_source_icon, calendar_app_install_icon,
+                fs::copy_options::overwrite_existing);
+  fs::copy_file(calendar_source_icon, calendar_theme_alias,
+                fs::copy_options::overwrite_existing);
+
+  const std::string version =
+      defragger_version + "+calendar" + calendar_version;
 
   std::ostringstream control;
   control << "Package: infiltrator-app-install-data\n"
@@ -582,6 +608,8 @@ static void create_app_install_data_package(const fs::path& root,
     size_t package_version_count = 0;
     fs::path defragger_package_path;
     std::string defragger_package_version;
+    fs::path calendar_package_path;
+    std::string calendar_package_version;
     std::string line;
     while (std::getline(app_lines, line)) {
       std::istringstream f(line); std::vector<std::string> v(9);
@@ -610,6 +638,11 @@ static void create_app_install_data_package(const fs::path& root,
       }
       const std::string current_package =
           deb_field(packages.front().path, "Package");
+      if (id == "calendar" &&
+          current_package == "infiltrator-calendar") {
+        calendar_package_path = packages.front().path;
+        calendar_package_version = packages.front().version;
+      }
       if (id == "system-monitor") {
         if (current_package == "system-monitor") {
           create_transition_package(root, public_dir,
@@ -654,9 +687,12 @@ static void create_app_install_data_package(const fs::path& root,
       latest += ",\"icon\":\"" + json_escape(v[8]) + "\",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
       catalogue_items.push_back(std::move(latest));
     }
-    if (!defragger_package_path.empty() && !defragger_package_version.empty()) {
+    if (!defragger_package_path.empty() && !defragger_package_version.empty() &&
+        !calendar_package_path.empty() && !calendar_package_version.empty()) {
       create_app_install_data_package(
-          root, public_dir, defragger_package_path, defragger_package_version);
+          root, public_dir,
+          defragger_package_path, defragger_package_version,
+          calendar_package_path, calendar_package_version);
     }
 
     std::ostringstream apps; apps << "[\n";
