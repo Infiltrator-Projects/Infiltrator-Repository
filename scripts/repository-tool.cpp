@@ -569,6 +569,11 @@ static void create_transition_package(const fs::path& root,
                                     packages.front().version, "Calendar");
         }
       }
+      if (id == "infiltrator-calc" &&
+          current_package == "infiltrator-calculator")
+        create_transition_package(root, public_dir,
+                                  "infiltrator-calc", "infiltrator-calculator",
+                                  packages.front().version, "Calculator");
       if (id == "defragger" &&
           current_package == "infiltrator-defragmenter")
         create_transition_package(root, public_dir,
