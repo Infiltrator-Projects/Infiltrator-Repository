@@ -46,11 +46,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/ssmithnet.net
-          ref: 7a8d2ec5ab0f2ace3444b01ae3bf0ed853d77962
+          ref: 7cd6a749f1e2dff23300c3bcf071e733bffc0475
           path: _family
 
       - name: Verify website family pin
-        run: test "$(git -C _family rev-parse HEAD)" = "7a8d2ec5ab0f2ace3444b01ae3bf0ed853d77962"
+        run: test "$(git -C _family rev-parse HEAD)" = "7cd6a749f1e2dff23300c3bcf071e733bffc0475"
 
       - name: Install repository tools
         run: |
