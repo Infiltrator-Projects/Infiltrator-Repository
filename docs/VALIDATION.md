@@ -1,26 +1,36 @@
 # Validation
 
-## Evidence model
+## Automated tests
 
-Build, unit, integration, lifecycle and physical-hardware evidence prove different things and are recorded separately.
+The repository maintains direct tests for:
 
-## Automated gates
+- retention/version-selection behaviour;
+- signing and signature-generation paths;
+- private mirror policy;
+- software-centre/site setup.
 
-- .github/workflows/publish.yml
-- .github/workflows/sync-private-intune.yml
+The publication workflow also exercises the real C++ repository tool and Debian utilities used by production.
 
-tests/ covers retention, signing, private-mirror policy and site setup. Publication additionally performs repository generation and selected Linux Mint lifecycle checks.
+## Package evidence
 
-## Manual/environment evidence
+Every accepted Debian package is checked at the package-metadata layer. Version, package name and architecture are compared with the expected catalogue/release identity rather than trusted from the filename.
 
-A chroot/userspace lifecycle run cannot prove every kernel-loaded package path; kernel/DKMS products still require their owning project to validate runtime loading on a matching booted kernel.
+SHA-256 digests are part of the materialised package identity.
 
-Do not promote fixture/simulator/chroot evidence into a broader claim than the environment actually exercised.
+## Signing evidence
 
-## Release/publication criterion
+The signing self-test creates a disposable CI key and drives the real signing code, then verifies generated signed metadata through an independent keyring. A successful unsigned generation is not represented as signing proof.
 
-The exact source revision and pinned dependencies/releases intended for publication must pass required gates. Artifacts must be traceable to that identity and documentation must not advertise known-failing or merely planned behaviour.
+## Linux Mint lifecycle evidence
+
+The Mint qualification uses a genuine Linux Mint userspace extracted from a verified ISO and exercises repository discovery plus representative install, upgrade, remove and `apt-get check` flows.
+
+That environment cannot prove runtime behaviour requiring a booted matching kernel. DKMS/kernel products therefore retain runtime qualification responsibility in their owning repositories.
+
+## Publication criterion
+
+A publication is valid only when the exact workflow source completes package discovery/validation, repository generation and the required policy tests. The site and APT metadata must describe the same resolved package set.
 
 ## Regression rule
 
-Reproducible defects gain permanent automated coverage where practical, at the narrowest layer that captures the failure.
+Any failure that allowed wrong version selection, bad metadata, incorrect retention or inconsistent site/repository state should gain a permanent regression test.

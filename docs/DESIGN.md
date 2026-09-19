@@ -2,27 +2,39 @@
 
 ## First-principles position
 
-Package Repository is designed from the behaviour it must own. Existing tools, standards and hosted services are evidence or mechanisms, not specifications to clone or dependencies allowed to redefine project policy.
+The repository is designed around one question: what is required to turn independently released software into a normal, inspectable APT source without making an opaque hosted service the source of publication policy?
 
-## Goals
+The answer is deliberately small: first-party policy code, standard Debian package semantics, deterministic static output and replaceable external mechanisms.
 
-- make publication deterministic and inspectable
-- keep package/source identity tied to upstream immutable releases
-- verify repository metadata and lifecycle behaviour
-- avoid making an opaque hosted service the source of publication policy
+## Design goals
 
-## Non-goals
+- deterministic repository materialisation from immutable upstream release identities;
+- normal APT behaviour rather than a custom updater protocol;
+- explicit retention rather than accidental "latest only" state;
+- package metadata and checksum verification before publication;
+- publication that can be inspected and reproduced on an ordinary Debian-family system;
+- one resolved package state feeding both APT metadata and the software catalogue.
 
-The repository does not rebuild application source into new application releases, and catalogue presentation does not redefine application version/support status.
+## Dependency philosophy
 
-## Dependency policy
+The project does not reimplement HTTP, Debian package parsing or OpenPGP simply to avoid all external commands. It uses mature system tools where their contract is stronger and more authoritative than a private implementation.
 
-Prefer first-party C/C++ implementation for portable/native logic where appropriate and exact pinned first-party shared dependencies for common contracts. External tools/services are acceptable when their interface is useful and replaceable; semantics remain documented and testable in this repository.
+That does not surrender policy ownership. `curl` may retrieve bytes, but it does not decide which release is acceptable. `dpkg-deb` may read fields, but it does not decide retention. GitHub may host a release, but it does not decide whether that release enters the repository.
 
-## Failure philosophy
+## Failure model
 
-Missing, unsupported, stale and failed are distinct states. The project prefers a visible refusal or unavailable result to manufacturing a plausible success. Destructive/publication/manufacturer actions require stronger evidence than read-only discovery.
+Publication fails closed on mismatched package/version/architecture metadata, missing required assets, checksum failure, malformed catalogue input or signing failure.
 
-## Decision quality
+Temporary command output is not repository state. Durable publication occurs only after validation and generation succeed.
 
-A design change should identify ownership, alternatives, evidence and validation. Newness alone is not a benefit; a change should improve correctness, resilience, safety, performance, fidelity or maintainability.
+## Security and trust
+
+Release asset identity, package metadata and signatures form separate trust layers. A package being downloadable does not mean it is acceptable; a package having the expected filename does not mean its internal metadata matches; an unsigned repository is not represented as signed.
+
+## Static-site rule
+
+The software centre is presentation over resolved repository state. It must not contain a second version-selection algorithm that can disagree with the APT repository.
+
+## Quality rule
+
+A change is acceptable when it improves correctness, resilience, inspectability, security or maintainability. Replacing a stable Debian mechanism with a fashionable framework is not an improvement by itself.
