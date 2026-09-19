@@ -152,8 +152,9 @@ jobs:
           test -n "$app_install_data"
           test "$(dpkg-deb -f "$app_install_data" Package)" = "app-install-data-ssmithnet"
           test "$(dpkg-deb -f "$app_install_data" Architecture)" = "all"
-          for icon in             infiltrator-defragmenter             infiltrator-calendar             infiltrator-system-monitor             infiltrator-calculator             infiltrator-runner-monitor; do
-            dpkg-deb -c "$app_install_data" | grep -Eq "./usr/share/app-install/icons/${icon}\.(svg|png|xpm)$"
+          dpkg-deb -c "$app_install_data" > /tmp/app-install-data-contents.txt
+          for icon in infiltrator-defragmenter infiltrator-calendar infiltrator-system-monitor infiltrator-calculator infiltrator-runner-monitor; do
+            grep -Eq "./usr/share/app-install/icons/${icon}\.(svg|png|xpm)$" /tmp/app-install-data-contents.txt
           done
 
           runner_version="$(jq -r '.[] | select(.id == "runnerscope") | .version' public/catalogue/apps.json)"
