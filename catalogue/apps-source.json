@@ -11,17 +11,6 @@
     "expected_architecture": "amd64"
   },
   {
-    "id": "software",
-    "name": "Software",
-    "repo": "Software",
-    "category": "System",
-    "description": "Unified Infiltrator software discovery, installation, updates, repositories, history and repair.",
-    "deb_regex": "^software_.*_amd64\\.deb$",
-    "icon": "software",
-    "expected_package_regex": "^infiltrator-software$",
-    "expected_architecture": "amd64"
-  },
-  {
     "id": "calendar",
     "name": "Calendar",
     "repo": "Calendar",
