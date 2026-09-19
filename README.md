@@ -40,8 +40,7 @@ Every publish run:
 6. generates multiversion APT `Packages`, `Packages.gz` and `Release` metadata;
 7. publishes APT `by-hash` paths to avoid inconsistent metadata during CDN/cache transitions;
 8. generates the software-centre catalogue from the same verified packages; and
-9. generates DEP-11/AppStream application metadata and cached icon archives directly from each application's published package; and
-10. deploys the result to GitHub Pages.
+9. deploys the result to GitHub Pages.
 
 A missing latest package, ambiguous release asset or SHA-256 mismatch fails the publication rather than silently publishing questionable content.
 
@@ -64,8 +63,6 @@ echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infilt
   | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list
 sudo apt update
 ```
-
-
 
 
 The former `alpha` path remains published as a temporary compatibility alias so existing alpha testers continue to receive packages while they migrate. New installations should use `beta`. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.

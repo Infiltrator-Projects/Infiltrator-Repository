@@ -63,7 +63,7 @@ with tempfile.TemporaryDirectory(prefix="infiltrator-retention-") as td:
     pool = root / "public" / "pool" / "main"
     pool_versions = sorted(
         subprocess.check_output(["dpkg-deb", "-f", str(path), "Version"], text=True).strip()
-        for path in pool.glob("retention-test_*.deb")
+        for path in pool.glob("*.deb")
     )
     assert len(pool_versions) == 5, pool_versions
     assert set(pool_versions) == set(expected), pool_versions
