@@ -533,6 +533,15 @@ static void create_transition_package(const fs::path& root,
       for (auto& value : v) value = tsv_unescape(value);
       const auto& description=v[4]; const auto& regex_text=v[5]; const auto& local_glob=v[6]; const auto& owner=v[7];
       auto packages = local_glob.empty() ? remote_packages(root, owner, repo, regex_text) : local_packages(root, local_glob);
+      if (id == "calendar") {
+        packages.erase(
+            std::remove_if(packages.begin(), packages.end(),
+                           [](const Package& package) {
+                             return deb_field(package.path, "Package") !=
+                                    "infiltrator-calendar";
+                           }),
+            packages.end());
+      }
       if (packages.empty()) throw std::runtime_error(name + ": no mirrored DEBs");
       for (auto& package : packages) {
         const auto target = public_dir / "pool" / "main" / package.asset;
@@ -553,20 +562,6 @@ static void create_transition_package(const fs::path& root,
           create_transition_package(root, public_dir,
                                     "linux-system-monitor", "infiltrator-system-monitor",
                                     packages.front().version, "System Monitor");
-        }
-      }
-      if (id == "calendar") {
-        if (current_package == "cinnamon-calendar") {
-          create_transition_package(root, public_dir,
-                                    "calendar-plus", "cinnamon-calendar",
-                                    packages.front().version, "Calendar");
-        } else if (current_package == "infiltrator-calendar") {
-          create_transition_package(root, public_dir,
-                                    "calendar-plus", "infiltrator-calendar",
-                                    packages.front().version, "Calendar");
-          create_transition_package(root, public_dir,
-                                    "cinnamon-calendar", "infiltrator-calendar",
-                                    packages.front().version, "Calendar");
         }
       }
       if (id == "infiltrator-calc" &&

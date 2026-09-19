@@ -14,7 +14,7 @@
     "repo": "Calendar",
     "category": "Productivity",
     "description": "Enhanced Cinnamon clock and calendar with multiple time and calendar systems.",
-    "deb_regex": "^(calendar|calendar-plus)_.*_amd64\\.deb$",
+    "deb_regex": "^calendar_.*_amd64\\.deb$",
     "icon": "calendar"
   },
   {
