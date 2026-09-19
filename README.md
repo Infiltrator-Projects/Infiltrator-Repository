@@ -62,7 +62,10 @@ sudo grep -RIlF "$OLD" /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null
 echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' \
   | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list
 sudo apt update
+sudo apt install -y infiltrator-app-install-data
 ```
+
+The small `infiltrator-app-install-data` package installs package-name icon aliases used by Linux Mint Software Manager before an application is installed. This lets repository applications display their own artwork instead of Mint's generic package icon.
 
 The former `alpha` path remains published as a temporary compatibility alias so existing alpha testers continue to receive packages while they migrate. New installations should use `beta`. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.
 

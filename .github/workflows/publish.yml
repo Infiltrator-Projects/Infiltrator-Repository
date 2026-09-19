@@ -146,6 +146,12 @@ jobs:
             test -f "$transition"
             test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-defragmenter (= $defragger_version)"
           fi
+          app_install_data="public/pool/main/infiltrator-app-install-data_${defragger_version}_all.deb"
+          test -f "$app_install_data"
+          test "$(dpkg-deb -f "$app_install_data" Package)" = "infiltrator-app-install-data"
+          test "$(dpkg-deb -f "$app_install_data" Architecture)" = "all"
+          dpkg-deb -c "$app_install_data" | grep -Fq './usr/share/app-install/icons/infiltrator-defragmenter.png'
+          dpkg-deb -c "$app_install_data" | grep -Fq './usr/share/icons/hicolor/128x128/apps/infiltrator-defragmenter.png'
 
           runner_version="$(jq -r '.[] | select(.id == "runnerscope") | .version' public/catalogue/apps.json)"
           runner_asset="$(jq -r '.[] | select(.id == "runnerscope") | .asset' public/catalogue/apps.json)"
