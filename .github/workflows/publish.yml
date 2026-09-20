@@ -200,6 +200,24 @@ jobs:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
 
+      - name: Verify published Software Centre typography
+        run: |
+          set -euo pipefail
+          URL="https://infiltrator-projects.github.io/Infiltrator-Repository/?build=${GITHUB_SHA}"
+          for attempt in $(seq 1 30); do
+            body="$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "$URL" || true)"
+            if grep -Fq 'catalogue-card.raster-card h2' <<<"$body" \
+              && grep -Fq 'ui-monospace,monospace!important' <<<"$body" \
+              && grep -Fq 'infiltrator-build" content="raster-title-v2' <<<"$body"; then
+              echo "Published Software Centre contains the raster-title fix."
+              exit 0
+            fi
+            echo "Waiting for Software Centre HTML propagation ($attempt/30)..."
+            sleep 5
+          done
+          echo "Published Software Centre did not expose the raster-title fix in time." >&2
+          exit 1
+
   signing-self-test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
