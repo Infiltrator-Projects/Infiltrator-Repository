@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calculator 0.1.41 after verified source release",
+  "reason": "publish InfiltratorFS 0.18.65 after verified source release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -12,6 +12,12 @@
       "version": "0.1.41",
       "release_sha": "991dfaa044670735be24ebb7aab9d39e82aeff00",
       "release_published_at": "2026-09-20T05:36:22Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/InfiltratorFS",
+      "version": "0.18.65",
+      "release_sha": "afea9de31d31254886dd7117e432476909c8cc7e",
+      "release_published_at": "2026-09-20T06:30:45Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
