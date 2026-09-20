@@ -55,6 +55,42 @@
     "expected_architecture": "amd64"
   },
   {
+    "id": "infiltratorfs-desktop-integration",
+    "name": "InfiltratorFS Desktop Integration",
+    "repo": "InfiltratorFS",
+    "category": "Filesystems",
+    "description": "Desktop integration bundle for InfiltratorFS on Ubuntu 24.04 and Linux Mint 22.x.",
+    "deb_regex": "^infiltratorfs-desktop-integration_.*_all\\.deb$",
+    "version_regex": "^infiltratorfs-desktop-integration_([^_]+)_all\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltratorfs-desktop-integration$",
+    "expected_architecture": "all"
+  },
+  {
+    "id": "infiltratorfs-gnome-disk-utility",
+    "name": "InfiltratorFS GNOME Disks Integration",
+    "repo": "InfiltratorFS",
+    "category": "Filesystems",
+    "description": "GNOME Disks replacement package carrying InfiltratorFS filesystem integration.",
+    "deb_regex": "^infiltratorfs-gnome-disk-utility_.*_amd64\\.deb$",
+    "version_regex": "^infiltratorfs-gnome-disk-utility_([^_]+)_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltratorfs-gnome-disk-utility$",
+    "expected_architecture": "amd64"
+  },
+  {
+    "id": "infiltratorfs-libblockdev-fs3",
+    "name": "InfiltratorFS libblockdev Integration",
+    "repo": "InfiltratorFS",
+    "category": "Filesystems",
+    "description": "libblockdev filesystem plugin replacement package with InfiltratorFS support.",
+    "deb_regex": "^infiltratorfs-libblockdev-fs3_.*_amd64\\.deb$",
+    "version_regex": "^infiltratorfs-libblockdev-fs3_([^_]+)_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltratorfs-libblockdev-fs3$",
+    "expected_architecture": "amd64"
+  },
+  {
     "id": "infiltrator-calc",
     "name": "Calculator",
     "repo": "Calculator",
