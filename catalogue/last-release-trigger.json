@@ -1,11 +1,11 @@
 {
-  "reason": "publish System Settings 0.3.0 one-calendar temporal authority",
+  "reason": "publish Calendar 1.0.37 System Settings temporal-authority cleanup",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
-      "version": "1.0.35",
-      "release_sha": "21943c2a96ac65e6edf2fa23ee4cf974f0a2060c",
-      "release_published_at": "2026-09-20T12:25:51Z"
+      "version": "1.0.37",
+      "release_sha": "78b0836bf02b93470bdae3230d0cf40cedeb0670",
+      "release_published_at": "2026-09-20T14:09:35Z"
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
