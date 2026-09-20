@@ -203,19 +203,24 @@ jobs:
       - name: Verify published Software Centre typography
         run: |
           set -euo pipefail
-          URL="https://infiltrator-projects.github.io/Infiltrator-Repository/?build=${GITHUB_SHA}"
+          BASE="https://infiltrator-projects.github.io/Infiltrator-Repository"
           for attempt in $(seq 1 30); do
-            body="$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "$URL" || true)"
-            if grep -Fq 'catalogue-card.raster-card h2' <<<"$body" \
-              && grep -Fq 'ui-monospace,monospace!important' <<<"$body" \
-              && grep -Fq 'infiltrator-build" content="raster-title-v2' <<<"$body"; then
-              echo "Published Software Centre contains the raster-title fix."
+            body="$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "$BASE/?build=${GITHUB_SHA}" || true)"
+            css="$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "$BASE/assets/site.css?build=${GITHUB_SHA}" || true)"
+            if grep -Fq 'infiltrator-build" content="mb-corpo-card-type-v1' <<<"$body" \
+              && ! grep -Fq 'raster-card' <<<"$body" \
+              && ! grep -Fq 'Cascadia Mono' <<<"$body" \
+              && grep -Fq 'font-family:"MB Corpo A"' <<<"$css" \
+              && grep -Fq 'font-family:"MB Corpo S"' <<<"$css" \
+              && grep -Fq -- '--sans:"MB Corpo S"' <<<"$css" \
+              && grep -Fq -- '--display:"MB Corpo A"' <<<"$css"; then
+              echo "Published Software Centre is using the canonical MB Corpo website typography."
               exit 0
             fi
-            echo "Waiting for Software Centre HTML propagation ($attempt/30)..."
+            echo "Waiting for Software Centre typography propagation ($attempt/30)..."
             sleep 5
           done
-          echo "Published Software Centre did not expose the raster-title fix in time." >&2
+          echo "Published Software Centre did not expose the canonical MB Corpo typography in time." >&2
           exit 1
 
   signing-self-test:
