@@ -126,7 +126,7 @@ function iconSvg(kind){
   };
   return '<svg '+common+'>'+(p[kind]||p.monitor)+'</svg>';
 }
-function appIcon(a){return a.category==="Automotive"&&a.icon_url?'<img src="'+esc(a.icon_url)+'" alt="" aria-hidden="true">':iconSvg(a.icon);}
+function appIcon(a){return a.icon_url?'<img src="'+esc(a.icon_url)+'" alt="" aria-hidden="true">':iconSvg(a.icon);}
 function copyText(text,label){
   navigator.clipboard.writeText(text).then(function(){showToast(label||"Copied");}).catch(function(){showToast("Copy failed — select the command manually");});
 }
