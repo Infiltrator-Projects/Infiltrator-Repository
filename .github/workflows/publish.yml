@@ -354,7 +354,18 @@ jobs:
           echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' > /etc/apt/sources.list.d/infiltrator-e2e.list
           apt-get update
 
-          for pkg in system-monitor linux-system-monitor infiltrator-calendar linux-defragger infiltratorfs infiltrator-calculator mblink jaglink fordlink audilink bmwlink nps-wheres-wally-zabbix intune-zabbix-bridge; do
+          for pkg in \
+            infiltrator-system-monitor system-monitor linux-system-monitor \
+            infiltrator-software infiltrator-calendar \
+            infiltrator-defragmenter linux-defragger \
+            infiltratorfs infiltratorfs-desktop-integration \
+            infiltratorfs-gnome-disk-utility infiltratorfs-libblockdev-fs3 \
+            infiltrator-calculator \
+            mblink jaglink fordlink audilink bmwlink \
+            egypt \
+            infiltrator-runner-monitor runnerscope \
+            nps-wheres-wally-zabbix intune-zabbix-bridge
+          do
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
           done
 
