@@ -769,11 +769,13 @@ static std::string publish_package_icon(const fs::path& root,
 int main(int argc, char** argv) {
   try {
     if (argc >= 2 && std::string(argv[1]) == "validate-deb") {
-      if (argc != 6) {
-        std::cerr << "usage: repository-tool validate-deb FILE RELEASE_TAG PACKAGE_REGEX ARCHITECTURE\n";
+      if (argc != 6 && argc != 8) {
+        std::cerr << "usage: repository-tool validate-deb FILE RELEASE_TAG PACKAGE_REGEX ARCHITECTURE [ASSET VERSION_REGEX]\n";
         return 2;
       }
-      const auto version = release_version(argv[3]);
+      const auto version = argc == 8
+        ? package_version_from_identity(argv[3], argv[6], argv[7])
+        : release_version(argv[3]);
       check_deb_expected(fs::path(argv[2]), version, argv[4], argv[5]);
       return 0;
     }
