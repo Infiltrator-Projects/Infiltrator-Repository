@@ -52,7 +52,27 @@
     "deb_regex": "^infiltratorfs_.*_amd64\\.deb$",
     "icon": "filesystem",
     "expected_package_regex": "^infiltratorfs$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "supplemental_packages": [
+      {
+        "deb_regex": "^infiltratorfs-desktop-integration_.*_all\\.deb$",
+        "version_regex": "^infiltratorfs-desktop-integration_([^_]+)_all\\.deb$",
+        "expected_package_regex": "^infiltratorfs-desktop-integration$",
+        "expected_architecture": "all"
+      },
+      {
+        "deb_regex": "^infiltratorfs-gnome-disk-utility_.*_amd64\\.deb$",
+        "version_regex": "^infiltratorfs-gnome-disk-utility_([^_]+)_amd64\\.deb$",
+        "expected_package_regex": "^infiltratorfs-gnome-disk-utility$",
+        "expected_architecture": "amd64"
+      },
+      {
+        "deb_regex": "^infiltratorfs-libblockdev-fs3_.*_amd64\\.deb$",
+        "version_regex": "^infiltratorfs-libblockdev-fs3_([^_]+)_amd64\\.deb$",
+        "expected_package_regex": "^infiltratorfs-libblockdev-fs3$",
+        "expected_architecture": "amd64"
+      }
+    ]
   },
   {
     "id": "infiltratorfs-desktop-integration",
@@ -201,5 +221,17 @@
     "owner": "St-Augustines-College-Kyabram",
     "expected_package_regex": "^intune-zabbix-bridge$",
     "expected_architecture": "all"
+  },
+  {
+    "id": "backyard-racer",
+    "name": "Backyard Racer",
+    "repo": "backyard-racer",
+    "category": "Games",
+    "description": "Native street-rod garage, tuning and racing game.",
+    "deb_regex": "^backyard-racer_.*_amd64\\.deb$",
+    "icon": "car",
+    "expected_package_regex": "^backyard-racer$",
+    "expected_architecture": "amd64",
+    "optional_until_release": true
   }
 ]
