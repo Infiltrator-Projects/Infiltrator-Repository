@@ -618,7 +618,7 @@ static std::string publish_package_icon(const fs::path& root,
     fs::copy_file(root / "site" / "index.html", public_dir / "index.html");
     write(public_dir / ".nojekyll", "");
 
-    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.version_regex // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\")] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
+    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.version_regex // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\"),(.optional_until_release // false)] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
     std::istringstream app_lines(source);
     std::vector<std::string> catalogue_items;
     size_t package_version_count = 0;
