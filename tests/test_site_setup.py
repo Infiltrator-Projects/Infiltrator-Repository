@@ -14,7 +14,7 @@ assert "sudo apt update" in block
 assert "infiltrator-app-install-data" not in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
 assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
-assert "assets/infiltrator-web-v1.css?v=common-1.19.3" in site
+assert "assets/infiltrator-web-v1.css?v=common-1.19.10" in site
 assert "assets/site.css?v=family-20260919" in site
 assert "assets/site-overrides.css?v=family-20260919" in site
 assert "if(!repoReady||!repoInfo)return" in block
