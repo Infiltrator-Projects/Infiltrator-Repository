@@ -169,6 +169,17 @@
     "expected_architecture": "amd64"
   },
   {
+    "id": "egypt",
+    "name": "Egypt",
+    "repo": "Egypt",
+    "category": "Games",
+    "description": "Native Egyptian city-building and civilisation simulation.",
+    "deb_regex": "^egypt_.*_amd64\\.deb$",
+    "icon": "game",
+    "expected_package_regex": "^egypt$",
+    "expected_architecture": "amd64"
+  },
+  {
     "id": "runnerscope",
     "name": "Runner Monitor",
     "repo": "RunnerScope",
