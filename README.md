@@ -15,6 +15,7 @@ The project values deterministic, explainable publication over novelty. A new de
 ## Current applications
 
 - System Monitor
+- System Settings
 - Software
 - Calendar
 - Defragmenter
