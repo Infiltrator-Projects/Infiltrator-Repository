@@ -29,10 +29,12 @@ The project values deterministic, explainable publication over novelty. A new de
 - WHERE'S WALLY
 - Intune Zabbix Bridge
 - Runner Monitor
+- Egypt
+- Backyard Racer
 
 InfiltratorFS also publishes three separately versioned support packages through the same repository: Desktop Integration, GNOME Disks Integration and libblockdev Integration.
 
-The allow-list lives in `catalogue/apps-source.json`. A package is published only when a release contains exactly the expected `.deb` asset. Multi-package releases can declare an asset-version extraction rule so every Debian package is validated against its own package version rather than being assumed to share the parent release tag.
+The allow-list lives in `catalogue/apps-source.json`. A catalogue application is published only when a release contains exactly the expected primary `.deb` asset. Product-owned supplemental `.deb` packages may also be declared for APT-only publication; they are independently verified and indexed without creating duplicate Software Centre cards. Entries marked pending remain hidden until their first eligible release appears. Multi-package releases can declare an asset-version extraction rule so every Debian package is validated against its own package version rather than being assumed to share the parent release tag.
 
 ## Repository behaviour
 
