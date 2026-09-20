@@ -1,11 +1,11 @@
 {
-  "reason": "publish Calendar 1.0.37 System Settings temporal-authority cleanup",
+  "reason": "publish Calendar 1.0.38 and System Settings 0.3.1 Mint fallback integration",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
-      "version": "1.0.37",
-      "release_sha": "78b0836bf02b93470bdae3230d0cf40cedeb0670",
-      "release_published_at": "2026-09-20T14:09:35Z"
+      "version": "1.0.38",
+      "release_sha": "adc6ec9cee5970fb323a8b29afe25db22810055e",
+      "release_published_at": "2026-09-20T22:59:48Z"
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
@@ -51,9 +51,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.3.0",
-      "release_sha": "ff038b314ac5b8d3e0f7cf341e9d173378f3b2d2",
-      "release_published_at": "2026-09-20T13:48:49Z"
+      "version": "0.3.1",
+      "release_sha": "a599a44e37502ad54b95b5939a602dfc28782d1e",
+      "release_published_at": "2026-09-20T22:40:24Z"
     }
   ]
 }
