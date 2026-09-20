@@ -28,7 +28,8 @@ assert 'setAttribute("aria-pressed"' in site
 assert "activeCategory=cat;buildFilters()" not in site
 assert "Repository configuration could not be verified. Setup copying is disabled." in site
 assert "function appIcon(a)" in site and "a.icon_url" in site
-assert 'a.category==="Automotive"&&a.icon_url' in site, "only automotive catalogue cards may use packaged brand artwork"
+assert 'return a.icon_url?' in site, "packaged application artwork must be preferred whenever the verified DEB provides it"
+assert 'a.category==="Automotive"&&a.icon_url' not in site, "packaged artwork must not be restricted to automotive applications"
 assert ':iconSvg(a.icon);}' in site, "appIcon fallback must call iconSvg rather than recurse"
 assert ':appIcon(a);}' not in site, "appIcon must not recursively call itself"
 assert "calculator:" in site
