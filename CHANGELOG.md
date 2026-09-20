@@ -14,7 +14,9 @@ This file records user-visible, compatibility, architecture and validation chang
 
 ## Unreleased
 
-- Use the verified icon extracted from every GUI package when available, including Defragmenter; built-in line symbols are now strictly fallback artwork as documented.
+- Standardise non-automotive Software Centre icons on the InfiltratorFS/canonical `#00ADEF` line-art blue instead of the lighter package-art cyan, while retaining product artwork for Automotive entries.
+- Give non-automotive catalogue cards and dialogs the intended raster/terminal typography treatment; Automotive entries retain their polished Corpo presentation.
+- Verified package icons remain published for package-manager integration even when the Software Centre deliberately renders the canonical generic glyph.
 - Canonical documentation baseline aligned with the Infiltrator project family.
 
 ## Policy
