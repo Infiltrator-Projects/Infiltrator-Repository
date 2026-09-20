@@ -178,6 +178,25 @@ static std::string release_version(const std::string& tag) {
   return tag.substr(1);
 }
 
+static std::string package_version_from_identity(const std::string& release_tag,
+                                                 const std::string& asset,
+                                                 const std::string& version_regex) {
+  if (version_regex.empty()) return release_version(release_tag);
+  try {
+    const std::regex rx(version_regex);
+    std::smatch match;
+    if (!std::regex_match(asset, match, rx) || match.size() != 2 ||
+        match[1].str().empty())
+      throw std::runtime_error("asset filename does not provide exactly one package version: " + asset);
+    const auto version = match[1].str();
+    if (version.find_first_of("/\\\r\n") != std::string::npos)
+      throw std::runtime_error("asset-derived package version is unsafe: " + version);
+    return version;
+  } catch (const std::regex_error&) {
+    throw std::runtime_error("invalid asset package-version regex: " + version_regex);
+  }
+}
+
 static bool newer(const std::string& left, const std::string& right) {
     const int status = run("dpkg --compare-versions " + quote(left) + " gt " + quote(right));
     return status == 0;
@@ -433,7 +452,8 @@ static int sync_intune(const fs::path& root) {
   static std::vector<Package> remote_packages(const fs::path& root, const std::string& owner,
                                               const std::string& repo, const std::string& rx_text,
                                               const std::string& expected_package_regex,
-                                              const std::string& expected_architecture) {
+                                              const std::string& expected_architecture,
+                                              const std::string& version_regex) {
     const fs::path json = root / (".releases-" + repo + ".json");
     const auto api = "https://api.github.com/repos/" + owner + "/" + repo + "/releases?per_page=5";
     if (run("curl -fsSL --retry 5 " + github_headers() + " " + quote(api) +
@@ -489,7 +509,7 @@ static int sync_intune(const fs::path& root) {
           throw std::runtime_error("SHA-256 mismatch for " + p.asset);
         }
       }
-      p.version = release_version(p.release_tag);
+      p.version = package_version_from_identity(p.release_tag, p.asset, version_regex);
       check_deb_expected(p.path, p.version, expected_package_regex, expected_architecture);
       packages.push_back(std::move(p));
     }
@@ -590,22 +610,22 @@ static std::string publish_package_icon(const fs::path& root,
     fs::copy_file(root / "site" / "index.html", public_dir / "index.html");
     write(public_dir / ".nojekyll", "");
 
-    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\")] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
+    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.version_regex // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\")] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
     std::istringstream app_lines(source);
     std::vector<std::string> catalogue_items;
     size_t package_version_count = 0;
     std::string line;
     while (std::getline(app_lines, line)) {
-      std::istringstream f(line); std::vector<std::string> v(11);
+      std::istringstream f(line); std::vector<std::string> v(12);
       for (auto& value : v) std::getline(f, value, '\t');
       const auto& id=v[0]; const auto& name=v[1]; const auto& repo=v[2]; const auto& category=v[3];
       for (auto& value : v) value = tsv_unescape(value);
       const auto& description=v[4]; const auto& regex_text=v[5]; const auto& local_glob=v[6]; const auto& owner=v[7];
-      const auto& expected_package_regex=v[9]; const auto& expected_architecture=v[10];
+      const auto& version_regex=v[9]; const auto& expected_package_regex=v[10]; const auto& expected_architecture=v[11];
       if (expected_package_regex.empty() || expected_architecture.empty())
         throw std::runtime_error(name + ": expected package identity is not configured");
       auto packages = local_glob.empty()
-        ? remote_packages(root, owner, repo, regex_text, expected_package_regex, expected_architecture)
+        ? remote_packages(root, owner, repo, regex_text, expected_package_regex, expected_architecture, version_regex)
         : local_packages(root, local_glob);
       if (!local_glob.empty())
         for (const auto& package : packages)
