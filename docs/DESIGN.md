@@ -41,6 +41,6 @@ A change is acceptable when it improves correctness, resilience, inspectability,
 
 ## Website family
 
-The Software Centre belongs visually and navigationally to `ssmithnet.net`. It therefore uses the same loaded Corpo typography, wordmark, primary navigation, footer, dark blue-black/cyan/warm-separator language, focus treatment and reduced-motion behaviour. Catalogue cards, search, filters and package dialogs remain repository-specific tools within that family rather than a second design system.
+The Software Centre belongs visually and navigationally to `ssmithnet.net`. It therefore uses the same wordmark, primary navigation, footer, dark blue-black/cyan/warm-separator language, focus treatment and reduced-motion behaviour. Catalogue cards, search, filters and package dialogs remain repository-specific tools within that family rather than a second design system.
 
-Application identity comes from the application package where possible. During publication the current verified DEB is inspected for a standard application icon and that asset is published with the catalogue. A small built-in line symbol is a fallback only when a package has no suitable GUI icon.
+Non-automotive catalogue entries deliberately use the compact raster/terminal typography treatment and project-owned line glyphs coloured by the canonical Infiltrator blue `#00ADEF`, matching the InfiltratorFS catalogue identity. Their package artwork may still be published for package-manager use, but the Software Centre does not substitute a different cyan from those assets. Automotive applications are the exception: their product-specific package artwork and polished Corpo typography remain intact so Mercedes-Benz, Jaguar, Ford, Audi and BMW tools retain their own vehicle-family identity.
