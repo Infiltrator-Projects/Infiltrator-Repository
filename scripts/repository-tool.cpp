@@ -483,6 +483,15 @@ static int sync_intune(const fs::path& root) {
       std::string url; std::getline(fields, url, '\t'); std::getline(fields, p.sha, '\t'); std::getline(fields, size, '\t');
       if (p.sha.rfind("sha256:", 0) != 0 || p.sha.size() != 71) throw std::runtime_error("release asset has no SHA-256 digest");
       p.sha = p.sha.substr(7);
+      p.version = package_version_from_identity(p.release_tag, p.asset, version_regex);
+      const auto existing = std::find_if(packages.begin(), packages.end(),
+          [&](const Package& item) { return item.version == p.version; });
+      if (existing != packages.end()) {
+        if (existing->sha != p.sha || existing->asset != p.asset)
+          throw std::runtime_error(repo + ": package version " + p.version +
+                                   " is reused by different release content");
+        continue;
+      }
       p.path = root / "public" / "pool" / "main" / p.asset;
       const auto mirror_url =
           "https://infiltrator-projects.github.io/Infiltrator-Repository/pool/main/" +
@@ -509,7 +518,6 @@ static int sync_intune(const fs::path& root) {
           throw std::runtime_error("SHA-256 mismatch for " + p.asset);
         }
       }
-      p.version = package_version_from_identity(p.release_tag, p.asset, version_regex);
       check_deb_expected(p.path, p.version, expected_package_regex, expected_architecture);
       packages.push_back(std::move(p));
     }
