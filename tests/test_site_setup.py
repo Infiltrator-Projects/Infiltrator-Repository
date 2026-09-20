@@ -32,7 +32,9 @@ assert 'function isAutomotive(a){return a.category==="Automotive";}' in site
 assert 'return isAutomotive(a)&&a.icon_url?' in site, "automotive packages retain their product artwork"
 assert ':iconSvg(a.icon);}' in site, "non-automotive catalogue artwork must use the canonical accent-coloured line glyph"
 assert 'software:' in site, "Software needs its own canonical generic glyph"
-assert '"raster-card"' in site and '"raster-dialog"' in site, "non-automotive catalogue typography must retain the raster treatment"
+assert '"raster-card"' not in site and '"raster-dialog"' not in site, "catalogue typography must not bypass the canonical MB Corpo website family"
+assert '"Cascadia Mono"' not in site and '"DejaVu Sans Mono"' not in site and '"Liberation Mono"' not in site, "catalogue cards must inherit the canonical MB Corpo family instead of a private monospace stack"
+assert 'font:400 27px/1.08 var(--display)' in site, "application titles must use the canonical MB Corpo A display role"
 assert ':appIcon(a);}' not in site, "appIcon must not recursively call itself"
 assert "calculator:" in site
 
