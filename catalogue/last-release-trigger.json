@@ -1,11 +1,11 @@
 {
-  "reason": "publish Calculator 0.1.39 after verified source release",
+  "reason": "publish Calendar 1.0.28 after verified source release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
-      "version": "1.0.26",
-      "release_sha": "8b70dd1d105322d55e00eb18bdf9ada3a75bddc1",
-      "release_published_at": "2026-09-19T16:39:33Z"
+      "version": "1.0.28",
+      "release_sha": "ec868df70fe825e8ae6ecd70782becee52ccb832",
+      "release_published_at": "2026-09-20T03:18:06Z"
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
