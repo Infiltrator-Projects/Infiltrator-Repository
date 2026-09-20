@@ -14,6 +14,7 @@ This file records user-visible, compatibility, architecture and validation chang
 
 ## Unreleased
 
+- Use the verified icon extracted from every GUI package when available, including Defragmenter; built-in line symbols are now strictly fallback artwork as documented.
 - Canonical documentation baseline aligned with the Infiltrator project family.
 
 ## Policy
