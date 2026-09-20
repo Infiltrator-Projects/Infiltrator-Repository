@@ -137,7 +137,7 @@
     "name": "Runner Monitor",
     "repo": "RunnerScope",
     "category": "Development",
-    "description": "GitHub Actions self-hosted runner monitoring, active jobs and local runner service health.",
+    "description": "GitHub Actions self-hosted runner monitoring, active jobs and local runner service health in the shared Infiltrator console.",
     "deb_regex": "^runnerscope_.*_amd64\\.deb$",
     "icon": "workflow",
     "expected_package_regex": "^(infiltrator-runner-monitor|runnerscope)$",
