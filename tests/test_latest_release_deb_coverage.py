@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail closed when an Infiltrator-Projects release DEB is not catalogued."""
+"""Fail closed when a release DEB is neither a catalogue app nor an APT-only supplemental package."""
 
 import json
 import os
@@ -70,6 +70,25 @@ def main():
             errors.append(f"{owner}/{repo} ({entry['id']}): invalid deb_regex: {exc}")
             continue
         rules.setdefault((owner, repo), []).append((entry["id"], compiled))
+
+        for index, supplemental in enumerate(entry.get("supplemental_packages", []), start=1):
+            supplemental_regex = supplemental.get("deb_regex")
+            if not supplemental_regex:
+                errors.append(
+                    f"{owner}/{repo} ({entry['id']} supplemental #{index}): missing deb_regex"
+                )
+                continue
+            try:
+                supplemental_compiled = re.compile(supplemental_regex)
+            except re.error as exc:
+                errors.append(
+                    f"{owner}/{repo} ({entry['id']} supplemental #{index}): "
+                    f"invalid deb_regex: {exc}"
+                )
+                continue
+            rules.setdefault((owner, repo), []).append(
+                (f"{entry['id']}:supplemental:{index}", supplemental_compiled)
+            )
 
     repos = api_json(f"/orgs/{ORG}/repos?per_page=100&type=all")
     if len(repos) >= 100:
