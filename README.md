@@ -15,6 +15,7 @@ The project values deterministic, explainable publication over novelty. A new de
 ## Current applications
 
 - System Monitor
+- Software
 - Calendar
 - Defragmenter
 - InfiltratorFS
@@ -24,11 +25,14 @@ The project values deterministic, explainable publication over novelty. A new de
 - FORDLINK
 - AUDILINK
 - BMWLINK
+- Egypt
 - WHERE'S WALLY
 - Intune Zabbix Bridge
 - Runner Monitor
 
-The allow-list lives in `catalogue/apps-source.json`. A package is published only when a release contains exactly the expected `.deb` asset.
+InfiltratorFS also publishes three separately versioned support packages through the same repository: Desktop Integration, GNOME Disks Integration and libblockdev Integration.
+
+The allow-list lives in `catalogue/apps-source.json`. A package is published only when a release contains exactly the expected `.deb` asset. Multi-package releases can declare an asset-version extraction rule so every Debian package is validated against its own package version rather than being assumed to share the parent release tag.
 
 ## Repository behaviour
 
@@ -114,7 +118,7 @@ Every non-scheduled publish runs the signing self-test. The heavier Mint lifecyc
 
 The signing self-test creates a disposable CI-only OpenPGP key, signs the primary `beta` suite and temporary `alpha` compatibility suite through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
 
-The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for all thirteen packages, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
+The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for the published package set, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
 
 ## Runner placement
 
