@@ -35,11 +35,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.19.10
+      - name: Check out pinned Infiltratr Common 1.19.16
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: 33e69c0a462b56d388881d89c4eb49f72fa0b0fe
+          ref: eb2cd6a5501a0e27f6e4370120d4e497b1eff52c
           path: _common
 
       - name: Check out pinned ssmithnet.net website family
@@ -198,7 +198,7 @@ jobs:
 
       - name: Deploy Pages through pinned COMMON
         id: deployment
-        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@33e69c0a462b56d388881d89c4eb49f72fa0b0fe
+        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@eb2cd6a5501a0e27f6e4370120d4e497b1eff52c
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
@@ -234,11 +234,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.19.10
+      - name: Check out pinned Infiltratr Common 1.19.16
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: 33e69c0a462b56d388881d89c4eb49f72fa0b0fe
+          ref: eb2cd6a5501a0e27f6e4370120d4e497b1eff52c
           path: _common
 
       - name: Install signing test tools
@@ -359,7 +359,7 @@ jobs:
 
           for pkg in \
             infiltrator-system-monitor system-monitor linux-system-monitor \
-            infiltrator-software infiltrator-calendar \
+            infiltrator-software infiltrator-system-settings infiltrator-calendar \
             infiltrator-defragmenter linux-defragger \
             infiltratorfs infiltratorfs-desktop-integration \
             infiltratorfs-gnome-disk-utility infiltratorfs-libblockdev-fs3 \
@@ -398,7 +398,7 @@ jobs:
           ! dpkg-query -W -f='${db:Status-Abbrev}' system-monitor 2>/dev/null | grep -q '^ii'
           ! dpkg-query -W -f='${db:Status-Abbrev}' linux-system-monitor 2>/dev/null | grep -q '^ii'
           apt-get check
-          for pkg in infiltrator-calendar linux-defragger infiltrator-calculator mblink jaglink fordlink audilink bmwlink; do
+          for pkg in infiltrator-system-settings infiltrator-calendar linux-defragger infiltrator-calculator mblink jaglink fordlink audilink bmwlink; do
             apt-get install -y --no-install-recommends "$pkg"
             dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
             apt-get check
