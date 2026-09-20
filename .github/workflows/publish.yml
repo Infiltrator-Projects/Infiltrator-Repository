@@ -67,11 +67,14 @@ jobs:
         run: build/repository-tool materialize
 
       - name: Verify repository source contracts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           python3 tests/test_site_setup.py
           python3 tests/test_private_mirror_policy.py
           python3 tests/test_retention.py build/repository-tool
           python3 tests/test_release_identity.py build/repository-tool
+          python3 tests/test_latest_release_deb_coverage.py
 
       - name: Read currently published Calendar version
         id: previous-calendar
