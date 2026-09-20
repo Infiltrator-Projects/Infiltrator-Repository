@@ -28,9 +28,11 @@ assert 'setAttribute("aria-pressed"' in site
 assert "activeCategory=cat;buildFilters()" not in site
 assert "Repository configuration could not be verified. Setup copying is disabled." in site
 assert "function appIcon(a)" in site and "a.icon_url" in site
-assert 'return a.icon_url?' in site, "packaged application artwork must be preferred whenever the verified DEB provides it"
-assert 'a.category==="Automotive"&&a.icon_url' not in site, "packaged artwork must not be restricted to automotive applications"
-assert ':iconSvg(a.icon);}' in site, "appIcon fallback must call iconSvg rather than recurse"
+assert 'function isAutomotive(a){return a.category==="Automotive";}' in site
+assert 'return isAutomotive(a)&&a.icon_url?' in site, "automotive packages retain their product artwork"
+assert ':iconSvg(a.icon);}' in site, "non-automotive catalogue artwork must use the canonical accent-coloured line glyph"
+assert 'software:' in site, "Software needs its own canonical generic glyph"
+assert '"raster-card"' in site and '"raster-dialog"' in site, "non-automotive catalogue typography must retain the raster treatment"
 assert ':appIcon(a);}' not in site, "appIcon must not recursively call itself"
 assert "calculator:" in site
 
