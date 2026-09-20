@@ -624,17 +624,26 @@ static std::string publish_package_icon(const fs::path& root,
     size_t package_version_count = 0;
     std::string line;
     while (std::getline(app_lines, line)) {
-      std::istringstream f(line); std::vector<std::string> v(12);
+      std::istringstream f(line); std::vector<std::string> v(13);
       for (auto& value : v) std::getline(f, value, '\t');
       const auto& id=v[0]; const auto& name=v[1]; const auto& repo=v[2]; const auto& category=v[3];
       for (auto& value : v) value = tsv_unescape(value);
       const auto& description=v[4]; const auto& regex_text=v[5]; const auto& local_glob=v[6]; const auto& owner=v[7];
       const auto& version_regex=v[9]; const auto& expected_package_regex=v[10]; const auto& expected_architecture=v[11];
+      const bool optional_until_release = v[12] == "true";
       if (expected_package_regex.empty() || expected_architecture.empty())
         throw std::runtime_error(name + ": expected package identity is not configured");
-      auto packages = local_glob.empty()
-        ? remote_packages(root, owner, repo, regex_text, expected_package_regex, expected_architecture, version_regex)
-        : local_packages(root, local_glob);
+      std::vector<Package> packages;
+      try {
+        packages = local_glob.empty()
+          ? remote_packages(root, owner, repo, regex_text, expected_package_regex, expected_architecture, version_regex)
+          : local_packages(root, local_glob);
+      } catch (const std::exception& error) {
+        if (!optional_until_release) throw;
+        std::cout << name << ": no eligible published package yet; catalogue entry remains pending ("
+                  << error.what() << ")\n";
+        continue;
+      }
       if (!local_glob.empty())
         for (const auto& package : packages)
           check_deb_expected(package.path, package.version, expected_package_regex, expected_architecture);
@@ -704,6 +713,44 @@ static std::string publish_package_icon(const fs::path& root,
       }
       latest += ",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
       catalogue_items.push_back(std::move(latest));
+    }
+
+    // Some products publish companion Debian packages that belong in APT but
+    // should not appear as duplicate Software Centre application cards.  Each
+    // supplemental package is independently release-discovered, digest-verified
+    // and Debian-metadata-verified, then copied into the same multiversion pool.
+    const auto supplemental_source = command_output(
+      "jq -r '.[] as $app | ($app.supplemental_packages // [])[] | "
+      "[$app.repo,($app.owner // \"Infiltrator-Projects\"),.deb_regex,"
+      ".expected_package_regex,.expected_architecture,(.version_regex // \"\")] | @tsv' " +
+      quote((root / "catalogue/apps-source.json").string()));
+    std::istringstream supplemental_lines(supplemental_source);
+    while (std::getline(supplemental_lines, line)) {
+      std::istringstream f(line);
+      std::vector<std::string> v(6);
+      for (auto& value : v) std::getline(f, value, '\t');
+      for (auto& value : v) value = tsv_unescape(value);
+      const auto& repo_name = v[0];
+      const auto& owner = v[1];
+      const auto& regex_text = v[2];
+      const auto& expected_package_regex = v[3];
+      const auto& expected_architecture = v[4];
+      const auto& version_regex = v[5];
+      if (repo_name.empty() || regex_text.empty() || expected_package_regex.empty() ||
+          expected_architecture.empty())
+        throw std::runtime_error("supplemental package identity is incomplete");
+      auto packages = remote_packages(root, owner, repo_name, regex_text,
+                                      expected_package_regex, expected_architecture,
+                                      version_regex);
+      if (packages.size() > 5) packages.resize(5);
+      for (auto& package : packages) {
+        const auto target = public_dir / "pool" / "main" / package.asset;
+        if (package.path != target)
+          fs::copy_file(package.path, target, fs::copy_options::overwrite_existing);
+        package.path = target;
+        package.sha = digest(target);
+      }
+      package_version_count += packages.size();
     }
 
     std::ostringstream apps; apps << "[\n";
