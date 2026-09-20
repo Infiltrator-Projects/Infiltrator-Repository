@@ -22,6 +22,17 @@
     "expected_architecture": "amd64"
   },
   {
+    "id": "system-settings",
+    "name": "System Settings",
+    "repo": "System-Settings",
+    "category": "System",
+    "description": "Native system-wide settings shell and shared policy controls for Infiltrator applications.",
+    "deb_regex": "^infiltrator-system-settings_.*_amd64\\.deb$",
+    "icon": "settings",
+    "expected_package_regex": "^infiltrator-system-settings$",
+    "expected_architecture": "amd64"
+  },
+  {
     "id": "calendar",
     "name": "Calendar",
     "repo": "Calendar",
