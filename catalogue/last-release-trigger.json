@@ -1,11 +1,11 @@
 {
-  "reason": "publish Calendar 1.0.32 after verified source release",
+  "reason": "publish System Settings 0.2.0 and current Calendar after temporal-authority integration",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
-      "version": "1.0.32",
-      "release_sha": "92abffca2441bcae8813fc5f23870bdb1524b555",
-      "release_published_at": "2026-09-20T08:49:31Z"
+      "version": "1.0.34",
+      "release_sha": "3195d5374e3b86e96b068503c6b2f617d7bd24a0",
+      "release_published_at": "2026-09-20T11:38:01Z"
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
@@ -48,6 +48,12 @@
       "version": "0.2.11",
       "release_sha": "67b906c4ac73da2ff4640acd1d1d6e7da62d9f7a",
       "release_published_at": "2026-09-03T00:59:11Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/System-Settings",
+      "version": "0.2.0",
+      "release_sha": "9eb21a731d7ce756b89404db4cc56fc34eae3418",
+      "release_published_at": "2026-09-20T11:56:58Z"
     }
   ]
 }
