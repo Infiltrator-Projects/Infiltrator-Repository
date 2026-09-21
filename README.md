@@ -73,11 +73,11 @@ done
 echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' \
   | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list
 sudo apt update
-sudo apt install -y app-install-data-ssmithnet
+sudo rm -f /var/cache/mintinstall/pkginfo.json
 rm -f "$HOME/.cache/mintinstall/pkginfo.json"
 ```
 
-`app-install-data-ssmithnet` is generated from the latest published application packages. It supplies package-name artwork for Linux Mint Software Manager before installation and invalidates Mint's system package cache when installed or upgraded. The setup command also removes the invoking user's Mint Software Manager cache so newly added or renamed repository applications are visible immediately.
+Linux Mint Software Manager keeps its own package cache. The setup command invalidates both the system and invoking user's Mint Software Manager caches after refreshing APT so newly added or renamed repository applications are rebuilt from the current APT package set. No repository metadata package is installed.
 
 The repository publishes only the `beta` suite. The former `alpha` suite is not published or aliased. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.
 
