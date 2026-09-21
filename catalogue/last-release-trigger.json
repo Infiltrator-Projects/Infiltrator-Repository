@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calculator 0.2.11 Common 1.19.20 integration release",
+  "reason": "publish InfiltratorFS 0.18.66 exact-source release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -15,9 +15,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
-      "version": "0.18.65",
-      "release_sha": "afea9de31d31254886dd7117e432476909c8cc7e",
-      "release_published_at": "2026-09-20T06:30:45Z"
+      "version": "0.18.66",
+      "release_sha": "5d30641760f9c3616de50f2d7f1b843a6e097f8b",
+      "release_published_at": "2026-09-21T04:45:28Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
