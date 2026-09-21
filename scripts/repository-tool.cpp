@@ -629,128 +629,6 @@ static std::string publish_package_icon(const fs::path& root,
 }
 
 
-struct SoftwareManagerAlias {
-  std::string package;
-  fs::path icon;
-};
-
-static std::string software_manager_data_version(
-    const std::string& newest_release_timestamp) {
-  std::string digits;
-  for (unsigned char character : newest_release_timestamp) {
-    if (std::isdigit(character)) digits += static_cast<char>(character);
-  }
-  if (digits.size() > 14U) digits.resize(14U);
-  if (digits.size() < 8U) return "2.0.0";
-  return "2.0." + digits;
-}
-
-static void create_software_manager_data_package(
-    const fs::path& root,
-    const fs::path& public_dir,
-    std::vector<SoftwareManagerAlias> aliases,
-    const std::string& newest_release_timestamp) {
-  if (aliases.empty()) {
-    std::cout << "No application artwork in this publication; "
-                 "skipping Linux Mint Software Manager data package\n";
-    return;
-  }
-
-  std::sort(aliases.begin(), aliases.end(),
-            [](const SoftwareManagerAlias& left,
-               const SoftwareManagerAlias& right) {
-              return left.package < right.package;
-            });
-  aliases.erase(
-      std::unique(aliases.begin(), aliases.end(),
-                  [](const SoftwareManagerAlias& left,
-                     const SoftwareManagerAlias& right) {
-                    return left.package == right.package;
-                  }),
-      aliases.end());
-
-  const fs::path staging = root / "build" / "app-install-data-ssmithnet";
-  fs::remove_all(staging);
-  fs::create_directories(staging / "DEBIAN");
-  fs::create_directories(staging / "usr/share/app-install/icons");
-
-  std::size_t installed_icons = 0U;
-  for (const auto& alias : aliases) {
-    if (!std::regex_match(alias.package, std::regex("^[a-z0-9][a-z0-9+.-]*$")))
-      throw std::runtime_error(
-          "unsafe Debian package name for Software Manager icon: " +
-          alias.package);
-    if (!fs::is_regular_file(alias.icon)) continue;
-    const std::string extension = alias.icon.extension().string();
-    if (extension != ".svg" && extension != ".png" && extension != ".xpm")
-      continue;
-    const fs::path target =
-        staging / "usr/share/app-install/icons" /
-        (alias.package + extension);
-    fs::copy_file(alias.icon, target, fs::copy_options::overwrite_existing);
-    ++installed_icons;
-  }
-  if (installed_icons == 0U)
-    throw std::runtime_error(
-        "Linux Mint Software Manager data package contains no application icons");
-
-  const std::string version =
-      software_manager_data_version(newest_release_timestamp);
-  std::ostringstream control;
-  control << "Package: app-install-data-ssmithnet\n"
-          << "Version: " << version << "\n"
-          << "Section: misc\n"
-          << "Priority: optional\n"
-          << "Architecture: all\n"
-          << "Conflicts: infiltrator-app-install-data\n"
-          << "Replaces: infiltrator-app-install-data\n"
-          << "Provides: infiltrator-app-install-data\n"
-          << "Maintainer: Shannon Smith <The-First-Infiltrator@users.noreply.github.com>\n"
-          << "Description: Linux Mint Software Manager data for Infiltrator applications\n"
-          << " Package-name icon aliases for repository applications before they are\n"
-          << " installed. Installing or upgrading this metadata also invalidates Mint's\n"
-          << " system package cache so newly published applications are discoverable.\n";
-  write(staging / "DEBIAN" / "control", control.str());
-
-  const char postinst[] =
-      "#!/bin/sh\n"
-      "set -e\n"
-      "rm -f /var/cache/mintinstall/pkginfo.json\n"
-      "exit 0\n";
-  const char postrm[] =
-      "#!/bin/sh\n"
-      "set -e\n"
-      "rm -f /var/cache/mintinstall/pkginfo.json\n"
-      "exit 0\n";
-  write(staging / "DEBIAN" / "postinst", postinst);
-  write(staging / "DEBIAN" / "postrm", postrm);
-  fs::permissions(staging / "DEBIAN" / "postinst",
-                  fs::perms::owner_exec | fs::perms::owner_read |
-                      fs::perms::owner_write | fs::perms::group_exec |
-                      fs::perms::group_read | fs::perms::others_exec |
-                      fs::perms::others_read,
-                  fs::perm_options::replace);
-  fs::permissions(staging / "DEBIAN" / "postrm",
-                  fs::perms::owner_exec | fs::perms::owner_read |
-                      fs::perms::owner_write | fs::perms::group_exec |
-                      fs::perms::group_read | fs::perms::others_exec |
-                      fs::perms::others_read,
-                  fs::perm_options::replace);
-
-  const fs::path target = public_dir / "pool" / "main" /
-      ("app-install-data-ssmithnet_" + version + "_all.deb");
-  const std::string command =
-      "SOURCE_DATE_EPOCH=315532800 dpkg-deb -Zxz --build --root-owner-group " +
-      quote(staging.string()) + " " + quote(target.string());
-  if (run(command))
-    throw std::runtime_error(
-        "unable to build Linux Mint Software Manager data package");
-  check_deb(target, version, "app-install-data-ssmithnet", "all");
-  std::cout << "Published " << installed_icons
-            << " Linux Mint Software Manager package-name icon aliases\n";
-  fs::remove_all(staging);
-}
-
   static int publish(const fs::path& root) {
     const fs::path public_dir = root / "public";
     fs::remove_all(public_dir);
@@ -762,8 +640,6 @@ static void create_software_manager_data_package(
     const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.version_regex // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\"),(.optional_until_release // false)] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
     std::istringstream app_lines(source);
     std::vector<std::string> catalogue_items;
-    std::vector<SoftwareManagerAlias> software_manager_aliases;
-    std::string newest_release_timestamp;
     size_t package_version_count = 0;
     std::string line;
     while (std::getline(app_lines, line)) {
@@ -848,23 +724,15 @@ static void create_software_manager_data_package(
       auto latest = metadata_json(packages.front(), id, name, repo, owner, category, description);
       latest.pop_back();
       const auto icon_url = publish_package_icon(root, public_dir, id, packages.front().path);
-      if (!packages.front().published.empty() &&
-          packages.front().published > newest_release_timestamp)
-        newest_release_timestamp = packages.front().published;
       latest += ",\"icon\":\"" + json_escape(v[8]) + "\"";
       if (!icon_url.empty()) {
         latest += ",\"icon_url\":\"" + json_escape(icon_url) + "\"";
         latest += ",\"icon_sha256\":\"" +
                   digest(public_dir / fs::path(icon_url)) + "\"";
-        software_manager_aliases.push_back(
-            {current_package, public_dir / fs::path(icon_url)});
       }
       latest += ",\"source_url\":\"https://github.com/" + json_escape(owner) + "/" + json_escape(repo) + "\",\"history\":[" + history.str() + "]}";
       catalogue_items.push_back(std::move(latest));
     }
-
-    create_software_manager_data_package(
-        root, public_dir, software_manager_aliases, newest_release_timestamp);
 
     // Some products publish companion Debian packages that belong in APT but
     // should not appear as duplicate Software Centre application cards.  Each
