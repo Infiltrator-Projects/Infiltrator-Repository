@@ -5,12 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    # Tokenless central discovery. Two independent ten-minute schedules are
-    # staggered five minutes apart and avoid minute 0, where GitHub documents
-    # the highest scheduled-workflow load. Together they request a refresh
-    # every five minutes without any source-repository PAT or custom secret.
-    - cron: '2,12,22,32,42,52 * * * *'
-    - cron: '7,17,27,37,47,57 * * * *'
+    # Tokenless central discovery. One minimum-frequency POSIX step schedule is
+    # simpler for GitHub to register than two interleaved schedules and still
+    # requests a refresh every five minutes without any source-repository PAT
+    # or custom secret. Scheduled Actions are asynchronous, so source projects
+    # must not treat this pull-based refresh as a synchronous release gate.
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: read
