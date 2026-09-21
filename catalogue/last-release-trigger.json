@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calendar 1.0.38 and System Settings 0.3.1 Mint fallback integration",
+  "reason": "publish Calculator 0.2.10 arbitrary-precision Scientific release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -9,9 +9,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.1.41",
-      "release_sha": "991dfaa044670735be24ebb7aab9d39e82aeff00",
-      "release_published_at": "2026-09-20T05:36:22Z"
+      "version": "0.2.10",
+      "release_sha": "0b438aa971e700ed1c74c789d3277062900a0d7c",
+      "release_published_at": "2026-09-21T03:43:46Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
