@@ -25,7 +25,10 @@ jobs:
     # The heavyweight Mint lifecycle test is manual-only below.
     concurrency:
       group: pages
-      cancel-in-progress: true
+      # Never cancel an in-flight repository publication. A later queued run
+      # rebuilds from the newest main state after the current signed snapshot
+      # has completed, so every deployed repository is internally complete.
+      cancel-in-progress: false
     outputs:
       calendar_changed: ${{ steps.release-delta.outputs.calendar_changed }}
     environment:
@@ -71,6 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           python3 tests/test_site_setup.py
+          python3 tests/test_publish_workflow.py
           python3 tests/test_private_mirror_policy.py
           python3 tests/test_retention.py build/repository-tool
           python3 tests/test_release_identity.py build/repository-tool
