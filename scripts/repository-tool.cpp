@@ -632,9 +632,11 @@ static void create_software_manager_data_package(
     const fs::path& public_dir,
     std::vector<SoftwareManagerAlias> aliases,
     const std::string& newest_release_timestamp) {
-  if (aliases.empty())
-    throw std::runtime_error(
-        "no application artwork is available for Linux Mint Software Manager");
+  if (aliases.empty()) {
+    std::cout << "No application artwork in this publication; "
+                 "skipping Linux Mint Software Manager data package\n";
+    return;
+  }
 
   std::sort(aliases.begin(), aliases.end(),
             [](const SoftwareManagerAlias& left,
