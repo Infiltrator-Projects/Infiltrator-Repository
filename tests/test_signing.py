@@ -89,7 +89,8 @@ Expire-Date: 1d
     repository = json.loads((root / "public" / "catalogue" / "repository.json").read_text())
     assert repository["signed"] is True, repository
     assert repository["suite"] == "beta", repository
-    assert repository["compatibility_suite"] == "alpha", repository
+    assert "compatibility_suite" not in repository, repository
+    assert "compatibility_suite_deprecated" not in repository, repository
     assert repository["stable_reserved"] is True, repository
     assert repository.get("generated_at"), repository
     public_key = root / "public" / "repository-key.gpg"
@@ -98,9 +99,9 @@ Expire-Date: 1d
     verify_env = dict(os.environ)
     verify_env["GNUPGHOME"] = str(verify_home)
     run(["gpg", "--batch", "--import", str(public_key)], env=verify_env)
-    for suite in ("beta", "alpha"):
-        directory = root / "public" / "dists" / suite
-        run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
-        run(["gpg", "--batch", "--verify", str(directory / "Release.gpg"), str(directory / "Release")], env=verify_env)
+    directory = root / "public" / "dists" / "beta"
+    run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
+    run(["gpg", "--batch", "--verify", str(directory / "Release.gpg"), str(directory / "Release")], env=verify_env)
+    assert not (root / "public" / "dists" / "alpha").exists(), "alpha must not be published"
 
-print("PASS: compiled C++ publisher signs and verifies beta plus alpha compatibility suites")
+print("PASS: compiled C++ publisher signs and verifies the beta suite only")

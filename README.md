@@ -76,7 +76,7 @@ sudo apt update
 ```
 
 
-The former `alpha` path remains published as a temporary compatibility alias so existing alpha testers continue to receive packages while they migrate. New installations should use `beta`. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.
+The repository publishes only the `beta` suite. The former `alpha` suite is not published or aliased. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.
 
 ## Signing readiness
 
@@ -119,7 +119,7 @@ break offline/static hosting and is neither necessary nor supported.
 
 Every non-scheduled publish runs the signing self-test. The heavier Mint lifecycle test runs on manual workflow dispatch, or on an explicitly tagged promotion push containing `[mint-e2e]`, after publication succeeds.
 
-The signing self-test creates a disposable CI-only OpenPGP key, signs the primary `beta` suite and temporary `alpha` compatibility suite through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
+The signing self-test creates a disposable CI-only OpenPGP key, signs the `beta` suite through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
 
 The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for the published package set, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
 

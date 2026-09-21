@@ -75,9 +75,8 @@ with tempfile.TemporaryDirectory(prefix="infiltrator-retention-") as td:
     assert packages.count("Package: retention-test\n") == 5, packages
 
     beta_release = (root / "public" / "dists" / "beta" / "Release").read_text()
-    alpha_release = (root / "public" / "dists" / "alpha" / "Release").read_text()
     assert "Label: Infiltrator Beta\n" in beta_release, beta_release
-    assert "Label: Infiltrator Alpha\n" in alpha_release, alpha_release
+    assert not (root / "public" / "dists" / "alpha").exists(), "alpha must not be published"
     assert not (root / "public" / "dists" / "stable").exists(), "stable is reserved, not an alias"
 
-print("PASS: compiled C++ publisher retains five versions and publishes beta with alpha compatibility and reserves stable")
+print("PASS: compiled C++ publisher retains five versions and publishes beta only while reserving stable")
