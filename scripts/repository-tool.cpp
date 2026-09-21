@@ -579,6 +579,24 @@ static std::string publish_package_icon(const fs::path& root,
   fs::path best;
   int best_kind = -1;
   std::uintmax_t best_size = 0;
+
+  // Prefer the package-name alias explicitly provided for Mint Software
+  // Manager.  Falling back to the largest icon in the package can select
+  // status or helper artwork when an application ships several icons.
+  const std::string package_name = deb_field(package, "Package");
+  for (const std::string extension : {".svg", ".png", ".xpm"}) {
+    const fs::path candidate =
+        staging / "usr/share/app-install/icons" /
+        (package_name + extension);
+    if (!fs::is_regular_file(candidate)) continue;
+    std::error_code ec;
+    best = candidate;
+    best_kind = 3;
+    best_size = fs::file_size(candidate, ec);
+    if (ec) best_size = 0;
+    break;
+  }
+
   for (const auto& entry : fs::recursive_directory_iterator(
            staging, fs::directory_options::skip_permission_denied)) {
     if (!entry.is_regular_file()) continue;
@@ -589,7 +607,7 @@ static std::string publish_package_icon(const fs::path& root,
                            generic.find("/apps/") != std::string::npos;
     const bool pixmap = generic.find("/usr/share/pixmaps/") != std::string::npos;
     if (!icon_tree && !pixmap) continue;
-    const int kind = ext == ".svg" ? 2 : ext == ".png" ? 1 : -1;
+    const int kind = ext == ".svg" ? 2 : ext == ".png" ? 1 : ext == ".xpm" ? 0 : -1;
     if (kind < 0) continue;
     std::error_code ec;
     const auto size = fs::file_size(path, ec);
