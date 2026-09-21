@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [application-release]
   schedule:
     # Tokenless central discovery. One minimum-frequency POSIX step schedule is
     # simpler for GitHub to register than two interleaved schedules and still
