@@ -110,8 +110,16 @@ jobs:
           test -n "$app_install_data"
           test "$(dpkg-deb -f "$app_install_data" Package)" = "app-install-data-ssmithnet"
           test "$(dpkg-deb -f "$app_install_data" Architecture)" = "all"
-          grep -q '^Package: app-install-data-ssmithnet
-          mkdir -p public/assets
+          grep -q '^Package: app-install-data-ssmithnet$' public/dists/beta/main/binary-amd64/Packages
+          rm -rf /tmp/app-install-data-control
+          dpkg-deb -e "$app_install_data" /tmp/app-install-data-control
+          grep -Fq 'rm -f /var/cache/mintinstall/pkginfo.json' /tmp/app-install-data-control/postinst
+          dpkg-deb -c "$app_install_data" > /tmp/app-install-data-contents.txt
+          while IFS= read -r package_name; do
+            grep -Eq "\\./usr/share/app-install/icons/${package_name}\\.(svg|png|xpm)$" /tmp/app-install-data-contents.txt
+          done < <(jq -r '.[] | select((.icon_url // "") != "") | .package' public/catalogue/apps.json)
+
+          rm -rf public/assets
           cp -a _family/assets/. public/assets/
           cp _common/design/infiltrator-web-v1.css public/assets/infiltrator-web-v1.css
           test -s public/assets/infiltrator-web-v1.css
