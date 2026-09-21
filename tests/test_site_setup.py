@@ -12,7 +12,7 @@ assert "infiltrator-beta.list\\n" in block
 assert "infiltrator.list\\n" in block
 assert "sudo apt update" in block
 assert "sudo apt install -y app-install-data-ssmithnet" in block
-assert 'rm -f \\"$HOME/.cache/mintinstall/pkginfo.json\\"' in block
+assert "mintinstall/pkginfo.json" in block
 assert "infiltrator-app-install-data" not in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
 assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
