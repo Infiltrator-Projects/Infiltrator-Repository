@@ -1,5 +1,5 @@
 {
-  "reason": "publish Software 0.3.7",
+  "reason": "publish Software 0.3.8",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -15,9 +15,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Software",
-      "version": "0.3.7",
-      "release_sha": "d9c35a9001871a6c98a432f5d6bdd6a975f9cb78",
-      "release_published_at": "2026-09-21T10:45:08Z"
+      "version": "0.3.8",
+      "release_sha": "7caef47aa169ae9638ad0d91eb5dc7567379ea46",
+      "release_published_at": "2026-09-21T11:25:46Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
