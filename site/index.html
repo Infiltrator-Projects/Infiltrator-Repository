@@ -149,12 +149,12 @@ function setupCommand(){
       "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\n"+
       "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
       "sudo apt update\n"+
-      "sudo apt install -y app-install-data-ssmithnet\n"+
+      "sudo rm -f /var/cache/mintinstall/pkginfo.json\n"+
       "rm -f \"$HOME/.cache/mintinstall/pkginfo.json\"";
   }
   return clean+"echo 'deb [trusted=yes arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list\n"+
     "sudo apt update\n"+
-    "sudo apt install -y app-install-data-ssmithnet\n"+
+    "sudo rm -f /var/cache/mintinstall/pkginfo.json\n"+
     "rm -f \"$HOME/.cache/mintinstall/pkginfo.json\"";
 }
 function updateRepoInfo(){
