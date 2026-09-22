@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calendar 1.0.52 release",
+  "reason": "publish InfiltratorFS 0.18.74 sustained write stall recovery",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -21,9 +21,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
-      "version": "0.18.72",
-      "release_sha": "d989aa36fae9ae3638f7d5c4679d701655e73839",
-      "release_published_at": "2026-09-22T08:19:19Z"
+      "version": "0.18.74",
+      "release_sha": "1ce22ee14e354a60ff3f504119502b49c0e612c5",
+      "release_published_at": "2026-09-22T11:19:24Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
