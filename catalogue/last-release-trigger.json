@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Settings 0.3.16 release",
+  "reason": "publish System Settings 0.3.17 release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -57,9 +57,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.3.16",
-      "release_sha": "d7716fcfd9b0388dfb86c8974d2e7316eee1a6ee",
-      "release_published_at": "2026-09-22T08:30:43Z"
+      "version": "0.3.17",
+      "release_sha": "fbd28d66dd1da24224a1f4ac174b68b89bf08fe3",
+      "release_published_at": "2026-09-22T09:31:53Z"
     }
   ]
 }
