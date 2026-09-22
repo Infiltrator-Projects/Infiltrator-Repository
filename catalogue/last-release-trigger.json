@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calculator 0.2.25 Linux GTK stylesheet fix",
+  "reason": "publish InfiltratorFS 0.18.72 qualified release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -21,9 +21,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
-      "version": "0.18.66",
-      "release_sha": "5d30641760f9c3616de50f2d7f1b843a6e097f8b",
-      "release_published_at": "2026-09-21T04:45:28Z"
+      "version": "0.18.72",
+      "release_sha": "d989aa36fae9ae3638f7d5c4679d701655e73839",
+      "release_published_at": "2026-09-22T08:19:19Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
