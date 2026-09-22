@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calculator 0.2.23 final code-polish release",
+  "reason": "publish Calculator 0.2.24 modular Advanced Tools release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -9,9 +9,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.2.23",
-      "release_sha": "e91a18c654e7b0d75e458ef42c71734db83bb542",
-      "release_published_at": "2026-09-22T05:03:27Z"
+      "version": "0.2.24",
+      "release_sha": "380fae83576a8b843f8d656f8fcbe763be1f317f",
+      "release_published_at": "2026-09-22T05:56:11Z"
     },
     {
       "repository": "Infiltrator-Projects/Software",
