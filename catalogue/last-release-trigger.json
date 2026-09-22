@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calculator 0.2.21 Linux idle CPU release",
+  "reason": "publish Calculator 0.2.22 Common 1.19.23 alignment release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -9,9 +9,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.2.21",
-      "release_sha": "e0713bbcb74c7569e7e2b59da4a2137768e3060d",
-      "release_published_at": "2026-09-22T04:11:36Z"
+      "version": "0.2.22",
+      "release_sha": "014c37db73a65f78b249bafc67fd5f2d6dd6c1de",
+      "release_published_at": "2026-09-22T04:59:16Z"
     },
     {
       "repository": "Infiltrator-Projects/Software",
