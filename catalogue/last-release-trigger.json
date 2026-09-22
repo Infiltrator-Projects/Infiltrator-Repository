@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calculator 0.2.24 modular Advanced Tools release",
+  "reason": "publish Calculator 0.2.25 Linux GTK stylesheet fix",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -9,9 +9,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.2.24",
-      "release_sha": "380fae83576a8b843f8d656f8fcbe763be1f317f",
-      "release_published_at": "2026-09-22T05:56:11Z"
+      "version": "0.2.25",
+      "release_sha": "8ef058672ca00bcc28260f583cc6b865b3c8fa7a",
+      "release_published_at": "2026-09-22T08:07:20Z"
     },
     {
       "repository": "Infiltrator-Projects/Software",
