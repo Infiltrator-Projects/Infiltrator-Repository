@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calculator 0.2.26 Common 1.19.24 release",
+  "reason": "publish System Settings 0.3.16 release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -57,9 +57,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.3.15",
-      "release_sha": "2476c950e46c9d92ec0d82a01765ef06e387f2c6",
-      "release_published_at": "2026-09-21T10:44:43Z"
+      "version": "0.3.16",
+      "release_sha": "d7716fcfd9b0388dfb86c8974d2e7316eee1a6ee",
+      "release_published_at": "2026-09-22T08:30:43Z"
     }
   ]
 }
