@@ -1,5 +1,5 @@
 {
-  "reason": "publish Software 0.3.8",
+  "reason": "publish Calculator 0.2.21 Linux idle CPU release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -9,9 +9,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.2.11",
-      "release_sha": "893d170c6e7a4dcf2275587416710a32da4a3dc5",
-      "release_published_at": "2026-09-21T04:10:32Z"
+      "version": "0.2.21",
+      "release_sha": "e0713bbcb74c7569e7e2b59da4a2137768e3060d",
+      "release_published_at": "2026-09-22T04:11:36Z"
     },
     {
       "repository": "Infiltrator-Projects/Software",
