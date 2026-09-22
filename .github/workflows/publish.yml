@@ -40,11 +40,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.19.16
+      - name: Check out pinned Infiltratr Common 1.19.24
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: eb2cd6a5501a0e27f6e4370120d4e497b1eff52c
+          ref: 748e089ae175329471d4cf375522c44081371bd5
           path: _common
 
       - name: Check out pinned ssmithnet.net website family
@@ -219,7 +219,7 @@ jobs:
 
       - name: Deploy Pages through pinned COMMON
         id: deployment
-        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@eb2cd6a5501a0e27f6e4370120d4e497b1eff52c
+        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@748e089ae175329471d4cf375522c44081371bd5
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
@@ -255,11 +255,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.19.16
+      - name: Check out pinned Infiltratr Common 1.19.24
         uses: actions/checkout@v4
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
-          ref: eb2cd6a5501a0e27f6e4370120d4e497b1eff52c
+          ref: 748e089ae175329471d4cf375522c44081371bd5
           path: _common
 
       - name: Install signing test tools
