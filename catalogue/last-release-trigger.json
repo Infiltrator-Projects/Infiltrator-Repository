@@ -1,5 +1,5 @@
 {
-  "reason": "publish InfiltratorFS 0.18.72 qualified release",
+  "reason": "publish Calculator 0.2.26 Common 1.19.24 release",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -9,9 +9,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.2.25",
-      "release_sha": "8ef058672ca00bcc28260f583cc6b865b3c8fa7a",
-      "release_published_at": "2026-09-22T08:07:20Z"
+      "version": "0.2.26",
+      "release_sha": "5c3e3fc752245e0b439407fe120509a8188ea00b",
+      "release_published_at": "2026-09-22T08:19:49Z"
     },
     {
       "repository": "Infiltrator-Projects/Software",
