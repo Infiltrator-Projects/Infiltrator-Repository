@@ -55,6 +55,17 @@
     "expected_architecture": "amd64"
   },
   {
+    "id": "filesystem-support",
+    "name": "Filesystem Support",
+    "repo": "Filesystem-Support",
+    "category": "Filesystems",
+    "description": "Debian-first manager for discovering, installing, removing, loading and unloading filesystem support.",
+    "deb_regex": "^Filesystem-Support-.*-amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator-filesystem-support$",
+    "expected_architecture": "amd64"
+  },
+  {
     "id": "infiltratorfs",
     "name": "InfiltratorFS",
     "repo": "InfiltratorFS",
