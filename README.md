@@ -131,7 +131,7 @@ Repository publication, signing checks and the Mint chroot test use GitHub-hoste
 
 ## Publication
 
-GitHub Actions publishes on pushes to this repository's `main`, on manual request and from its own five-minute pull schedule using GitHub's canonical `*/5` cron form. Application repositories do not push or dispatch publication into this repository. Intune Zabbix Bridge is public and its release mirror is pulled and SHA-256/package-metadata verified without a PAT or cross-repository secret before publication. Scheduled runs refresh packages without re-downloading the multi-gigabyte Mint ISO; the signing self-test runs on non-scheduled publication, while the Mint lifecycle test runs only on manual dispatch.
+GitHub Actions publishes on pushes to this repository's `main`, on manual request and from its own five-minute pull schedule using GitHub's canonical `*/5` cron form. A central `main` push therefore also acts as an immediate pull refresh when a newly released application must be indexed without waiting for GitHub's scheduled-run queue. Application repositories do not push or dispatch publication into this repository. Intune Zabbix Bridge is public and its release mirror is pulled and SHA-256/package-metadata verified without a PAT or cross-repository secret before publication. Scheduled runs refresh packages without re-downloading the multi-gigabyte Mint ISO; the signing self-test runs on non-scheduled publication, while the Mint lifecycle test runs only on manual dispatch.
 
 Live software centre:
 
