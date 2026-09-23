@@ -7,12 +7,13 @@ on:
   repository_dispatch:
     types: [application-release]
   schedule:
-    # Tokenless central discovery. One minimum-frequency POSIX step schedule is
-    # simpler for GitHub to register than two interleaved schedules and still
-    # requests a refresh every five minutes without any source-repository PAT
-    # or custom secret. Scheduled Actions are asynchronous, so source projects
-    # must not treat this pull-based refresh as a synchronous release gate.
-    - cron: '*/5 * * * *'
+    # Tokenless central discovery. Poll every five minutes, offset by two
+    # minutes so the job does not join the heavily contended :00/:05/:10...
+    # schedule boundary. GitHub documents that scheduled runs may be delayed or
+    # dropped under load, especially around the start of an hour, so preserve
+    # this off-boundary cadence rather than simplifying it back to */5.
+    # Source projects must not treat this asynchronous pull as a release gate.
+    - cron: '2-57/5 * * * *'
 
 permissions:
   contents: read
