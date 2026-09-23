@@ -30,7 +30,6 @@ The project values deterministic, explainable publication over novelty. A new de
 - WHERE'S WALLY
 - Intune Zabbix Bridge
 - Runner Monitor
-- Egypt
 - Backyard Racer
 
 InfiltratorFS also publishes three separately versioned support packages through the same repository: Desktop Integration, GNOME Disks Integration and libblockdev Integration.
@@ -161,4 +160,4 @@ metadata + by-hash          ↓
 
 The Software Centre is the distribution surface of the same website family as `ssmithnet.net`. Publication pins the family source at `ssmithnet.net` commit `7cd6a749f1e2dff23300c3bcf071e733bffc0475` and copies its self-contained typography, graphics and interaction layer into the Pages artifact. The shared acceptance test from that same immutable commit checks canonical metadata, landmarks, navigation, local assets and the three real Corpo font files.
 
-Infiltratr Common 1.19.10 (`33e69c0a462b56d388881d89c4eb49f72fa0b0fe`) remains the lower-level neutral design/infrastructure dependency. Package Repository owns catalogue behaviour, APT setup and package presentation. Application icons are extracted from the verified current DEB when the package contains a standard application icon, so a released icon update follows the package rather than a separate website illustration map; the compact built-in symbols are only a fallback for packages without a GUI icon.
+Infiltratr Common 1.19.24 (`748e089ae175329471d4cf375522c44081371bd5`) remains the lower-level neutral design/infrastructure dependency. Package Repository owns catalogue behaviour, APT setup and package presentation. Application icons are extracted from the verified current DEB when the package contains a standard application icon, so a released icon update follows the package rather than a separate website illustration map; the compact built-in symbols are only a fallback for packages without a GUI icon.
