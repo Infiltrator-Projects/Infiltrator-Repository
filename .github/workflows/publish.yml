@@ -4,8 +4,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  repository_dispatch:
-    types: [application-release]
   schedule:
     # Tokenless central discovery. Poll every five minutes, offset by two
     # minutes so the job does not join the heavily contended :00/:05/:10...

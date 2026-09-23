@@ -9,8 +9,9 @@ assert "group: pages" in workflow
 assert "cancel-in-progress: false" in workflow
 assert "cancel-in-progress: true" not in workflow
 
-assert "repository_dispatch:" in workflow
-assert "types: [application-release]" in workflow
+assert "repository_dispatch:" not in workflow
+assert "application-release" not in workflow
+assert "/dispatches" not in workflow
 
 # Central discovery must remain an off-boundary five-minute pull. GitHub
 # documents higher schedule load at common minute boundaries, especially :00.
