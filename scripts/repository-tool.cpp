@@ -459,39 +459,104 @@ static int sync_intune(const fs::path& root) {
     if (run("curl -fsSL --retry 5 " + github_headers() + " " + quote(api) +
             " -o " + quote(json.string())))
       throw std::runtime_error("unable to read releases for " + repo);
-    const auto query = "jq -er --arg rx " + quote(rx_text) +
-      " '[.[] | select((.draft|not) and (.prerelease|not))] | .[:5][] as $r | "
-      "($r.assets // []) | map(select(.name|test($rx))) | if length==1 then .[0] as $a | "
-      "[$r.tag_name,$r.html_url,($r.published_at // $r.created_at // \"\"),$a.name,"
-      "$a.browser_download_url,($a.digest // \"\"),($a.size // 0)] | @tsv else empty end' " +
+
+    /*
+     * GitHub's release-list response can briefly expose a new release before
+     * its embedded assets array is populated. The dedicated assets_url is the
+     * authoritative asset collection and becomes readable independently. Read
+     * each eligible release's assets endpoint before deciding whether the
+     * release contains the one primary DEB required by repository policy.
+     */
+    const auto releases_query =
+      "jq -r '[.[] | select((.draft|not) and (.prerelease|not))] | .[:5][] | "
+      "[.id,.tag_name,.html_url,(.published_at // .created_at // \"\"),.assets_url] | @tsv' " +
       quote(json.string());
-    const auto latest_check = "jq -e --arg rx " + quote(rx_text) +
-      " '([.[] | select((.draft|not) and (.prerelease|not))][0] // {}) as $r | "
-      "((($r.assets // []) | map(select(.name|test($rx)))) | length) == 1' " +
-      quote(json.string());
-    if (run(latest_check))
-      throw std::runtime_error(repo + ": latest eligible release does not contain exactly one matching DEB");
-    std::istringstream lines(command_output(query));
-    fs::remove(json);
+    std::istringstream release_lines(command_output(releases_query));
+
     std::vector<Package> packages;
-    std::string line;
-    while (std::getline(lines, line)) {
-      std::istringstream fields(line);
-      Package p; std::string size;
-      std::getline(fields, p.release_tag, '\t'); std::getline(fields, p.release_url, '\t');
-      std::getline(fields, p.published, '\t'); std::getline(fields, p.asset, '\t');
-      std::string url; std::getline(fields, url, '\t'); std::getline(fields, p.sha, '\t'); std::getline(fields, size, '\t');
-      if (p.sha.rfind("sha256:", 0) != 0 || p.sha.size() != 71) throw std::runtime_error("release asset has no SHA-256 digest");
+    std::string release_line;
+    std::size_t release_index = 0U;
+    while (std::getline(release_lines, release_line)) {
+      std::istringstream release_fields(release_line);
+      std::string release_id, release_tag, release_url, published, assets_url;
+      std::getline(release_fields, release_id, '\t');
+      std::getline(release_fields, release_tag, '\t');
+      std::getline(release_fields, release_url, '\t');
+      std::getline(release_fields, published, '\t');
+      std::getline(release_fields, assets_url, '\t');
+
+      if (release_id.empty() || release_tag.empty() || assets_url.empty())
+        throw std::runtime_error(repo + ": release metadata is incomplete");
+
+      const std::string expected_assets_prefix =
+          "https://api.github.com/repos/" + owner + "/" + repo + "/releases/";
+      if (assets_url.rfind(expected_assets_prefix, 0U) != 0U ||
+          assets_url.find_first_of("\r\n") != std::string::npos)
+        throw std::runtime_error(repo + ": release assets URL is outside the expected GitHub repository");
+
+      const fs::path assets_json =
+          root / (".release-assets-" + repo + "-" + release_id + ".json");
+      if (run("curl -fsSL --retry 5 " + github_headers() + " " +
+              quote(assets_url + "?per_page=100") + " -o " +
+              quote(assets_json.string()))) {
+        fs::remove(json);
+        fs::remove(assets_json);
+        throw std::runtime_error("unable to read release assets for " + repo);
+      }
+
+      const std::string count_command =
+          "jq -r --arg rx " + quote(rx_text) +
+          " '[.[] | select(.name|test($rx))] | length' " +
+          quote(assets_json.string());
+      const std::string count = trim_eol(command_output(count_command));
+      if (count != "1") {
+        fs::remove(assets_json);
+        if (release_index == 0U) {
+          fs::remove(json);
+          throw std::runtime_error(
+              repo + ": latest eligible release does not contain exactly one matching DEB");
+        }
+        ++release_index;
+        continue;
+      }
+
+      const std::string asset_query =
+          "jq -r --arg rx " + quote(rx_text) +
+          " '[.[] | select(.name|test($rx))][0] | "
+          "[.name,.browser_download_url,(.digest // \"\"),(.size // 0)] | @tsv' " +
+          quote(assets_json.string());
+      std::istringstream fields(command_output(asset_query));
+      fs::remove(assets_json);
+
+      Package p;
+      p.release_tag = release_tag;
+      p.release_url = release_url;
+      p.published = published;
+      std::string url, size;
+      std::getline(fields, p.asset, '\t');
+      std::getline(fields, url, '\t');
+      std::getline(fields, p.sha, '\t');
+      std::getline(fields, size, '\t');
+
+      if (p.asset.empty() || url.empty() ||
+          p.sha.rfind("sha256:", 0) != 0 || p.sha.size() != 71)
+        throw std::runtime_error(repo + ": release asset metadata is incomplete");
       p.sha = p.sha.substr(7);
-      p.version = package_version_from_identity(p.release_tag, p.asset, version_regex);
-      const auto existing = std::find_if(packages.begin(), packages.end(),
+      p.version = package_version_from_identity(
+          p.release_tag, p.asset, version_regex);
+
+      const auto existing = std::find_if(
+          packages.begin(), packages.end(),
           [&](const Package& item) { return item.version == p.version; });
       if (existing != packages.end()) {
         if (existing->sha != p.sha || existing->asset != p.asset)
-          throw std::runtime_error(repo + ": package version " + p.version +
-                                   " is reused by different release content");
+          throw std::runtime_error(
+              repo + ": package version " + p.version +
+              " is reused by different release content");
+        ++release_index;
         continue;
       }
+
       p.path = root / "public" / "pool" / "main" / p.asset;
       const auto mirror_url =
           "https://infiltrator-projects.github.io/Infiltrator-Repository/pool/main/" +
@@ -510,19 +575,34 @@ static int sync_intune(const fs::path& root) {
       } else {
         fs::remove(p.path);
       }
+
       if (!materialized) {
-        if (run("curl -fsSL --retry 5 " + quote(url) + " -o " + quote(p.path.string())))
+        if (run("curl -fsSL --retry 5 " + quote(url) + " -o " +
+                quote(p.path.string())))
           throw std::runtime_error("unable to download " + p.asset);
         if (digest(p.path) != p.sha) {
           fs::remove(p.path);
           throw std::runtime_error("SHA-256 mismatch for " + p.asset);
         }
       }
-      check_deb_expected(p.path, p.version, expected_package_regex, expected_architecture);
+
+      check_deb_expected(
+          p.path, p.version, expected_package_regex, expected_architecture);
       packages.push_back(std::move(p));
+      ++release_index;
     }
-    if (packages.empty()) throw std::runtime_error(repo + ": no usable packages found");
-    std::sort(packages.begin(), packages.end(), [](const Package& a, const Package& b) { return newer(a.version, b.version); });
+
+    fs::remove(json);
+    if (release_index == 0U)
+      throw std::runtime_error(repo + ": no eligible releases found");
+    if (packages.empty())
+      throw std::runtime_error(repo + ": no usable packages found");
+
+    std::sort(
+        packages.begin(), packages.end(),
+        [](const Package& a, const Package& b) {
+          return newer(a.version, b.version);
+        });
     return packages;
   }
 
