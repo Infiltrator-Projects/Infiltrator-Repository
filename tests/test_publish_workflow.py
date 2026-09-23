@@ -13,10 +13,9 @@ assert "repository_dispatch:" not in workflow
 assert "application-release" not in workflow
 assert "/dispatches" not in workflow
 
-# Central discovery must remain an off-boundary five-minute pull. GitHub
-# documents higher schedule load at common minute boundaries, especially :00.
-assert "cron: '2-57/5 * * * *'" in workflow
-assert "cron: '*/5 * * * *'" not in workflow
+# Central discovery must remain a GitHub-supported five-minute pull.
+assert "cron: '*/5 * * * *'" in workflow
+assert "cron: '2-57/5 * * * *'" not in workflow
 
 publish_index = workflow.index("name: Publish Beta Repository")
 concurrency_index = workflow.index("concurrency:", publish_index)
