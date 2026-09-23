@@ -1,5 +1,5 @@
 {
-  "reason": "publish InfiltratorFS 0.18.74 sustained write stall recovery",
+  "reason": "publish InfiltratorFS 0.18.75 allocation publication latency recovery",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -21,9 +21,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
-      "version": "0.18.74",
-      "release_sha": "1ce22ee14e354a60ff3f504119502b49c0e612c5",
-      "release_published_at": "2026-09-22T11:19:24Z"
+      "version": "0.18.75",
+      "release_sha": "4272ea6cb24bf905678628f989ffed5525dc5ca2",
+      "release_published_at": "2026-09-22T22:41:28Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
