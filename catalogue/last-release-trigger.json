@@ -1,5 +1,5 @@
 {
-  "reason": "publish InfiltratorFS 0.18.75 allocation publication latency recovery",
+  "reason": "publish Filesystem Support 0.4.6",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -60,6 +60,12 @@
       "version": "0.3.17",
       "release_sha": "fbd28d66dd1da24224a1f4ac174b68b89bf08fe3",
       "release_published_at": "2026-09-22T09:31:53Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Filesystem-Support",
+      "version": "0.4.6",
+      "release_sha": "be6a558be935f00fabaf9b96eb6ef9383f66e034",
+      "release_published_at": "2026-09-24T22:26:01Z"
     }
   ]
 }
