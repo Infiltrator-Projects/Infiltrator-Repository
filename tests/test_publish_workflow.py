@@ -9,11 +9,11 @@ assert "group: pages" in workflow
 assert "cancel-in-progress: false" in workflow
 assert "cancel-in-progress: true" not in workflow
 
-assert "repository_dispatch:" not in workflow
-assert "application-release" not in workflow
+assert "repository_dispatch:" in workflow
+assert "types: [application-release]" in workflow
 assert "/dispatches" not in workflow
 
-# Central discovery must remain a GitHub-supported five-minute pull.
+# Release dispatch is primary; the five-minute schedule remains a recovery path.
 assert "cron: '*/5 * * * *'" in workflow
 assert "cron: '2-57/5 * * * *'" not in workflow
 

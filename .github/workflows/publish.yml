@@ -4,11 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [application-release]
   schedule:
-    # Tokenless central discovery. Use GitHub's canonical minimum-frequency
-    # schedule syntax. A previous range/step expression stopped producing
-    # scheduled runs after deployment, so keep this simple and observable.
-    # Source projects must not treat this asynchronous pull as a release gate.
+    # Immediate source-project release dispatch is the primary publication
+    # trigger. Keep the tokenless five-minute pull as a recovery path if a
+    # dispatch token is unavailable or GitHub drops an external event.
     - cron: '*/5 * * * *'
 
 permissions:
