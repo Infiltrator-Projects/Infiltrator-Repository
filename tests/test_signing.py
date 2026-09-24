@@ -99,9 +99,9 @@ Expire-Date: 1d
     verify_env = dict(os.environ)
     verify_env["GNUPGHOME"] = str(verify_home)
     run(["gpg", "--batch", "--import", str(public_key)], env=verify_env)
-    directory = root / "public" / "dists" / "beta"
-    run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
-    run(["gpg", "--batch", "--verify", str(directory / "Release.gpg"), str(directory / "Release")], env=verify_env)
-    assert not (root / "public" / "dists" / "alpha").exists(), "alpha must not be published"
+    for suite in ("alpha", "beta"):
+        directory = root / "public" / "dists" / suite
+        run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
+        run(["gpg", "--batch", "--verify", str(directory / "Release.gpg"), str(directory / "Release")], env=verify_env)
 
-print("PASS: compiled C++ publisher signs and verifies the beta suite only")
+print("PASS: compiled C++ publisher signs and verifies alpha and beta suites")
