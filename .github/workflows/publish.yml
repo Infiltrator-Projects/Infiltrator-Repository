@@ -99,6 +99,8 @@ jobs:
           APT_SIGNING_PASSPHRASE: ${{ secrets.APT_SIGNING_PASSPHRASE }}
         run: |
           build/repository-tool publish
+          test -s public/dists/alpha/Release
+          test -s public/dists/alpha/main/binary-amd64/Packages.gz
           test -s public/dists/beta/Release
           test -s public/dists/beta/main/binary-amd64/Packages.gz
           test -s public/catalogue/apps.json
@@ -107,6 +109,7 @@ jobs:
           # Every published catalogue entry must be present in APT, regardless
           # of whether the application package carries custom artwork.
           while IFS= read -r package_name; do
+            grep -Fq "Package: $package_name" public/dists/alpha/main/binary-amd64/Packages
             grep -Fq "Package: $package_name" public/dists/beta/main/binary-amd64/Packages
           done < <(jq -r '.[].package' public/catalogue/apps.json)
           if find public/pool/main -maxdepth 1 -type f -name 'app-install-data-ssmithnet_*' | grep -q .; then
