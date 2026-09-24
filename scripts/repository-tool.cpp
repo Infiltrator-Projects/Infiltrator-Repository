@@ -857,8 +857,8 @@ static std::string publish_package_icon(const fs::path& root,
     apps << "\n]\n";
     write(public_dir / "catalogue" / "apps.json", apps.str());
 
-    for (const std::string suite : {"beta"}) {
-      const std::string suite_label = "Beta";
+    for (const std::string suite : {"alpha", "beta"}) {
+      const std::string suite_label = suite == "alpha" ? "Alpha" : "Beta";
       const auto binary = public_dir / "dists" / suite / "main" / "binary-amd64";
       fs::create_directories(binary);
       const auto packages_text = command_output("cd " + quote(public_dir.string()) + " && dpkg-scanpackages --multiversion pool/main /dev/null");
@@ -897,7 +897,7 @@ static std::string publish_package_icon(const fs::path& root,
       const std::string pass = std::getenv("APT_SIGNING_PASSPHRASE") ? std::getenv("APT_SIGNING_PASSPHRASE") : "";
       const std::string common = "GNUPGHOME=" + quote(ghome.string()) + " gpg --batch --yes --pinentry-mode loopback " +
         (pass.empty() ? "" : "--passphrase \"$APT_SIGNING_PASSPHRASE\" ");
-      for (const std::string suite : {"beta"}) {
+      for (const std::string suite : {"alpha", "beta"}) {
         const auto dir = public_dir / "dists" / suite;
         if (run(common + "--local-user " + quote(fingerprint) + " --clearsign --output " + quote((dir / "InRelease").string()) + " " + quote((dir / "Release").string())) ||
             run(common + "--local-user " + quote(fingerprint) + " --detach-sign --output " + quote((dir / "Release.gpg").string()) + " " + quote((dir / "Release").string())))
