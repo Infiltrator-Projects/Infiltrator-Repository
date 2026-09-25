@@ -1,5 +1,5 @@
 {
-  "reason": "republish Software 0.3.39",
+  "reason": "republish Software 0.3.40",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -15,9 +15,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Software",
-      "version": "0.3.39",
-      "release_sha": "13c57e66efca2c367d124357691e5fc48182da1d",
-      "release_published_at": "2026-09-25T10:25:40Z"
+      "version": "0.3.40",
+      "release_sha": "e31b132a2de090132ead91650944297a55f4416b",
+      "release_published_at": "2026-09-25T11:11:01Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
