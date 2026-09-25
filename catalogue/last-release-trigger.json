@@ -1,5 +1,5 @@
 {
-  "reason": "republish System Monitor 1.0.102",
+  "reason": "republish System Monitor 1.0.103",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -69,9 +69,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Monitor",
-      "version": "1.0.102",
-      "release_sha": "fe357ddf330f53b768e0cc4d3deb87703e920bcc",
-      "release_published_at": "2026-09-25T09:05:23Z"
+      "version": "1.0.103",
+      "release_sha": "bcede4208f7b265226bb2db2527a1078503801ac",
+      "release_published_at": "2026-09-25T09:22:08Z"
     }
   ]
 }
