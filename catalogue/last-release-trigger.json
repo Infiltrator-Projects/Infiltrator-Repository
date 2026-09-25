@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Settings 0.4.26",
+  "reason": "republish System Monitor 1.0.112",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -69,9 +69,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Monitor",
-      "version": "1.0.111",
-      "release_sha": "62394e3d0906b9adb4485ae11e156692e8f0163f",
-      "release_published_at": "2026-09-25T13:12:25Z"
+      "version": "1.0.112",
+      "release_sha": "daeab3371859e92cde01266962d0370806070fcd",
+      "release_published_at": "2026-09-25T13:42:11Z"
     }
   ]
 }
