@@ -68,4 +68,4 @@ Each catalogue entry declares an expected Debian package-name regular expression
 
 ## Website family boundary
 
-The Software Centre consumes an immutable snapshot of the `ssmithnet.net` website family during publication. The pinned snapshot supplies the three Corpo font assets, shared site CSS, graphics and the cross-site output acceptance test. Package Repository retains its own catalogue layout and behaviour. Common 1.19.10 remains the product-neutral layer beneath both sites.
+The Software Centre consumes an immutable snapshot of the `ssmithnet.net` website family during publication. The pinned snapshot supplies the three Corpo font assets, shared site CSS, graphics and the cross-site output acceptance test. Package Repository retains its own catalogue layout and behaviour. Common 1.19.35 remains the product-neutral layer beneath both sites.
