@@ -33,6 +33,18 @@
     "expected_architecture": "amd64"
   },
   {
+    "id": "infiltrator-os",
+    "name": "Infiltrator OS",
+    "repo": "Infiltrator-OS",
+    "category": "System",
+    "description": "Install the Infiltrator desktop, storage, system applications and boot theme together.",
+    "deb_regex": "^infiltrator-os_.*_all\\.deb$",
+    "icon": "settings",
+    "expected_package_regex": "^infiltrator-os$",
+    "expected_architecture": "all",
+    "optional_until_release": true
+  },
+  {
     "id": "infiltrator-os-plymouth-theme",
     "name": "Infiltrator OS Plymouth Theme",
     "repo": "Infiltrator-OS",
