@@ -14,6 +14,7 @@ The project values deterministic, explainable publication over novelty. A new de
 
 ## Current applications
 
+- Infiltrator OS desktop bundle and Plymouth theme
 - System Monitor
 - System Settings
 - Software
