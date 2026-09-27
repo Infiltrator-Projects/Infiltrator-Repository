@@ -1,5 +1,5 @@
 {
-  "reason": "publish Infiltrator OS 1.0.3",
+  "reason": "publish Software 0.3.53",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -15,9 +15,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Software",
-      "version": "0.3.49",
-      "release_sha": "c3bcee0ade63a6651bc46fb234388c64bcbad1c0",
-      "release_published_at": "2026-09-27T05:23:30Z"
+      "version": "0.3.53",
+      "release_sha": "319bedb6289a4aa15a6c8b223680e0ceb2e562ed",
+      "release_published_at": "2026-09-27T12:33:12Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
