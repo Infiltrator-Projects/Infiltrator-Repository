@@ -37,11 +37,11 @@
     "name": "Infiltrator OS Plymouth Theme",
     "repo": "Infiltrator-OS",
     "category": "System",
-    "description": "Boot splash theme package for Infiltrator OS.",
-    "deb_regex": "^infiltrator-os-plymouth-theme_.*_all\\.deb$",
+    "description": "Infiltrator OS boot branding and native System Monitor integration.",
+    "deb_regex": "^infiltrator-os-plymouth-theme_.*_amd64\\.deb$",
     "icon": "settings",
     "expected_package_regex": "^infiltrator-os-plymouth-theme$",
-    "expected_architecture": "all"
+    "expected_architecture": "amd64"
   },
   {
     "id": "calendar",
