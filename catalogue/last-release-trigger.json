@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Monitor 1.0.131",
+  "reason": "publish Software 0.3.49",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -15,9 +15,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Software",
-      "version": "0.3.40",
-      "release_sha": "e31b132a2de090132ead91650944297a55f4416b",
-      "release_published_at": "2026-09-25T11:11:01Z"
+      "version": "0.3.49",
+      "release_sha": "c3bcee0ade63a6651bc46fb234388c64bcbad1c0",
+      "release_published_at": "2026-09-27T05:23:30Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
