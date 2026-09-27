@@ -1,5 +1,5 @@
 {
-  "reason": "publish Calendar 1.0.69",
+  "reason": "publish Infiltrator OS 1.0.3",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -72,6 +72,12 @@
       "version": "1.0.131",
       "release_sha": "a3f5caa14b6cd6495af855968829e8a70cab01a1",
       "release_published_at": "2026-09-27T04:29:37Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Infiltrator-OS",
+      "version": "1.0.3",
+      "release_sha": "6aed0515f23f78086e0d667317538be46631ced3",
+      "release_published_at": "2026-09-27T12:49:57Z"
     }
   ]
 }
