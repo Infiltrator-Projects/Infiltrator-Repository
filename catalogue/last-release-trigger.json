@@ -1,11 +1,11 @@
 {
-  "reason": "publish Software 0.3.49",
+  "reason": "publish Calendar 1.0.69",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
-      "version": "1.0.52",
-      "release_sha": "394e26dc28e08052b27c784816d83010e1b40700",
-      "release_published_at": "2026-09-22T11:01:33Z"
+      "version": "1.0.69",
+      "release_sha": "28e3a2b652fc1aab7aff735bc272edba72d5a378",
+      "release_published_at": "2026-09-27T09:44:37Z"
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
