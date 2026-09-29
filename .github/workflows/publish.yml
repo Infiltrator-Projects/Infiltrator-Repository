@@ -220,10 +220,39 @@ jobs:
 
       - name: Deploy Pages through pinned COMMON
         id: deployment
+        continue-on-error: true
         uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@7cc5de3de0e94ed2cfcff0840bbb5346eb5c9c9f
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
+
+      # GitHub's artifact API is eventually consistent: upload-pages-artifact
+      # can finish before deploy-pages can discover the new artifact. Retry the
+      # deployment itself without rebuilding or re-uploading the repository.
+      - name: Wait for uploaded Pages artifact visibility
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 5
+
+      - name: Retry Pages deployment after artifact propagation
+        id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
+
+      - name: Require Pages deployment success
+        if: always()
+        shell: bash
+        env:
+          PRIMARY_OUTCOME: ${{ steps.deployment.outcome }}
+          RETRY_OUTCOME: ${{ steps.deployment_retry.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$PRIMARY_OUTCOME" == "success" || "$RETRY_OUTCOME" == "success" ]]; then
+            exit 0
+          fi
+          echo "GitHub Pages deployment failed on both the initial attempt and the artifact-visibility retry." >&2
+          exit 1
 
       - name: Verify published Software Centre typography
         run: |
