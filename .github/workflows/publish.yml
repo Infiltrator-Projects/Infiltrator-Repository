@@ -106,6 +106,20 @@ jobs:
           test -s public/catalogue/apps.json
           test -s public/catalogue/repository.json
 
+          # Filesystem Support owns desktop integration in its main package.
+          # Never republish the retired helper or a package that depends on it.
+          if find public/pool -type f -name 'infiltrator-filesystem-support-udisks_*.deb' | grep -q .; then
+            echo 'Retired Filesystem Support desktop package reappeared in the pool' >&2
+            exit 1
+          fi
+          for channel in alpha beta; do
+            index="public/dists/$channel/main/binary-amd64/Packages"
+            if grep -Eq '^Package: infiltrator-filesystem-support-udisks$|^Depends:.*infiltrator-filesystem-support-udisks' "$index"; then
+              echo "Retired Filesystem Support desktop dependency reappeared in $channel" >&2
+              exit 1
+            fi
+          done
+
           # Every published catalogue entry must be present in APT, regardless
           # of whether the application package carries custom artwork.
           while IFS= read -r package_name; do
@@ -276,6 +290,20 @@ jobs:
           done
           echo "Published Software Centre did not expose the canonical MB Corpo typography in time." >&2
           exit 1
+
+  retire-filesystem-desktop-artifacts:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Withdraw archived APT snapshots containing the retired desktop package
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/retire-filesystem-desktop-artifacts.py
 
   signing-self-test:
     runs-on: ubuntu-latest

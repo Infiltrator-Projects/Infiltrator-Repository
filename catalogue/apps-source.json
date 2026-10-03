@@ -74,14 +74,7 @@
     "deb_regex": "^Filesystem-Support-.*-amd64\\.deb$",
     "icon": "filesystem",
     "expected_package_regex": "^infiltrator-filesystem-support$",
-    "expected_architecture": "amd64",
-    "supplemental_packages": [
-      {
-        "deb_regex": "^infiltrator-filesystem-support-udisks_.*_amd64\\.deb$",
-        "expected_package_regex": "^infiltrator-filesystem-support-udisks$",
-        "expected_architecture": "amd64"
-      }
-    ]
+    "expected_architecture": "amd64"
   },
   {
     "id": "infiltratorfs",
