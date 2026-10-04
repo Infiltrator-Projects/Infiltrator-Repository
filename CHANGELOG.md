@@ -14,6 +14,7 @@ This file records user-visible, compatibility, architecture and validation chang
 
 ## Unreleased
 
+- Refresh the central APT catalogue for Filesystem Support 0.5.11 and verify Update Manager can see the released package.
 - Republish after the Filesystem Support 0.5.3 release so APT clients receive the complete five-entry Amiga catalogue and desktop media-detection package.
 - Advance all Package Repository Common consumers, including publication, Pages deployment and private-mirror synchronisation, to released Infiltratr Common 1.19.10 at `33e69c0a462b56d388881d89c4eb49f72fa0b0fe`.
 - Correct the documented website-family pin to the immutable commit actually consumed by publication.
