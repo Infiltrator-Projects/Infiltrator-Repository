@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Monitor 1.0.168",
+  "reason": "publish Filesystem Support 0.5.12",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -63,9 +63,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Filesystem-Support",
-      "version": "0.4.6",
-      "release_sha": "be6a558be935f00fabaf9b96eb6ef9383f66e034",
-      "release_published_at": "2026-09-24T22:26:01Z"
+      "version": "0.5.12",
+      "release_sha": "afa218be1a1e570b48ffa479e1cd69d752e423fa",
+      "release_published_at": "2026-10-06T07:51:17Z"
     },
     {
       "repository": "Infiltrator-Projects/System-Monitor",
