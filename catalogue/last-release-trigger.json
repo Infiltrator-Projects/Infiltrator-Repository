@@ -1,5 +1,5 @@
 {
-  "reason": "publish Software 0.3.53",
+  "reason": "publish System Monitor 1.0.168",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -22,7 +22,7 @@
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
       "version": "0.18.75",
-      "release_sha": "4272ea6cb24bf905678628f989ffed5525dc5ca2",
+      "release_sha": "4272ea6cb24bf905678f989ffed5525dc5ca2",
       "release_published_at": "2026-09-22T22:41:28Z"
     },
     {
@@ -69,9 +69,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Monitor",
-      "version": "1.0.131",
-      "release_sha": "a3f5caa14b6cd6495af855968829e8a70cab01a1",
-      "release_published_at": "2026-09-27T04:29:37Z"
+      "version": "1.0.168",
+      "release_sha": "2ed24d6d5d66f5dab2e3d7285bc8cdc23735a0bb",
+      "release_published_at": "2026-10-06T00:33:19Z"
     },
     {
       "repository": "Infiltrator-Projects/Infiltrator-OS",
