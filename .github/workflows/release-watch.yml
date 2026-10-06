@@ -1,0 +1,105 @@
+name: Watch application releases
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Cross-repository release dispatch is preferred, but source repositories
+    # cannot always reach this repository (for example when a fine-grained PAT
+    # loses access). Poll at off-peak minutes so APT publication still happens
+    # without any cross-repository credential.
+    - cron: '7,17,27,37,47,57 * * * *'
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check out repository metadata
+        uses: actions/checkout@v4
+
+      - name: Detect unpublished application releases
+        id: detect
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          published="$(mktemp)"
+          curl -fsSL --retry 3 --retry-delay 2 \
+            -H 'Cache-Control: no-cache' \
+            "https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json?watch=${GITHUB_RUN_ID}" \
+            > "$published"
+
+          mismatch=false
+          while IFS=$'\t' read -r id owner repo; do
+            [[ -n "$id" && -n "$repo" ]] || continue
+
+            release="$(curl -fsSL --retry 2 --retry-delay 1 \
+              -H 'Accept: application/vnd.github+json' \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/${owner}/${repo}/releases/latest" 2>/dev/null || true)"
+            [[ -n "$release" ]] || continue
+
+            tag="$(jq -r '.tag_name // empty' <<<"$release")"
+            [[ -n "$tag" ]] || continue
+            latest="${tag#v}"
+            current="$(jq -r --arg id "$id" '.[] | select(.id == $id) | (.version // "")' "$published" | head -n1)"
+
+            if [[ -n "$current" && "$latest" != "$current" ]]; then
+              printf '%s: APT=%s latest=%s (%s/%s)\n' \
+                "$id" "$current" "$latest" "$owner" "$repo"
+              mismatch=true
+            fi
+          done < <(
+            jq -r '.[]
+              | select((.repo // "") != "")
+              | select(has("local_deb_glob") | not)
+              | [.id, (.owner // "Infiltrator-Projects"), .repo]
+              | @tsv' catalogue/apps-source.json
+          )
+
+          echo "mismatch=$mismatch" >> "$GITHUB_OUTPUT"
+
+      - name: Check for an active repository publication
+        if: steps.detect.outputs.mismatch == 'true'
+        id: active
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          active=false
+          for status in in_progress queued waiting pending; do
+            count="$(gh api \
+              "repos/${GITHUB_REPOSITORY}/actions/workflows/publish.yml/runs?status=${status}&per_page=1" \
+              --jq '.total_count' 2>/dev/null || echo 0)"
+            if [[ "${count:-0}" -gt 0 ]]; then
+              active=true
+              break
+            fi
+          done
+          echo "active=$active" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger central APT publication
+        if: steps.detect.outputs.mismatch == 'true' && steps.active.outputs.active != 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run publish.yml --repo "$GITHUB_REPOSITORY"
+          echo 'Triggered Publish Beta Repository because the public catalogue is behind a source release.'
+
+      - name: Report watcher state
+        shell: bash
+        run: |
+          if [[ "${{ steps.detect.outputs.mismatch }}" != "true" ]]; then
+            echo 'APT catalogue already matches the latest discoverable application releases.'
+          elif [[ "${{ steps.active.outputs.active }}" == "true" ]]; then
+            echo 'APT catalogue is behind, but a repository publication is already active.'
+          fi
