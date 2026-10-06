@@ -14,6 +14,7 @@ This file records user-visible, compatibility, architecture and validation chang
 
 ## Unreleased
 
+- Refresh the central APT catalogue for Filesystem Support 0.5.13.
 - Refresh the central APT catalogue for InfiltratorFS 0.18.94 and its repaired Ubuntu/Mint desktop integration packages.
 - Refresh the central APT catalogue for Filesystem Support 0.5.11 and verify Update Manager can see the released package.
 - Republish after the Filesystem Support 0.5.3 release so APT clients receive the complete five-entry Amiga catalogue and desktop media-detection package.
