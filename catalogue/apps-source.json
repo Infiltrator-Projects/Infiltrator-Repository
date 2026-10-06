@@ -22,6 +22,17 @@
     "expected_architecture": "amd64"
   },
   {
+    "id": "infiltrator-file-manager",
+    "name": "Files",
+    "repo": "Infiltrator-File-Manager",
+    "category": "System",
+    "description": "InfiltratorOS file manager with asynchronous browsing, deterministic operation architecture and InfiltratorFS-aware design.",
+    "deb_regex": "^infiltrator-file-manager_.*_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator-file-manager$",
+    "expected_architecture": "amd64"
+  },
+  {
     "id": "system-settings",
     "name": "System Settings",
     "repo": "System-Settings",
