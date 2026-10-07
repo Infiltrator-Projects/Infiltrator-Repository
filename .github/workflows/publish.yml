@@ -440,8 +440,7 @@ jobs:
             infiltrator-system-monitor system-monitor linux-system-monitor \
             infiltrator-software infiltrator-system-settings infiltrator-calendar \
             infiltrator-defragmenter linux-defragger \
-            infiltratorfs infiltratorfs-desktop-integration \
-            infiltratorfs-gnome-disk-utility infiltratorfs-libblockdev-fs3 \
+            infiltratorfs \
             infiltrator-calculator \
             mblink jaglink fordlink audilink bmwlink \
             egypt \
@@ -449,6 +448,19 @@ jobs:
             nps-wheres-wally-zabbix intune-zabbix-bridge
           do
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
+          done
+
+          # InfiltratorFS desktop integration is now owned by the single
+          # infiltratorfs package. The retired helper packages must not return.
+          for retired in \
+            infiltratorfs-desktop-integration \
+            infiltratorfs-gnome-disk-utility \
+            infiltratorfs-libblockdev-fs3
+          do
+            if apt-cache policy "$retired" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'; then
+              echo "Retired InfiltratorFS helper package is still published: $retired" >&2
+              exit 1
+            fi
           done
 
           # Exercise a real package-name migration: install the newest retained
