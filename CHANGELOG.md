@@ -16,7 +16,7 @@ This file records user-visible, compatibility, architecture and validation chang
 
 - Publish Infiltrator File Manager 0.1.2 to the central APT repository so Mint Update Manager receives the released Files package.
 - Refresh the central APT catalogue for Filesystem Support 0.5.13.
-- Refresh the central APT catalogue for InfiltratorFS 0.18.95 and its repaired Ubuntu/Mint desktop integration package.
+- Refresh the central APT catalogue for InfiltratorFS 0.18.97 and its repaired Ubuntu/Mint desktop integration package.
 - Refresh the central APT catalogue for Filesystem Support 0.5.11 and verify Update Manager can see the released package.
 - Republish after the Filesystem Support 0.5.3 release so APT clients receive the complete five-entry Amiga catalogue and desktop media-detection package.
 - Advance all Package Repository Common consumers, including publication, Pages deployment and private-mirror synchronisation, to released Infiltratr Common 1.19.10 at `33e69c0a462b56d388881d89c4eb49f72fa0b0fe`.
