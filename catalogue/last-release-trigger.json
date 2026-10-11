@@ -1,5 +1,5 @@
 {
-  "reason": "publish Filesystem Support 0.5.16",
+  "reason": "publish System Settings 0.4.73",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -57,9 +57,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.4.35",
-      "release_sha": "a6439f63d0b45c67fecdcce50aaca1e7a7c49040",
-      "release_published_at": "2026-09-26T12:46:38Z"
+      "version": "0.4.73",
+      "release_sha": "f0d8da39267150340a7046474c6fc9437fe1627d",
+      "release_published_at": "2026-10-11T21:46:17Z"
     },
     {
       "repository": "Infiltrator-Projects/Filesystem-Support",
