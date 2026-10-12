@@ -20,9 +20,10 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    # Automatic repository publication must complete inside the ten-minute ceiling.
-    # The heavyweight Mint lifecycle test is manual-only below.
+    timeout-minutes: 30
+    # Repository-wide retrieval, signing and verification is deliberately
+    # bounded, with enough headroom for normal upstream/network variance.
+    # The heavyweight Mint lifecycle test remains manual-only below.
     concurrency:
       group: pages
       # Never cancel an in-flight repository publication. A later queued run
