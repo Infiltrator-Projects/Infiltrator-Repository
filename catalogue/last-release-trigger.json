@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Settings 0.4.73",
+  "reason": "publish System Settings 0.4.77",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -57,9 +57,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.4.73",
-      "release_sha": "f0d8da39267150340a7046474c6fc9437fe1627d",
-      "release_published_at": "2026-10-11T21:46:17Z"
+      "version": "0.4.77",
+      "release_sha": "b3fbfa911c65b405a08a1ce7f9af8482cfc6eec7",
+      "release_published_at": "2026-10-12T02:43:24Z"
     },
     {
       "repository": "Infiltrator-Projects/Filesystem-Support",
