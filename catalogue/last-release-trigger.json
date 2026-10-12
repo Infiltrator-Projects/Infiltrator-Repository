@@ -1,5 +1,5 @@
 {
-  "reason": "publish Files 0.1.20",
+  "reason": "publish Defragmenter 1.8.0-254",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -84,6 +84,12 @@
       "version": "1.0.3",
       "release_sha": "6aed0515f23f78086e0d667317538be46631ced3",
       "release_published_at": "2026-09-27T12:49:57Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Defragmenter",
+      "version": "1.8.0-254",
+      "release_sha": "2c8bee8ce2b2e9dd25c2608c6b56e6339efddc68",
+      "release_published_at": "2026-10-12T04:08:32Z"
     }
   ]
 }
