@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Settings 0.4.78",
+  "reason": "publish Files 0.1.19",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -18,6 +18,12 @@
       "version": "0.3.53",
       "release_sha": "319bedb6289a4aa15a6c8b223680e0ceb2e562ed",
       "release_published_at": "2026-09-27T12:33:12Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Infiltrator-File-Manager",
+      "version": "0.1.19",
+      "release_sha": "10d1ff196b8dc41cbc9c89b7195ea548aea042ed",
+      "release_published_at": "2026-10-12T03:06:48Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
