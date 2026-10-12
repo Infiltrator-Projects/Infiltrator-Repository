@@ -1,5 +1,5 @@
 {
-  "reason": "publish Defragmenter 1.8.0-254",
+  "reason": "publish System Settings 0.4.80",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -63,9 +63,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.4.78",
-      "release_sha": "028bf83d70a31dc706b4cbd9087bd706e0a3b2c9",
-      "release_published_at": "2026-10-12T03:06:17Z"
+      "version": "0.4.80",
+      "release_sha": "6c3eff165b4350b9515b1598ae91b2cdf0f48cb5",
+      "release_published_at": "2026-10-12T09:56:37Z"
     },
     {
       "repository": "Infiltrator-Projects/Filesystem-Support",
