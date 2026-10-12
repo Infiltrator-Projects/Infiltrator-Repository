@@ -1,5 +1,5 @@
 {
-  "reason": "publish Files 0.1.19",
+  "reason": "publish Files 0.1.20",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -21,9 +21,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Infiltrator-File-Manager",
-      "version": "0.1.19",
-      "release_sha": "10d1ff196b8dc41cbc9c89b7195ea548aea042ed",
-      "release_published_at": "2026-10-12T03:06:48Z"
+      "version": "0.1.20",
+      "release_sha": "aaf683889b8476e8be59dbe2753249b48f0698fe",
+      "release_published_at": "2026-10-12T03:44:24Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
