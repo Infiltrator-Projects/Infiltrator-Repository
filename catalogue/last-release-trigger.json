@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Monitor 1.0.186",
+  "reason": "publish System Monitor 1.0.187",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -75,9 +75,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Monitor",
-      "version": "1.0.186",
-      "release_sha": "54fb042f9a003af511889284dba7b03e1cfa7757",
-      "release_published_at": "2026-10-12T21:42:29Z"
+      "version": "1.0.187",
+      "release_sha": "97af914ff8fb73f1518ee00cbb116fc882bde17f",
+      "release_published_at": "2026-10-12T22:23:48Z"
     },
     {
       "repository": "Infiltrator-Projects/Infiltrator-OS",
