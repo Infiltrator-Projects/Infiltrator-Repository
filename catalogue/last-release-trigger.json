@@ -1,5 +1,5 @@
 {
-  "reason": "publish System Monitor 1.0.188",
+  "reason": "publish System Settings 0.4.90",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -63,9 +63,9 @@
     },
     {
       "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.4.80",
-      "release_sha": "6c3eff165b4350b9515b1598ae91b2cdf0f48cb5",
-      "release_published_at": "2026-10-12T09:56:37Z"
+      "version": "0.4.90",
+      "release_sha": "80072999a9c54947e582ff68895738c50197ec06",
+      "release_published_at": "2026-10-13T05:13:12Z"
     },
     {
       "repository": "Infiltrator-Projects/Filesystem-Support",
