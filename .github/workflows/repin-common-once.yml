@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: One-shot Common repin
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/repin-common-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  repin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Repin maintained Common references and retire this workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          old_version = "1.19.35"
+          new_version = "1.19.42"
+          old_sha = "7cc5de3de0e94ed2cfcff0840bbb5346eb5c9c9f"
+          new_sha = "086b79504e3480167a23fe620820f074002413a7"
+          paths = [
+              Path(".github/workflows/publish.yml"),
+              Path(".github/workflows/sync-private-intune.yml"),
+              Path("README.md"),
+              Path("docs/ARCHITECTURE.md"),
+              Path("site/index.html"),
+              Path("tests/test_site_setup.py"),
+          ]
+
+          for path in paths:
+              text = path.read_text(encoding="utf-8")
+              updated = text.replace(old_version, new_version).replace(old_sha, new_sha)
+              if updated == text:
+                  raise SystemExit(f"expected Common pin not found in {path}")
+              path.write_text(updated, encoding="utf-8")
+
+          readme = Path("README.md")
+          text = readme.read_text(encoding="utf-8")
+          marker = (
+              f"Infiltratr Common {new_version} (`{new_sha}`) remains the lower-level "
+              "neutral design/infrastructure dependency. "
+          )
+          policy = (
+              "During pre-release estate development, Package Repository tracks the latest "
+              "qualified Common contract directly and must not lag by more than five published "
+              "Common releases. "
+          )
+          if policy not in text:
+              if marker not in text:
+                  raise SystemExit("README Common dependency marker changed unexpectedly")
+              text = text.replace(marker, marker + policy, 1)
+              readme.write_text(text, encoding="utf-8")
+
+          architecture = Path("docs/ARCHITECTURE.md")
+          text = architecture.read_text(encoding="utf-8")
+          marker = f"Common {new_version} remains the product-neutral layer beneath both sites."
+          policy = (
+              " During pre-release estate development, this repository follows the latest "
+              "qualified Common contract and may not remain more than five published Common "
+              "releases behind."
+          )
+          if policy.strip() not in text:
+              if marker not in text:
+                  raise SystemExit("Architecture Common dependency marker changed unexpectedly")
+              text = text.replace(marker, marker + policy, 1)
+              architecture.write_text(text, encoding="utf-8")
+          PY
+
+          rm .github/workflows/repin-common-once.yml
+
+          if grep -RFn --exclude-dir=.git \
+              -e '1.19.35' \
+              -e '7cc5de3de0e94ed2cfcff0840bbb5346eb5c9c9f' \
+              .github/workflows/publish.yml \
+              .github/workflows/sync-private-intune.yml \
+              README.md docs/ARCHITECTURE.md site/index.html tests/test_site_setup.py; then
+            echo 'Stale Common pin remains in maintained repository surfaces.' >&2
+            exit 1
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Repin repository tooling to Common 1.19.42'
+          git push origin HEAD:main
