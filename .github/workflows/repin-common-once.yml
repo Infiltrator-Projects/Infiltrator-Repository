@@ -21,7 +21,7 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Repin maintained Common references and retire this workflow
+      - name: Repin maintained non-workflow Common references
         shell: bash
         run: |
           set -euo pipefail
@@ -33,8 +33,6 @@ jobs:
           old_sha = "7cc5de3de0e94ed2cfcff0840bbb5346eb5c9c9f"
           new_sha = "086b79504e3480167a23fe620820f074002413a7"
           paths = [
-              Path(".github/workflows/publish.yml"),
-              Path(".github/workflows/sync-private-intune.yml"),
               Path("README.md"),
               Path("docs/ARCHITECTURE.md"),
               Path("site/index.html"),
@@ -80,8 +78,6 @@ jobs:
               architecture.write_text(text, encoding="utf-8")
           PY
 
-          rm .github/workflows/repin-common-once.yml
-
           if grep -RFn --exclude-dir=.git \
               -e '1.19.35' \
               -e '7cc5de3de0e94ed2cfcff0840bbb5346eb5c9c9f' \
@@ -94,7 +90,7 @@ jobs:
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
+          git add README.md docs/ARCHITECTURE.md site/index.html tests/test_site_setup.py
           git diff --cached --check
-          git commit -m 'Repin repository tooling to Common 1.19.42'
+          git commit -m 'Finish repository Common 1.19.42 repin'
           git push origin HEAD:main
