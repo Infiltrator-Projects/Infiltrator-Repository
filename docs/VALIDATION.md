@@ -7,7 +7,8 @@ The repository maintains direct tests for:
 - retention/version-selection behaviour;
 - signing and signature-generation paths;
 - private mirror policy;
-- software-centre/site setup.
+- software-centre/site setup;
+- required Slicer catalogue membership and exclusion of the mistaken inherited `2.9.6` package when publishing `0.0.1`.
 
 The publication workflow also exercises the real C++ repository tool and Debian utilities used by production.
 

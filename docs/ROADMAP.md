@@ -3,7 +3,7 @@
 ## Current foundation
 
 - C++17 first-party repository materialisation and catalogue generation.
-- Public GitHub release discovery for normal application packages.
+- Public GitHub release discovery for normal application packages, including Slicer with an explicit guard against reintroducing the mistaken inherited version.
 - Debian metadata/version validation and SHA-256 checks.
 - Retention and mirrored-package policy with automated tests.
 - Repository signing self-test path.

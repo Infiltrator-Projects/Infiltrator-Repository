@@ -18,6 +18,7 @@ The project values deterministic, explainable publication over novelty. A new de
 - System Settings
 - Software
 - Calendar
+- Slicer
 - Defragmenter
 - InfiltratorFS
 - Calculator
@@ -52,6 +53,8 @@ Every publish run:
 9. deploys the result to GitHub Pages.
 
 A missing latest package, ambiguous release asset or SHA-256 mismatch fails the publication rather than silently publishing questionable content.
+
+Slicer starts its Infiltrator product version at `0.0.1`. The mistakenly inherited `2.9.6` DEB is explicitly retired from APT discovery; it must not outrank the corrected product version. Its original GitHub tag and assets remain intact.
 
 ## Add to Linux Mint
 
@@ -107,7 +110,7 @@ from the runner rather than embedding protocol or Debian implementations.
 The production release path is C++17. The former Python publisher, mirror
 materialiser and Intune synchroniser have been removed rather than retained as
 a second implementation. Regression tests invoke the compiled C++ executable,
-so a green workflow validates the code that actually publishes the repository.
+so a green workflow validates the code that actually publishes the repository. Slicer publication has a regression fixture with both `v0.0.1` and the mistaken `v2.9.6` release, proving that only the corrected product package reaches the catalogue and APT indexes.
 
 The `publish` command performs release discovery, authenticated GitHub API
 access when `GITHUB_TOKEN` is available, published-mirror reuse, asset/hash
