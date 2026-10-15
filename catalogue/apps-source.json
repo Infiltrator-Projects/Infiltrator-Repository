@@ -115,6 +115,17 @@
     "expected_architecture": "amd64"
   },
   {
+    "id": "slicer",
+    "name": "Slicer",
+    "repo": "Slicer",
+    "category": "Productivity",
+    "description": "3D model slicing and print preparation for FFF and resin printers.",
+    "deb_regex": "^infiltrator-slicer_.*_amd64\\.deb$",
+    "icon": "software",
+    "expected_package_regex": "^infiltrator-slicer$",
+    "expected_architecture": "amd64"
+  },
+  {
     "id": "mblink",
     "name": "MBLINK",
     "repo": "MBLINK",

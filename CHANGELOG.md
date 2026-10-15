@@ -14,6 +14,8 @@ This file records user-visible, compatibility, architecture and validation chang
 
 ## Unreleased
 
+- Register the released Slicer Debian package in the catalogue, restoring release coverage so application updates including Runner Monitor 1.3.10 can reach APT clients.
+
 - Publish Infiltrator File Manager 0.1.2 to the central APT repository so Mint Update Manager receives the released Files package.
 - Refresh the central APT catalogue for Filesystem Support 0.5.13.
 - Refresh the central APT catalogue for InfiltratorFS 0.18.97 and its repaired Ubuntu/Mint desktop integration package.
