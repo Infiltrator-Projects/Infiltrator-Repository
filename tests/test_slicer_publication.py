@@ -10,6 +10,36 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
+def validate_published(public, expected_version=None):
+    apps = json.loads((public / "catalogue/apps.json").read_text())
+    slicers = [app for app in apps if app["id"] == "slicer"]
+    assert len(slicers) == 1, "The published catalogue must contain Slicer"
+    app = slicers[0]
+    assert app["package"] == "infiltrator-slicer" and app["architecture"] == "amd64", app
+    assert app["version"] != "2.9.6", app
+    if expected_version is not None:
+        assert app["version"] == expected_version, app
+    for suite in ("alpha", "beta"):
+        index = (public / f"dists/{suite}/main/binary-amd64/Packages").read_text()
+        versions = []
+        for stanza in index.split("\n\n"):
+            fields = dict(line.split(": ", 1) for line in stanza.splitlines()
+                          if ": " in line and not line.startswith(" "))
+            if fields.get("Package") == "infiltrator-slicer":
+                assert fields["Architecture"] == "amd64", fields
+                versions.append(fields["Version"])
+        assert app["version"] in versions and "2.9.6" not in versions, versions
+        assert set(versions) == {item["version"] for item in app["history"]}, versions
+        for version in versions:
+            assert subprocess.run(["dpkg", "--compare-versions", version, "le", app["version"]]).returncode == 0
+        print(f"PASS: {suite} APT selects Slicer {app['version']}; indexed versions: {', '.join(versions)}")
+    print(json.dumps({key: app[key] for key in ("id", "package", "version", "architecture", "asset", "sha256")}))
+
+
+if sys.argv[1] == "--published":
+    validate_published(Path(sys.argv[2]))
+    raise SystemExit(0)
+
 TOOL = Path(sys.argv[1]).resolve()
 entries = json.loads((ROOT / "catalogue/apps-source.json").read_text())
 matches = [entry for entry in entries if entry["id"] == "slicer"]
@@ -95,6 +125,7 @@ shutil.copyfile(source, output)
     for key in ("APT_SIGNING_KEY_B64", "APT_SIGNING_KEY_FINGERPRINT", "APT_SIGNING_PASSPHRASE"):
         env.pop(key, None)
     subprocess.run([str(TOOL), "publish"], cwd=root, env=env, check=True)
+    validate_published(root / "public", expected_version="0.0.1")
     apps = json.loads((root / "public/catalogue/apps.json").read_text())
     assert len(apps) == 1 and apps[0]["id"] == "slicer", apps
     assert apps[0]["version"] == "0.0.1", apps

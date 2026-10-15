@@ -30,7 +30,7 @@ That environment cannot prove runtime behaviour requiring a booted matching kern
 
 ## Publication criterion
 
-A publication is valid only when the exact workflow source completes package discovery/validation, repository generation and the required policy tests. The site and APT metadata must describe the same resolved package set.
+A publication is valid only when the exact workflow source completes package discovery/validation, repository generation and the required policy tests. The site and APT metadata must describe the same resolved package set. Before deployment, `tests/test_slicer_publication.py --published public` requires Slicer in the generated catalogue, compares its retained versions with both APT indexes, and rejects the inherited `2.9.6` package or any indexed version newer than the catalogue selection.
 
 ## Regression rule
 

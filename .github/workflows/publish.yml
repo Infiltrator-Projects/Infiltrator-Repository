@@ -107,7 +107,7 @@ jobs:
           test -s public/dists/beta/main/binary-amd64/Packages.gz
           test -s public/catalogue/apps.json
           test -s public/catalogue/repository.json
-          jq -e 'any(.[]; .id == "slicer" and .package == "infiltrator-slicer" and .architecture == "amd64" and .version != "2.9.6")' public/catalogue/apps.json
+          python3 tests/test_slicer_publication.py --published public
 
           # Filesystem Support owns desktop integration in its main package.
           # Never republish the retired helper or a package that depends on it.
