@@ -31,7 +31,6 @@ The project values deterministic, explainable publication over novelty. A new de
 - WHERE'S WALLY
 - Intune Zabbix Bridge
 - Runner Monitor
-- Slicer
 - Backyard Racer
 
 InfiltratorFS also publishes three separately versioned support packages through the same repository: Desktop Integration, GNOME Disks Integration and libblockdev Integration.
