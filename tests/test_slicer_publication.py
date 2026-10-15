@@ -8,6 +8,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import test_latest_release_deb_coverage as coverage
 
 ROOT = Path(__file__).resolve().parents[1]
 def validate_published(public, expected_version=None):
@@ -82,7 +83,8 @@ with tempfile.TemporaryDirectory(prefix="slicer-publication-") as td:
                        check=True, stdout=subprocess.DEVNULL)
         releases.append({
             "id": release_id, "tag_name": f"v{version}", "draft": False,
-            "prerelease": False, "published_at": "2026-10-16T00:00:00Z",
+            "prerelease": False, "published_at": (
+                "2026-10-16T00:00:00Z" if version == "0.0.1" else "2026-10-15T14:34:35Z"),
             "html_url": f"https://github.com/Infiltrator-Projects/Slicer/releases/tag/v{version}",
             "assets_url": f"https://api.github.com/repos/Infiltrator-Projects/Slicer/releases/{release_id}/assets",
         })
@@ -92,7 +94,15 @@ with tempfile.TemporaryDirectory(prefix="slicer-publication-") as td:
             "digest": "sha256:" + hashlib.sha256(deb.read_bytes()).hexdigest(),
             "size": deb.stat().st_size,
         }]))
+    # Reproduce the real API response: the inherited higher version appears first.
+    releases.reverse()
     (fixture / "releases.json").write_text(json.dumps(releases))
+    original_api = coverage.api_json
+    try:
+        coverage.api_json = lambda path: releases
+        assert coverage.latest_release("Infiltrator-Projects", "Slicer")["tag_name"] == "v0.0.1"
+    finally:
+        coverage.api_json = original_api
     bin_dir = root / "bin"
     bin_dir.mkdir()
     curl = bin_dir / "curl"

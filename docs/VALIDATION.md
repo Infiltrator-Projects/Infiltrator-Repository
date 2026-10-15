@@ -34,7 +34,7 @@ A publication is valid only when the exact workflow source completes package dis
 
 ## Regression rule
 
-Any failure that allowed wrong version selection, bad metadata, incorrect retention or inconsistent site/repository state should gain a permanent regression test.
+Any failure that allowed wrong version selection, bad metadata, incorrect retention or inconsistent site/repository state should gain a permanent regression test. Slicer discovery also tests a GitHub release list with the inherited higher version first; publication dates determine the latest eligible release, independently of API ordering.
 
 ## Forensic consistency regressions
 

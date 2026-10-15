@@ -35,11 +35,12 @@ def api_json(path):
 
 
 def latest_release(owner, repo):
-    releases = api_json(f"/repos/{owner}/{repo}/releases?per_page=10")
-    return next(
+    releases = api_json(f"/repos/{owner}/{repo}/releases?per_page=100")
+    return max(
         (release for release in releases
          if not release.get("draft") and not release.get("prerelease")),
-        None,
+        key=lambda release: release.get("published_at") or release.get("created_at") or "",
+        default=None,
     )
 
 

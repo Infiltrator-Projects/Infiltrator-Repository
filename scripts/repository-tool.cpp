@@ -455,7 +455,7 @@ static int sync_intune(const fs::path& root) {
                                               const std::string& expected_architecture,
                                               const std::string& version_regex) {
     const fs::path json = root / (".releases-" + repo + ".json");
-    const auto api = "https://api.github.com/repos/" + owner + "/" + repo + "/releases?per_page=5";
+    const auto api = "https://api.github.com/repos/" + owner + "/" + repo + "/releases?per_page=100";
     if (run("curl -fsSL --retry 5 " + github_headers() + " " + quote(api) +
             " -o " + quote(json.string())))
       throw std::runtime_error("unable to read releases for " + repo);
@@ -463,12 +463,16 @@ static int sync_intune(const fs::path& root) {
     /*
      * GitHub's release-list response can briefly expose a new release before
      * its embedded assets array is populated. The dedicated assets_url is the
-     * authoritative asset collection and becomes readable independently. Read
-     * each eligible release's assets endpoint before deciding whether the
-     * release contains the one primary DEB required by repository policy.
+     * authoritative asset collection and becomes readable independently.
+     *
+     * API list order is not a publication-date guarantee (in particular after
+     * resetting an inherited version sequence). Sort eligible releases before
+     * enforcing the latest-release contract. Read each release's assets endpoint
+     * before deciding whether the release contains the one primary DEB required by repository policy.
      */
     const auto releases_query =
-      "jq -r '[.[] | select((.draft|not) and (.prerelease|not))] | .[:5][] | "
+      "jq -r '[.[] | select((.draft|not) and (.prerelease|not))] | "
+      "sort_by(.published_at // .created_at // \"\") | reverse | .[:5][] | "
       "[.id,.tag_name,.html_url,(.published_at // .created_at // \"\"),.assets_url] | @tsv' " +
       quote(json.string());
     std::istringstream release_lines(command_output(releases_query));
