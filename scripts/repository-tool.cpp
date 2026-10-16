@@ -51,11 +51,34 @@ static std::string read(const fs::path& path) {
   return {std::istreambuf_iterator<char>(input), {}};
 }
 
+// Each invocation owns its scratch state. mkdtemp atomically creates a
+// mode-0700 directory; exceptions cannot strand a signing key in the checkout.
+class PrivateDirectory {
+ public:
+  explicit PrivateDirectory(const char* prefix) {
+    auto pattern = (fs::temp_directory_path() / (std::string(prefix) + "-XXXXXX")).string();
+    std::vector<char> buffer(pattern.begin(), pattern.end());
+    buffer.push_back('\0');
+    const char* created = ::mkdtemp(buffer.data());
+    if (!created) throw std::runtime_error("unable to create private temporary directory");
+    path_ = created;
+  }
+  PrivateDirectory(const PrivateDirectory&) = delete;
+  PrivateDirectory& operator=(const PrivateDirectory&) = delete;
+  ~PrivateDirectory() {
+    std::error_code ignored;
+    fs::remove_all(path_, ignored);
+  }
+  const fs::path& path() const noexcept { return path_; }
+ private:
+  fs::path path_;
+};
+
 static std::string command_output(const std::string& command) {
-  fs::path output = fs::current_path() / ".repository-tool-output";
+  PrivateDirectory temporary("repository-command");
+  const fs::path output = temporary.path() / "stdout";
   if (run(command + " > " + quote(output.string()))) throw std::runtime_error("command failed");
   auto value = read(output);
-  fs::remove(output);
   return value;
 }
 
@@ -891,8 +914,10 @@ static std::string publish_package_icon(const fs::path& root,
     const char* fingerprint = std::getenv("APT_SIGNING_KEY_FINGERPRINT");
     if ((key && *key) || (fingerprint && *fingerprint)) {
       if (!key || !*key || !fingerprint || !*fingerprint) throw std::runtime_error("APT signing requires key and fingerprint");
-      const fs::path ghome = root / ".repository-gnupg"; fs::remove_all(ghome); fs::create_directories(ghome);
-      const fs::path keyfile = root / ".repository-signing-key.b64"; write(keyfile, key);
+      PrivateDirectory signing("repository-signing");
+      const fs::path ghome = signing.path() / "gnupg";
+      fs::create_directory(ghome, signing.path());
+      const fs::path keyfile = signing.path() / "key.b64"; write(keyfile, key);
       if (run("base64 --decode " + quote(keyfile.string()) + " | GNUPGHOME=" + quote(ghome.string()) + " gpg --batch --import"))
         throw std::runtime_error("unable to import APT signing key");
       if (run("GNUPGHOME=" + quote(ghome.string()) + " gpg --batch --list-secret-keys " +
@@ -909,7 +934,7 @@ static std::string publish_package_icon(const fs::path& root,
       }
       if (run("GNUPGHOME=" + quote(ghome.string()) + " gpg --batch --export " + quote(fingerprint) + " > " + quote((public_dir / "repository-key.gpg").string())))
         throw std::runtime_error("unable to export repository key");
-      fs::remove_all(ghome); fs::remove(keyfile); signed_repo = true;
+      signed_repo = true;
     }
     const auto generated_at = trim_eol(command_output("date -u +%Y-%m-%dT%H:%M:%SZ"));
     write(public_dir / "catalogue" / "repository.json",

@@ -37,17 +37,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
       - name: Check out pinned Infiltratr Common 1.19.42
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
           ref: 086b79504e3480167a23fe620820f074002413a7
           path: _common
 
       - name: Check out pinned ssmithnet.net website family
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/ssmithnet.net
           ref: 7cd6a749f1e2dff23300c3bcf071e733bffc0475
@@ -74,6 +74,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic -pthread -I"$GITHUB_WORKSPACE/_common/include" tests/command_output_test.cpp "$GITHUB_WORKSPACE/build/common/libinfiltratr-common.a" -lm -ldl -o build/command-output-test
+          ./build/command-output-test
+          python3 tests/test_signing.py build/repository-tool
           python3 tests/test_site_setup.py
           python3 tests/test_publish_workflow.py
           python3 tests/test_private_mirror_policy.py
@@ -306,7 +309,7 @@ jobs:
       contents: read
       actions: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Withdraw archived APT snapshots containing the retired desktop package
         env:
           GH_TOKEN: ${{ github.token }}
@@ -318,10 +321,10 @@ jobs:
     if: github.event_name != 'schedule'
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
       - name: Check out pinned Infiltratr Common 1.19.42
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/Infiltrator-Libraries
           ref: 086b79504e3480167a23fe620820f074002413a7
@@ -356,7 +359,7 @@ jobs:
       )
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
       - name: Install Mint test tools
         run: |

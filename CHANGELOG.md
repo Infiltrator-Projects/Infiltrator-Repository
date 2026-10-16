@@ -1,5 +1,11 @@
 ## 2026-09-19 — Joint forensic consistency completion
 
+## 2026-10-16 maintenance
+
+- Give command capture isolated temporary state and prevent concurrent calls from overwriting each other's output.
+- Scope private signing material to a mode-0700 temporary directory, including failure cleanup.
+- Qualify concurrent capture and compiled-publisher signing on the maintained publication path.
+
 - aligned the Software Centre with the pinned ssmithnet.net website family and Common 1.19.3;
 - made APT setup state-aware, line-scoped and safe across unsigned/signed transitions;
 - added independent Package/Version/Architecture release validation with executable regression fixtures;

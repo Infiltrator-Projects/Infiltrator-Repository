@@ -68,4 +68,8 @@ Each catalogue entry declares an expected Debian package-name regular expression
 
 ## Website family boundary
 
-The Software Centre consumes an immutable snapshot of the `ssmithnet.net` website family during publication. The pinned snapshot supplies the three Corpo font assets, shared site CSS, graphics and the cross-site output acceptance test. Package Repository retains its own catalogue layout and behaviour. Common 1.19.42 remains the product-neutral layer beneath both sites. During pre-release estate development, this repository follows the latest qualified Common contract and may not remain more than five published Common releases behind.
+The Software Centre consumes an immutable snapshot of the `ssmithnet.net` website family during publication. The pinned snapshot supplies the three Corpo font assets, shared site CSS, graphics and the cross-site output acceptance test. Package Repository retains its own catalogue layout and behaviour. The immutable Common checkout declared by the publication workflow supplies product-neutral mechanics beneath this site. During pre-release estate development, this repository follows the latest qualified Common contract and may not remain more than five published Common releases behind.
+
+## Temporary publication state
+
+Each command capture owns a private, unique temporary directory. Parallel processes and worker calls do not share a checkout-relative output filename. Signing material has a separate private scope and is removed during normal completion or exception unwinding. The checkout and generated public tree are not scratch owners for private key material.

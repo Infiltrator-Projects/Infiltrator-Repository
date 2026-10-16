@@ -84,7 +84,17 @@ Expire-Date: 1d
     env["APT_SIGNING_KEY_B64"] = base64.b64encode(secret).decode("ascii")
     env["APT_SIGNING_KEY_FINGERPRINT"] = fingerprint
     env.pop("APT_SIGNING_PASSPHRASE", None)
+    scratch = root / "scratch"
+    scratch.mkdir(mode=0o700)
+    env["TMPDIR"] = str(scratch)
     run([str(BINARY), "publish"], env=env, cwd=root)
+    assert not list(scratch.iterdir()), "private signing scratch survived publication"
+    failed_env = dict(env, APT_SIGNING_KEY_FINGERPRINT="0" * 40)
+    failed = subprocess.run([str(BINARY), "publish"], env=failed_env, cwd=root,
+                            capture_output=True, text=True)
+    assert failed.returncode != 0, "wrong signing fingerprint was accepted"
+    assert not list(scratch.iterdir()), "private signing scratch survived failure"
+    assert not (root / ".repository-signing-key.b64").exists()
 
     repository = json.loads((root / "public" / "catalogue" / "repository.json").read_text())
     assert repository["signed"] is True, repository

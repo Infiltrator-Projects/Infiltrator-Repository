@@ -44,3 +44,7 @@ Publication now exercises the defects reproduced in the 19 September 2026 joint 
 - `tests/test_site_setup.py` requires setup copying to remain disabled until repository metadata is verified, requires line-scoped cleanup of Infiltrator APT entries rather than whole-file suite rewriting, checks signed/unsigned canonical paths, keyboard-selection semantics and the package-icon path.
 - the pinned `ssmithnet.net/tests/check_web_family.py` runs against the completed Pages tree and requires canonical/Open Graph metadata, the shared navigation/landmarks and three real local Corpo WOFF2 assets.
 - package publication extracts an application icon from the verified current DEB when available; the catalogue references that published file and falls back to a built-in symbol only for packages without one.
+
+## Concurrent capture and signing failure
+
+The source workflow compiles a fixture against the actual publisher implementation. Eight workers capture distinct command outputs concurrently, a failed child command must report failure, and a private temporary directory must remain inaccessible to other users and disappear during exception unwinding. The existing compiled-publisher signing fixture verifies both signed suites and now also exercises a wrong-fingerprint failure with private scratch cleanup.
