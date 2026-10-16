@@ -284,10 +284,12 @@ jobs:
         run: |
           set -euo pipefail
           BASE="https://infiltrator-projects.github.io/Infiltrator-Repository"
+          expected_marker="$(sed -n '/<meta name="infiltrator-build" /p' site/index.html)"
+          test -n "$expected_marker"
           for attempt in $(seq 1 30); do
             body="$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "$BASE/?build=${GITHUB_SHA}" || true)"
             css="$(curl -fsS --max-time 20 -H 'Cache-Control: no-cache' "$BASE/assets/site.css?build=${GITHUB_SHA}" || true)"
-            if grep -Fq 'infiltrator-build" content="mb-corpo-card-type-v1' <<<"$body" \
+            if grep -Fq "$expected_marker" <<<"$body" \
               && ! grep -Fq 'raster-card' <<<"$body" \
               && ! grep -Fq 'Cascadia Mono' <<<"$body" \
               && grep -Fq 'font-family:"MB Corpo A"' <<<"$css" \

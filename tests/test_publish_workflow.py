@@ -22,4 +22,9 @@ concurrency_index = workflow.index("concurrency:", publish_index)
 cancel_index = workflow.index("cancel-in-progress: false", concurrency_index)
 assert publish_index < concurrency_index < cancel_index
 
+# A published-page identity follows the template rather than a retired UI label.
+assert 'expected_marker="$(sed -n' in workflow and "site/index.html)" in workflow
+assert 'grep -Fq "$expected_marker"' in workflow
+assert 'mb-corpo-card-type-v1' not in workflow
+
 print("Repository publication concurrency contract passed")
