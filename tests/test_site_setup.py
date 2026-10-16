@@ -18,8 +18,8 @@ assert "infiltrator-app-install-data" not in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
 assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
 assert "assets/infiltrator-web-v1.css?v=common-1.19.42" in site
-assert "assets/site.css?v=family-20260919" in site
-assert "assets/site-overrides.css?v=family-20260919" in site
+assert "assets/site.css?v=family-20261016-type" in site
+assert "assets/site-overrides.css?v=family-20261016-type" in site
 assert "if(!repoReady||!repoInfo)return" in block
 assert 'id="copyRepo" disabled' in site
 assert "\\#\"+legacyBase+\"#d" in block

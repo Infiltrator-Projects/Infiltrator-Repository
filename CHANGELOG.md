@@ -2,6 +2,8 @@
 
 ## 2026-10-16 — Publication robustness
 
+- Refresh the pinned website family and stylesheet version for readable shared blue labels; the Software Centre heading label follows the same 14px size.
+
 - Isolate concurrent command capture and private signing state, including exception cleanup.
 - Qualify the real production concurrency, signing and failure paths.
 - Generate SHA256 and SHA512 by-hash indexes and retain verified previous index bytes for 24 hours across Pages deployments.
