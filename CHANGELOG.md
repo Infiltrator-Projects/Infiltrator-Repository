@@ -2,7 +2,7 @@
 
 ## 2026-10-16 — Publication robustness
 
-- Refresh the pinned website family for balanced typography, the fixed official Mercedes app blue (#00ADEF) and readable supporting text; keep the Software Centre introduction on the same heading and label scale.
+- Refresh the pinned website family for balanced typography, the original locked MB fonts, palette and wordmark (including #00ADEF) and readable supporting text; keep the Software Centre introduction on the same heading and label scale.
 
 - Isolate concurrent command capture and private signing state, including exception cleanup.
 - Qualify the real production concurrency, signing and failure paths.
