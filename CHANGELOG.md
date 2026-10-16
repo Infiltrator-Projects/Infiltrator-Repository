@@ -1,10 +1,14 @@
+# Changelog
+
+## 2026-10-16 — Publication robustness
+
+- Isolate concurrent command capture and private signing state, including exception cleanup.
+- Qualify the real production concurrency, signing and failure paths.
+- Generate SHA256 and SHA512 by-hash indexes and retain verified previous index bytes for 24 hours across Pages deployments.
+- Separate bounded immutable metadata leases from eligible package selection; reject missing or corrupt retained indexes before publication.
+- Qualify transitions, expiry, migration and malformed-state rejection against the production index owner.
+
 ## 2026-09-19 — Joint forensic consistency completion
-
-## 2026-10-16 maintenance
-
-- Give command capture isolated temporary state and prevent concurrent calls from overwriting each other's output.
-- Scope private signing material to a mode-0700 temporary directory, including failure cleanup.
-- Qualify concurrent capture and compiled-publisher signing on the maintained publication path.
 
 - aligned the Software Centre with the pinned ssmithnet.net website family and Common 1.19.3;
 - made APT setup state-aware, line-scoped and safe across unsigned/signed transitions;

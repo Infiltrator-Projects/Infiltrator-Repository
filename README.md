@@ -47,7 +47,7 @@ Every publish run:
 4. requires and verifies each GitHub release asset SHA-256 digest;
 5. reads package metadata from the `.deb` itself with `dpkg-deb`;
 6. generates multiversion APT `Packages`, `Packages.gz` and `Release` metadata;
-7. publishes APT `by-hash` paths to avoid inconsistent metadata during CDN/cache transitions;
+7. publishes SHA256/SHA512 APT `by-hash` paths and retains verified previous index bytes for 24 hours across CDN/cache transitions;
 8. generates the software-centre catalogue from the same verified packages; and
 9. deploys the result to GitHub Pages.
 

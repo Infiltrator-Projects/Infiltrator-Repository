@@ -4,6 +4,8 @@
 // sha256sum helpers rather than embedding an HTTP, Debian or OpenPGP stack.
 // This keeps the executable small and makes it usable on GitHub's Ubuntu
 // runners as well as ordinary Debian-based development systems.
+#include "apt-index-history.hpp"
+#include <ctime>
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
@@ -736,7 +738,47 @@ static std::string publish_package_icon(const fs::path& root,
 }
 
 
-  static int publish(const fs::path& root) {
+static std::string index_digest(const std::string& algorithm, const fs::path& file) {
+  if (algorithm == "SHA256") return digest(file);
+  if (algorithm != "SHA512") throw std::runtime_error("unsupported APT index hash");
+  std::istringstream output(command_output("sha512sum " + quote(file.string())));
+  std::string result;
+  output >> result;
+  if (!repository_indexes::valid_hash(algorithm, result))
+    throw std::runtime_error("unable to hash APT index");
+  return result;
+}
+
+static void retain_index_history(const fs::path& current, std::string previous_base) {
+  const auto now = static_cast<std::int64_t>(std::time(nullptr));
+  PrivateDirectory transfers("repository-index-history");
+  repository_indexes::Loader load = [](const std::string&) -> std::optional<fs::path> {
+    return std::nullopt;
+  };
+  std::size_t response = 0;
+  if (!previous_base.empty()) {
+    if (previous_base.rfind("https://", 0) != 0 ||
+        previous_base.find_first_of("?#\r\n") != std::string::npos)
+      throw std::runtime_error("previous repository must be an HTTPS base URL");
+    while (previous_base.back() == '/') previous_base.pop_back();
+    load = [&](const std::string& relative) -> std::optional<fs::path> {
+      const auto destination = transfers.path() / ("response-" + std::to_string(response++));
+      const auto url = previous_base + "/" + relative + "?index-history=" + std::to_string(now);
+      const auto status = trim_eol(command_output(
+          "curl --silent --show-error --location --proto '=https' --proto-redir '=https' "
+          "--retry 2 --connect-timeout 15 --max-time 60 --max-filesize 16777216 --output " +
+          quote(destination.string()) + " --write-out '%{http_code}' " + quote(url)));
+      if (status == "404") return std::nullopt;
+      if (status != "200")
+        throw std::runtime_error("unable to retrieve previous APT index state: HTTP " + status);
+      return destination;
+    };
+  }
+  write(current / repository_indexes::manifest_path,
+        repository_indexes::retain(current, load, index_digest, now));
+}
+
+  static int publish(const fs::path& root, const std::string& previous_repository = {}) {
     const fs::path public_dir = root / "public";
     fs::remove_all(public_dir);
     fs::create_directories(public_dir / "pool" / "main");
@@ -906,8 +948,6 @@ static std::string publish_package_icon(const fs::path& root,
       const auto pos = release_text.find(marker);
       release_text.insert(pos == std::string::npos ? 0 : pos + marker.size(), "Acquire-By-Hash: yes\n");
       write(release, release_text);
-      const auto by_hash = binary / "by-hash" / "SHA256"; fs::create_directories(by_hash);
-      for (const auto& file : {binary / "Packages", binary / "Packages.gz"}) fs::copy_file(file, by_hash / digest(file), fs::copy_options::overwrite_existing);
     }
     bool signed_repo = false;
     const char* key = std::getenv("APT_SIGNING_KEY_B64");
@@ -945,6 +985,7 @@ static std::string publish_package_icon(const fs::path& root,
           std::to_string(catalogue_items.size()) +
           ",\"package_version_count\":" + std::to_string(package_version_count) +
           ",\"generated_at\":\"" + json_escape(generated_at) + "\"}\n");
+    retain_index_history(public_dir, previous_repository);
     std::cout << "Built " << catalogue_items.size() << " applications in " << public_dir << '\n';
     return 0;
   }
@@ -961,7 +1002,10 @@ int main(int argc, char** argv) {
       check_deb_expected(fs::path(argv[2]), version, argv[4], argv[5]);
       return 0;
     }
-    if (argc != 2) { std::cerr << "usage: repository-tool <materialize|sync-intune|publish|validate-deb>\n"; return 2; }
+    std::string previous_repository;
+    if (argc == 4 && std::string(argv[1]) == "publish" && std::string(argv[2]) == "--previous-url")
+      previous_repository = argv[3];
+    else if (argc != 2) { std::cerr << "usage: repository-tool <materialize|sync-intune|publish [--previous-url HTTPS_URL]|validate-deb>\n"; return 2; }
     fs::path root;
     if (const char* configured = std::getenv("REPOSITORY_ROOT"); configured && *configured) {
       root = fs::absolute(configured);
@@ -973,7 +1017,7 @@ int main(int argc, char** argv) {
     const std::string command = argv[1];
     if (command == "materialize") return materialize(root);
     if (command == "sync-intune") return sync_intune(root);
-    if (command == "publish") return publish(root);
+    if (command == "publish") return publish(root, previous_repository);
     throw std::runtime_error("unknown command: " + command);
   } catch (const std::exception& error) {
     std::cerr << "repository-tool: " << error.what() << '\n';

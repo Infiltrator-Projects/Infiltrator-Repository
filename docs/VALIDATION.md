@@ -48,3 +48,11 @@ Publication now exercises the defects reproduced in the 19 September 2026 joint 
 ## Concurrent capture and signing failure
 
 The source workflow compiles a fixture against the actual publisher implementation. Eight workers capture distinct command outputs concurrently, a failed child command must report failure, and a private temporary directory must remain inaccessible to other users and disappear during exception unwinding. The existing compiled-publisher signing fixture verifies both signed suites and now also exercises a wrong-fingerprint failure with private scratch cleanup.
+
+## APT index transitions
+
+tests/apt_index_history_test.cpp exercises the production history owner with disposable publication generations. It checks both hash algorithms, unchanged canonical indexes, preservation of previous bytes, recovery from legacy SHA256-only by-hash hosting, migration without a manifest, first publication, expiry after a long publication gap, and rejection of corrupt, missing or malformed unexpired state. Failed candidates never acquire a complete history manifest.
+
+After deployment, compare each catalogue application's version and SHA-256 with its primary GitHub Release DEB and the matching Package/Version/SHA256 records in both published APT suites. Resolve the hashes in each Release file against the canonical indexes and their SHA256/SHA512 by-hash URLs. A successful HTTP response alone does not prove that these identities agree. catalogue/repository.json records the observed signing state; disposable signing fixtures establish signing-code behavior separately from production key configuration.
+
+The [Debian repository format](https://wiki.debian.org/DebianRepository/Format#indices_acquisition_via_hashsums_.28by-hash.29) defines content-addressed acquisition and retention of previous metadata. The live Pages response advertised a 600-second cache lifetime during this review; the publisher retains index history for 24 hours.

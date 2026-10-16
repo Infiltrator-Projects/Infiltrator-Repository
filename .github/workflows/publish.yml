@@ -76,6 +76,8 @@ jobs:
         run: |
           g++ -std=c++17 -O2 -Wall -Wextra -pedantic -pthread -I"$GITHUB_WORKSPACE/_common/include" tests/command_output_test.cpp "$GITHUB_WORKSPACE/build/common/libinfiltratr-common.a" -lm -ldl -o build/command-output-test
           ./build/command-output-test
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic -I"$GITHUB_WORKSPACE/_common/include" tests/apt_index_history_test.cpp "$GITHUB_WORKSPACE/build/common/libinfiltratr-common.a" -lm -ldl -o build/apt-index-history-test
+          ./build/apt-index-history-test
           python3 tests/test_signing.py build/repository-tool
           python3 tests/test_site_setup.py
           python3 tests/test_publish_workflow.py
@@ -103,7 +105,7 @@ jobs:
           APT_SIGNING_KEY_FINGERPRINT: ${{ secrets.APT_SIGNING_KEY_FINGERPRINT }}
           APT_SIGNING_PASSPHRASE: ${{ secrets.APT_SIGNING_PASSPHRASE }}
         run: |
-          build/repository-tool publish
+          build/repository-tool publish --previous-url https://infiltrator-projects.github.io/Infiltrator-Repository
           test -s public/dists/alpha/Release
           test -s public/dists/alpha/main/binary-amd64/Packages.gz
           test -s public/dists/beta/Release

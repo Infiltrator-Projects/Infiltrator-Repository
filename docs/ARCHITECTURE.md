@@ -19,7 +19,7 @@ The executable deliberately uses narrow system tools for mechanisms that are alr
 - `curl` for HTTP transfer;
 - `jq` for selected JSON extraction;
 - `dpkg`/`dpkg-deb` for Debian version and package metadata semantics;
-- `sha256sum` for digest calculation;
+- `sha256sum` and `sha512sum` for digest calculation;
 - OpenPGP tooling in the signing path.
 
 Those commands are mechanisms behind project-owned policy. Their output is validated before it affects repository state.
@@ -73,3 +73,11 @@ The Software Centre consumes an immutable snapshot of the `ssmithnet.net` websit
 ## Temporary publication state
 
 Each command capture owns a private, unique temporary directory. Parallel processes and worker calls do not share a checkout-relative output filename. Signing material has a separate private scope and is removed during normal completion or exception unwinding. The checkout and generated public tree are not scratch owners for private key material.
+
+## APT index lifetime
+
+The catalogue and current indexes describe the selected five-version package set. Immutable metadata has a separate transport lifetime: scripts/apt-index-history.hpp owns SHA-256/SHA-512 by-hash materialisation and a bounded 24-hour lease for previous index bytes. The publication workflow passes the existing public HTTPS repository through --previous-url. A new deployment carries its verified prior indexes forward, so cached Release metadata can still resolve its content-addressed indexes during a Pages/CDN transition.
+
+The small catalogue/apt-index-history.tsv manifest records expiry, suite, algorithm and digest. Metadata records, index sizes and entry counts have explicit bounds. Previous bytes are verified against their content address before copying; a missing or corrupt unexpired record fails publication. A deployment predating the manifest is seeded from its current Release metadata. A first publication can start with no previous deployment. Expired older indexes are omitted from the fresh generated tree.
+
+This transport history does not change eligible application versions, current APT selection or package-retention policy. Common still owns atomic file publication, and curl plus the distribution SHA-2 tools own transport and digest mechanisms.
