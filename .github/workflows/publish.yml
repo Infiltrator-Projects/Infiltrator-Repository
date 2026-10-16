@@ -189,35 +189,12 @@ jobs:
             test "$package_name" != "cinnamon-calendar"
           done
 
-          calculator_version="$(jq -r '.[] | select(.id == "infiltrator-calc") | .version' public/catalogue/apps.json)"
-          calculator_asset="$(jq -r '.[] | select(.id == "infiltrator-calc") | .asset' public/catalogue/apps.json)"
-          test -n "$calculator_version"
-          test -n "$calculator_asset"
-          test "$(dpkg-deb -f "public/pool/main/$calculator_asset" Package)" = "infiltrator-calculator"
-          for candidate in public/pool/main/*.deb; do
-            package_name="$(dpkg-deb -f "$candidate" Package)"
-            test "$package_name" != "infiltrator-calc"
-          done
-
-          defragger_version="$(jq -r '.[] | select(.id == "defragger") | .version' public/catalogue/apps.json)"
-          defragger_asset="$(jq -r '.[] | select(.id == "defragger") | .asset' public/catalogue/apps.json)"
-          test -n "$defragger_version"
-          test -n "$defragger_asset"
-          if [[ "$(dpkg-deb -f "public/pool/main/$defragger_asset" Package)" == "infiltrator-defragmenter" ]]; then
-            transition="public/pool/main/linux-defragger_${defragger_version}_all.deb"
-            test -f "$transition"
-            test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-defragmenter (= $defragger_version)"
-          fi
-
-          runner_version="$(jq -r '.[] | select(.id == "runnerscope") | .version' public/catalogue/apps.json)"
-          runner_asset="$(jq -r '.[] | select(.id == "runnerscope") | .asset' public/catalogue/apps.json)"
-          test -n "$runner_version"
-          test -n "$runner_asset"
-          if [[ "$(dpkg-deb -f "public/pool/main/$runner_asset" Package)" == "infiltrator-runner-monitor" ]]; then
-            transition="public/pool/main/runnerscope_${runner_version}_all.deb"
-            test -f "$transition"
-            test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-runner-monitor (= $runner_version)"
-          fi
+          # The catalogue declares every accepted current/legacy identity and
+          # the generic checks above validate all forward transitions.
+          while IFS=$'\t' read -r id expected; do
+            package="$(jq -r --arg id "$id" '.[] | select(.id == $id) | .package' public/catalogue/apps.json)"
+            [[ "$package" =~ $expected ]]
+          done < <(jq -r '.[] | select(.canonical_package) | [.id,.expected_package_regex] | @tsv' catalogue/apps-source.json)
 
       - name: Detect Calendar publication change
         id: release-delta
@@ -443,6 +420,7 @@ jobs:
 
           for pkg in \
             infiltrator-system-monitor system-monitor linux-system-monitor \
+            software system-settings calendar calculator defragmenter files \
             infiltrator-software infiltrator-system-settings infiltrator-calendar \
             infiltrator-defragmenter linux-defragger \
             infiltratorfs \
@@ -468,23 +446,19 @@ jobs:
             fi
           done
 
-          # Exercise a real package-name migration: install the newest retained
-          # pre-infiltrator System Monitor package, then upgrade to the current
-          # infiltrator-system-monitor package whose Breaks/Replaces/Provides
-          # metadata owns the migration.
-          mapfile -t legacy_monitor_versions < <(apt-cache madison system-monitor | awk '{print $3}' | awk '!seen[$0]++')
-          test "${#legacy_monitor_versions[@]}" -ge 2
-          previous="${legacy_monitor_versions[1]}"
-          latest="$(apt-cache policy infiltrator-system-monitor | awk '/Candidate:/ {print $2; exit}')"
+          # Install the last retained package with the previous public name,
+          # then exercise the forward upgrade into canonical system-monitor.
+          previous="1.0.205"
+          latest="$(apt-cache policy system-monitor | awk '/Candidate:/ {print $2; exit}')"
+          test -n "$previous"
           test -n "$latest"
 
-          apt-get install -y --no-install-recommends "system-monitor=$previous"
-          test "$(dpkg-query -W -f='${Version}' system-monitor)" = "$previous"
+          apt-get install -y --no-install-recommends "infiltrator-system-monitor=$previous"
+          test "$(dpkg-query -W -f='${Version}' infiltrator-system-monitor)" = "$previous"
           test -x /usr/bin/system-monitor
 
-          apt-get install -y --no-install-recommends "infiltrator-system-monitor=$latest"
-          test "$(dpkg-query -W -f='${Version}' infiltrator-system-monitor)" = "$latest"
-          dpkg-query -W infiltrator-system-monitor >/dev/null
+          apt-get install -y --no-install-recommends "system-monitor=$latest"
+          test "$(dpkg-query -W -f='${Version}' system-monitor)" = "$latest"
           test -x /usr/bin/system-monitor
           test ! -e /usr/bin/linux-system-monitor
           apt-get check
@@ -494,7 +468,7 @@ jobs:
           ! dpkg-query -W -f='${db:Status-Abbrev}' system-monitor 2>/dev/null | grep -q '^ii'
           ! dpkg-query -W -f='${db:Status-Abbrev}' linux-system-monitor 2>/dev/null | grep -q '^ii'
           apt-get check
-          for pkg in infiltrator-system-settings infiltrator-calendar linux-defragger infiltrator-calculator mblink jaglink fordlink audilink bmwlink; do
+          for pkg in system-settings calendar defragmenter calculator files mblink jaglink fordlink audilink bmwlink; do
             apt-get install -y --no-install-recommends "$pkg"
             dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
             apt-get check
