@@ -2,7 +2,7 @@
 
 ## 2026-10-16 — Publication robustness
 
-- Refresh the pinned website family and stylesheet version for readable shared blue labels; the Software Centre heading label follows the same 14px size.
+- Refresh the pinned website family for balanced typography, restrained silver-blue accents and readable supporting text; keep the Software Centre introduction on the same heading and label scale.
 
 - Isolate concurrent command capture and private signing state, including exception cleanup.
 - Qualify the real production concurrency, signing and failure paths.
