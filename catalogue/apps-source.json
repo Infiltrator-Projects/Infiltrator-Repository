@@ -45,13 +45,13 @@
   },
   {
     "id": "infiltrator-os-plymouth-theme",
-    "name": "Infiltrator OS Plymouth Theme",
-    "repo": "Infiltrator-OS",
+    "name": "InfiltratorOS",
+    "repo": "InfiltratorOS",
     "category": "System",
     "description": "Infiltrator OS boot branding and native System Monitor integration.",
-    "deb_regex": "^infiltrator-os-plymouth-theme_.*_amd64\\.deb$",
+    "deb_regex": "^infiltratoros_.*_amd64\\.deb$",
     "icon": "settings",
-    "expected_package_regex": "^infiltrator-os-plymouth-theme$",
+    "expected_package_regex": "^infiltratoros$",
     "expected_architecture": "amd64"
   },
   {
@@ -93,7 +93,7 @@
   {
     "id": "filesystem-support",
     "name": "Filesystem Support",
-    "repo": "Filesystem-Support",
+    "repo": "Filesystems",
     "category": "Filesystems",
     "description": "Debian-first manager for discovering, installing, removing, loading and unloading filesystem support.",
     "deb_regex": "^Filesystem-Support-.*-amd64\\.deb$",
