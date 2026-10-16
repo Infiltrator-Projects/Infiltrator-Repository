@@ -2,6 +2,7 @@
 
 Package Repository uses the same canonical documentation structure as the rest of the Infiltrator project family.
 
+- [Engineering philosophy](PHILOSOPHY.md) — governing engineering and documentation standard.
 - [Architecture](ARCHITECTURE.md) — publication components, data flow and ownership.
 - [Design](DESIGN.md) — first-principles repository philosophy and failure model.
 - [Decisions](DECISIONS.md) — durable architectural choices.
