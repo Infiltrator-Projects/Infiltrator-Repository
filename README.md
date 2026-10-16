@@ -81,7 +81,7 @@ rm -f "$HOME/.cache/mintinstall/pkginfo.json"
 
 Linux Mint Software Manager keeps its own package cache. The setup command invalidates both the system and invoking user's Mint Software Manager caches after refreshing APT so newly added or renamed repository applications are rebuilt from the current APT package set. No repository metadata package is installed.
 
-The repository publishes only the `beta` suite. The former `alpha` suite is not published or aliased. The `stable` suite is deliberately reserved for a future stable channel and is not published as a beta alias.
+The primary suite is `beta`. The publisher also emits `alpha` metadata for compatibility with existing APT entries. Both suites use the same verified package set and qualification gates. The `stable` suite remains reserved for a future stable channel.
 
 ## Signing readiness
 
@@ -124,7 +124,7 @@ break offline/static hosting and is neither necessary nor supported.
 
 Every non-scheduled publish runs the signing self-test. The heavier Mint lifecycle test runs on manual workflow dispatch, or on an explicitly tagged promotion push containing `[mint-e2e]`, after publication succeeds.
 
-The signing self-test creates a disposable CI-only OpenPGP key, signs the `beta` suite through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
+The signing self-test creates a disposable CI-only OpenPGP key, signs the `alpha` and `beta` suites through the real repository signing code, imports the generated public key into a fresh keyring and verifies both `InRelease` and `Release.gpg`.
 
 The Mint lifecycle test downloads the Linux Mint 22.3 Cinnamon ISO from the kernel.org Linux Mint mirror, verifies the ISO against its published SHA-256 list, extracts the genuine Mint `filesystem.squashfs`, and performs APT testing inside that clean Mint userspace. It checks repository discovery for the published package set, installs an older System Monitor and upgrades it to the current version, installs and removes the standard desktop applications, and runs `apt-get check` throughout. InfiltratorFS is dependency-resolved but not kernel-loaded in the chroot because DKMS runtime validation requires a booted Mint kernel. WHERE'S WALLY and Intune Zabbix Bridge are retrieved and Debian-metadata validated because complete installation also requires external Zabbix packages.
 
@@ -161,6 +161,6 @@ metadata + by-hash          ↓
 
 ## Website family contract
 
-The Software Centre is the distribution surface of the same website family as `ssmithnet.net`. Publication pins the family source at `ssmithnet.net` commit `7cd6a749f1e2dff23300c3bcf071e733bffc0475` and copies its self-contained typography, graphics and interaction layer into the Pages artifact. The shared acceptance test from that same immutable commit checks canonical metadata, landmarks, navigation, local assets and the three real Corpo font files.
+The Software Centre is the distribution surface of the same website family as `ssmithnet.net`. The [publication workflow](.github/workflows/publish.yml) owns the immutable `ssmithnet.net` family source revision and copies its self-contained typography, graphics and interaction layer into the Pages artifact. The shared acceptance test from that same immutable commit checks canonical metadata, landmarks, navigation, local assets and the three real Corpo font files.
 
-Infiltratr Common 1.19.42 (`086b79504e3480167a23fe620820f074002413a7`) remains the lower-level neutral design/infrastructure dependency. During pre-release estate development, Package Repository tracks the latest qualified Common contract directly and must not lag by more than five published Common releases. Package Repository owns catalogue behaviour, APT setup and package presentation. Application icons are extracted from the verified current DEB when the package contains a standard application icon, so a released icon update follows the package rather than a separate website illustration map; the compact built-in symbols are only a fallback for packages without a GUI icon.
+Common remains the lower-level neutral design and infrastructure dependency. Its immutable revision is owned by the [publication workflow](.github/workflows/publish.yml), alongside the family source pin. During pre-release estate development, Package Repository tracks the latest qualified Common contract directly and must not lag by more than five published Common releases. Package Repository owns catalogue behaviour, APT setup and package presentation. Application icons are extracted from the verified current DEB when the package contains a standard application icon, so a released icon update follows the package rather than a separate website illustration map; the compact built-in symbols are only a fallback for packages without a GUI icon.
