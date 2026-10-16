@@ -28,10 +28,10 @@ jobs:
       - name: Check out central repository
         uses: actions/checkout@v4
 
-      - name: Check out pinned Infiltratr Common 1.19.42
+      - name: Check out pinned Libraries 1.19.42
         uses: actions/checkout@v4
         with:
-          repository: Infiltrator-Projects/Infiltrator-Libraries
+          repository: Infiltrator-Projects/Libraries
           ref: 086b79504e3480167a23fe620820f074002413a7
           path: _common
 

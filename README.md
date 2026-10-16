@@ -22,15 +22,15 @@ The project values deterministic, explainable publication over novelty. A new de
 - Defragmenter
 - InfiltratorFS
 - Calculator
-- MBLINK
-- JAGLINK
-- FORDLINK
-- AUDILINK
-- BMWLINK
+- MBLink
+- JAGLink
+- FORDLink
+- AUDILink
+- BMWLink
 - Egypt
 - WHERE'S WALLY
 - Intune Zabbix Bridge
-- Runner Monitor
+- RunnerScope
 - Backyard Racer
 
 InfiltratorFS also publishes three separately versioned support packages through the same repository: Desktop Integration, GNOME Disks Integration and libblockdev Integration.

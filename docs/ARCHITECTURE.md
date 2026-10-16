@@ -26,7 +26,7 @@ Those commands are mechanisms behind project-owned policy. Their output is valid
 
 ### Common
 
-Pinned Infiltratr Common provides generic output escaping and durable atomic file publication. Repository-specific package selection, APT metadata, retention, signing and catalogue semantics remain local.
+Pinned Libraries provides generic output escaping and durable atomic file publication. Repository-specific package selection, APT metadata, retention, signing and catalogue semantics remain local.
 
 ### Mirrored packages
 

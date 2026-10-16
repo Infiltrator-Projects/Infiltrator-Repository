@@ -39,10 +39,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
-      - name: Check out pinned Infiltratr Common 1.19.42
+      - name: Check out pinned Libraries 1.19.42
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          repository: Infiltrator-Projects/Infiltrator-Libraries
+          repository: Infiltrator-Projects/Libraries
           ref: 086b79504e3480167a23fe620820f074002413a7
           path: _common
 
@@ -85,6 +85,7 @@ jobs:
           python3 tests/test_retention.py build/repository-tool
           python3 tests/test_release_identity.py build/repository-tool
           python3 tests/test_slicer_publication.py build/repository-tool
+          python3 tests/test_product_naming.py build/repository-tool
           python3 tests/test_latest_release_deb_coverage.py
 
       - name: Read currently published Calendar version
@@ -164,34 +165,24 @@ jobs:
           test -f "$mirror"
           test "$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .asset' public/catalogue/apps.json)" = "$(basename "$mirror")"
 
-          monitor_version="$(jq -r '.[] | select(.id == "system-monitor") | .version' public/catalogue/apps.json)"
-          monitor_asset="$(jq -r '.[] | select(.id == "system-monitor") | .asset' public/catalogue/apps.json)"
-          test -n "$monitor_version"
-          test -n "$monitor_asset"
-          monitor_package="$(dpkg-deb -f "public/pool/main/$monitor_asset" Package)"
-          if [[ "$monitor_package" == "system-monitor" ]]; then
-            transition="public/pool/main/linux-system-monitor_${monitor_version}_all.deb"
-            test -f "$transition"
-            test "$(dpkg-deb -f "$transition" Package)" = "linux-system-monitor"
-            test "$(dpkg-deb -f "$transition" Depends)" = "system-monitor (= $monitor_version)"
-          elif [[ "$monitor_package" == "infiltrator-system-monitor" ]]; then
-            for old in system-monitor linux-system-monitor; do
-              transition="public/pool/main/${old}_${monitor_version}_all.deb"
-              test -f "$transition"
-              test "$(dpkg-deb -f "$transition" Package)" = "$old"
-              test "$(dpkg-deb -f "$transition" Depends)" = "infiltrator-system-monitor (= $monitor_version)"
-            done
-          else
-            echo "Unexpected System Monitor package identity: $monitor_package" >&2
-            exit 1
-          fi
+          # Verify every forward transition declared by the catalogue. During
+          # rollout a product can still have its previous immutable release.
+          while IFS=$'\t' read -r id canonical legacy; do
+            current="$(jq -r --arg id "$id" '.[] | select(.id == $id) | .package' public/catalogue/apps.json)"
+            [[ "$current" == "$canonical" ]] || continue
+            version="$(jq -r --arg id "$id" '.[] | select(.id == $id) | .version' public/catalogue/apps.json)"
+            transition="public/pool/main/${legacy}_${version}_all.deb"
+            test -s "$transition"
+            test "$(dpkg-deb -f "$transition" Package)" = "$legacy"
+            test "$(dpkg-deb -f "$transition" Depends)" = "$canonical (= $version)"
+          done < <(jq -r '.[] | select(.canonical_package) | . as $app | .legacy_packages[] | [$app.id,$app.canonical_package,.] | @tsv' catalogue/apps-source.json)
 
           calendar_version="$(jq -r '.[] | select(.id == "calendar") | .version' public/catalogue/apps.json)"
           calendar_asset="$(jq -r '.[] | select(.id == "calendar") | .asset' public/catalogue/apps.json)"
           test -n "$calendar_version"
           test -n "$calendar_asset"
           calendar_package="$(dpkg-deb -f "public/pool/main/$calendar_asset" Package)"
-          test "$calendar_package" = "infiltrator-calendar"
+          [[ "$calendar_package" == calendar || "$calendar_package" == infiltrator-calendar ]]
           for candidate in public/pool/main/*.deb; do
             package_name="$(dpkg-deb -f "$candidate" Package)"
             test "$package_name" != "calendar-plus"
@@ -247,7 +238,7 @@ jobs:
       - name: Deploy Pages through pinned COMMON
         id: deployment
         continue-on-error: true
-        uses: Infiltrator-Projects/Infiltrator-Libraries/.github/actions/deploy-pages@086b79504e3480167a23fe620820f074002413a7
+        uses: Infiltrator-Projects/Libraries/.github/actions/deploy-pages@086b79504e3480167a23fe620820f074002413a7
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
@@ -327,10 +318,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
-      - name: Check out pinned Infiltratr Common 1.19.42
+      - name: Check out pinned Libraries 1.19.42
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          repository: Infiltrator-Projects/Infiltrator-Libraries
+          repository: Infiltrator-Projects/Libraries
           ref: 086b79504e3480167a23fe620820f074002413a7
           path: _common
 
@@ -512,7 +503,7 @@ jobs:
             apt-get check
           done
 
-          # MBLINK and JAGLINK both consume LINK's OpenPort 2.0 support. Prove
+          # MBLink and JAGLink both consume Link's OpenPort 2.0 support. Prove
           # that their Debian packages are co-installable and own distinct udev
           # rule paths so dpkg cannot regress to a shared-file collision.
           apt-get install -y --no-install-recommends mblink jaglink

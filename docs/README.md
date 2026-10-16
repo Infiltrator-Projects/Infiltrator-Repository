@@ -7,6 +7,7 @@ Package Repository uses the same canonical documentation structure as the rest o
 - [Design](DESIGN.md) — first-principles repository philosophy and failure model.
 - [Decisions](DECISIONS.md) — durable architectural choices.
 - [Roadmap](ROADMAP.md) — current foundation and direction.
+- [Product naming](NAMING.md) — canonical product names and compatible package transitions.
 - [Validation](VALIDATION.md) — package, signing and lifecycle evidence.
 - [Project README](../README.md) — user/operator overview.
 - [Changelog](../CHANGELOG.md) — contract-relevant history.

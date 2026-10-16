@@ -16,7 +16,7 @@ def validate_published(public, expected_version=None):
     slicers = [app for app in apps if app["id"] == "slicer"]
     assert len(slicers) == 1, "The published catalogue must contain Slicer"
     app = slicers[0]
-    assert app["package"] == "infiltrator-slicer" and app["architecture"] == "amd64", app
+    assert app["package"] in {"slicer", "infiltrator-slicer"} and app["architecture"] == "amd64", app
     assert app["version"] != "2.9.6", app
     if expected_version is not None:
         assert app["version"] == expected_version, app
@@ -26,11 +26,11 @@ def validate_published(public, expected_version=None):
         for stanza in index.split("\n\n"):
             fields = dict(line.split(": ", 1) for line in stanza.splitlines()
                           if ": " in line and not line.startswith(" "))
-            if fields.get("Package") == "infiltrator-slicer":
+            if fields.get("Package") == app["package"]:
                 assert fields["Architecture"] == "amd64", fields
                 versions.append(fields["Version"])
         assert app["version"] in versions and "2.9.6" not in versions, versions
-        assert set(versions) == {item["version"] for item in app["history"]}, versions
+        assert set(versions) == {item["version"] for item in app["history"] if item["package"] == app["package"]}, versions
         for version in versions:
             assert subprocess.run(["dpkg", "--compare-versions", version, "le", app["version"]]).returncode == 0
         print(f"PASS: {suite} APT selects Slicer {app['version']}; indexed versions: {', '.join(versions)}")
@@ -47,7 +47,9 @@ matches = [entry for entry in entries if entry["id"] == "slicer"]
 assert len(matches) == 1, "Slicer must remain an explicit catalogue application"
 entry = matches[0]
 assert entry["repo"] == "Slicer"
-assert entry["expected_package_regex"] == "^infiltrator-slicer$"
+assert re.fullmatch(entry["expected_package_regex"], "slicer")
+assert re.fullmatch(entry["expected_package_regex"], "infiltrator-slicer")
+assert entry["canonical_package"] == "slicer"
 assert entry["expected_architecture"] == "amd64"
 assert not entry.get("optional_until_release"), "Published Slicer must not silently disappear"
 active = re.compile(entry["deb_regex"])

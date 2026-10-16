@@ -7,8 +7,13 @@
     "description": "Native Linux system monitoring for Mint and other Debian-family desktops.",
     "deb_regex": "^(infiltrator-system-monitor|system-monitor|linux-system-monitor)_.*_amd64\\.deb$",
     "icon": "monitor",
-    "expected_package_regex": "^(infiltrator-system-monitor|system-monitor|linux-system-monitor)$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(system-monitor|infiltrator-system-monitor|linux-system-monitor)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "system-monitor",
+    "legacy_packages": [
+      "infiltrator-system-monitor",
+      "linux-system-monitor"
+    ]
   },
   {
     "id": "software",
@@ -16,21 +21,29 @@
     "repo": "Software",
     "category": "System",
     "description": "Unified Infiltrator software discovery, installation, updates, repositories, history and repair.",
-    "deb_regex": "^software_.*_amd64\\.deb$",
+    "deb_regex": "^(software|infiltrator-software)_.*_amd64\\.deb$",
     "icon": "software",
-    "expected_package_regex": "^infiltrator-software$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(software|infiltrator-software)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "software",
+    "legacy_packages": [
+      "infiltrator-software"
+    ]
   },
   {
     "id": "infiltrator-file-manager",
     "name": "Files",
-    "repo": "Infiltrator-File-Manager",
+    "repo": "Files",
     "category": "System",
     "description": "InfiltratorOS file manager with asynchronous browsing, deterministic operation architecture and InfiltratorFS-aware design.",
-    "deb_regex": "^infiltrator-file-manager_.*_amd64\\.deb$",
+    "deb_regex": "^(files|infiltrator-file-manager)_.*_amd64\\.deb$",
     "icon": "filesystem",
-    "expected_package_regex": "^infiltrator-file-manager$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(files|infiltrator-file-manager)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "files",
+    "legacy_packages": [
+      "infiltrator-file-manager"
+    ]
   },
   {
     "id": "system-settings",
@@ -38,10 +51,14 @@
     "repo": "System-Settings",
     "category": "System",
     "description": "Native system-wide settings shell and shared policy controls for Infiltrator applications.",
-    "deb_regex": "^infiltrator-system-settings_.*_amd64\\.deb$",
+    "deb_regex": "^(system-settings|infiltrator-system-settings)_.*_amd64\\.deb$",
     "icon": "settings",
-    "expected_package_regex": "^infiltrator-system-settings$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(system-settings|infiltrator-system-settings)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "system-settings",
+    "legacy_packages": [
+      "infiltrator-system-settings"
+    ]
   },
   {
     "id": "infiltratoros",
@@ -63,23 +80,31 @@
     "repo": "Calendar",
     "category": "Productivity",
     "description": "Enhanced Cinnamon clock and calendar with multiple time and calendar systems.",
-    "deb_regex": "^calendar_.*_amd64\\.deb$",
+    "deb_regex": "^(calendar|infiltrator-calendar)_.*_amd64\\.deb$",
     "icon": "calendar",
-    "expected_package_regex": "^infiltrator-calendar$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(calendar|infiltrator-calendar)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "calendar",
+    "legacy_packages": [
+      "infiltrator-calendar"
+    ]
   },
   {
     "id": "slicer",
     "name": "Slicer",
     "repo": "Slicer",
     "category": "Productivity",
-    "description": "Infiltrator 3D-print preparation, model slicing and G-code generation for FFF and resin printers.",
-    "deb_regex": "^infiltrator-slicer_(?!2\\.9\\.6_)[^_]+_amd64\\.deb$",
+    "description": "3D-print preparation, model slicing and G-code generation for FFF and resin printers.",
+    "deb_regex": "^(slicer|infiltrator-slicer)_(?!2\\.9\\.6_)[^_]+_amd64\\.deb$",
     "icon": "slicer",
-    "expected_package_regex": "^infiltrator-slicer$",
+    "expected_package_regex": "^(slicer|infiltrator-slicer)$",
     "expected_architecture": "amd64",
     "retired_release_deb_regexes": [
       "^infiltrator-slicer_2\\.9\\.6_amd64\\.deb$"
+    ],
+    "canonical_package": "slicer",
+    "legacy_packages": [
+      "infiltrator-slicer"
     ]
   },
   {
@@ -88,10 +113,15 @@
     "repo": "Defragmenter",
     "category": "System",
     "description": "Direct filesystem analysis and layout optimisation tooling.",
-    "deb_regex": "^(Defragmenter-.*-amd64\\.deb|linux-defragger_.*_amd64\\.deb)$",
+    "deb_regex": "^(Defragmenter-.*-amd64\\.deb|(defragmenter|infiltrator-defragmenter|linux-defragger)_.*_amd64\\.deb)$",
     "icon": "disk",
-    "expected_package_regex": "^(infiltrator-defragmenter|linux-defragger)$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(defragmenter|infiltrator-defragmenter|linux-defragger)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "defragmenter",
+    "legacy_packages": [
+      "infiltrator-defragmenter",
+      "linux-defragger"
+    ]
   },
   {
     "id": "filesystems",
@@ -129,29 +159,34 @@
     "repo": "Calculator",
     "category": "Productivity",
     "description": "Native cross-platform calculator with Standard, Scientific and Programmer modes.",
-    "deb_regex": "^calculator_.*_amd64\\.deb$",
+    "deb_regex": "^(calculator|infiltrator-calculator)_.*_amd64\\.deb$",
     "icon": "calculator",
-    "expected_package_regex": "^infiltrator-calculator$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(calculator|infiltrator-calculator|infiltrator-calc)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "calculator",
+    "legacy_packages": [
+      "infiltrator-calculator",
+      "infiltrator-calc"
+    ]
   },
   {
     "id": "mblink",
-    "name": "MBLINK",
-    "repo": "MBLINK",
+    "name": "MBLink",
+    "repo": "MBLink",
     "category": "Automotive",
     "description": "Mercedes-Benz diagnostics and vehicle-data application family.",
-    "deb_regex": "^MBLINK-.*-linux-amd64\\.deb$",
+    "deb_regex": "^(MBLink|MBLINK)-.*-linux-amd64\\.deb$",
     "icon": "car",
     "expected_package_regex": "^mblink$",
     "expected_architecture": "amd64"
   },
   {
     "id": "jaglink",
-    "name": "JAGLINK",
-    "repo": "Jaglink",
+    "name": "JAGLink",
+    "repo": "JAGLink",
     "category": "Automotive",
     "description": "Jaguar diagnostics and vehicle-data application family.",
-    "deb_regex": "^JAGLINK-.*-linux-amd64\\.deb$",
+    "deb_regex": "^(JAGLink|JAGLINK)-.*-linux-amd64\\.deb$",
     "icon": "car",
     "expected_package_regex": "^jaglink$",
     "expected_architecture": "amd64"
@@ -170,34 +205,34 @@
   },
   {
     "id": "fordlink",
-    "name": "FORDLINK",
-    "repo": "FORDLINK",
+    "name": "FORDLink",
+    "repo": "FORDLink",
     "category": "Automotive",
-    "description": "Ford diagnostics with a generic LINK standards baseline.",
+    "description": "Ford diagnostics with a generic Link standards baseline.",
     "icon": "car",
-    "deb_regex": "^FORDLINK-.*-linux-amd64\\.deb$",
+    "deb_regex": "^(FORDLink|FORDLINK)-.*-linux-amd64\\.deb$",
     "expected_package_regex": "^fordlink$",
     "expected_architecture": "amd64"
   },
   {
     "id": "audilink",
-    "name": "AUDILINK",
-    "repo": "AUDILINK",
+    "name": "AUDILink",
+    "repo": "AUDILink",
     "category": "Automotive",
-    "description": "Audi diagnostics with a generic LINK standards baseline.",
+    "description": "Audi diagnostics with a generic Link standards baseline.",
     "icon": "car",
-    "deb_regex": "^AUDILINK-.*-linux-amd64\\.deb$",
+    "deb_regex": "^(AUDILink|AUDILINK)-.*-linux-amd64\\.deb$",
     "expected_package_regex": "^audilink$",
     "expected_architecture": "amd64"
   },
   {
     "id": "bmwlink",
-    "name": "BMWLINK",
+    "name": "BMWLink",
     "repo": "BMWLink",
     "category": "Automotive",
-    "description": "BMW diagnostics with a generic LINK standards baseline.",
+    "description": "BMW diagnostics with a generic Link standards baseline.",
     "icon": "car",
-    "deb_regex": "^BMWLINK-.*-linux-amd64\\.deb$",
+    "deb_regex": "^(BMWLink|BMWLINK)-.*-linux-amd64\\.deb$",
     "expected_package_regex": "^bmwlink$",
     "expected_architecture": "amd64"
   },
@@ -214,14 +249,18 @@
   },
   {
     "id": "runnerscope",
-    "name": "Runner Monitor",
+    "name": "RunnerScope",
     "repo": "RunnerScope",
     "category": "Development",
     "description": "GitHub Actions self-hosted runner monitoring, active jobs and local runner service health in the shared Infiltrator console.",
     "deb_regex": "^runnerscope_.*_amd64\\.deb$",
     "icon": "workflow",
-    "expected_package_regex": "^(infiltrator-runner-monitor|runnerscope)$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^(runnerscope|infiltrator-runner-monitor)$",
+    "expected_architecture": "amd64",
+    "canonical_package": "runnerscope",
+    "legacy_packages": [
+      "infiltrator-runner-monitor"
+    ]
   },
   {
     "id": "intune-zabbix-bridge",

@@ -815,18 +815,6 @@ static void retain_index_history(const fs::path& current, std::string previous_b
       if (!local_glob.empty())
         for (const auto& package : packages)
           check_deb_expected(package.path, package.version, expected_package_regex, expected_architecture);
-      if (id == "calendar") {
-        packages.erase(
-            std::remove_if(packages.begin(), packages.end(),
-                           [](const Package& package) {
-                             if (deb_field(package.path, "Package") ==
-                                 "infiltrator-calendar")
-                               return false;
-                             fs::remove(package.path);
-                             return true;
-                           }),
-            packages.end());
-      }
       if (packages.empty()) throw std::runtime_error(name + ": no mirrored DEBs");
       for (auto& package : packages) {
         const auto target = public_dir / "pool" / "main" / package.asset;
@@ -835,34 +823,29 @@ static void retain_index_history(const fs::path& current, std::string previous_b
       }
       const std::string current_package =
           deb_field(packages.front().path, "Package");
-      if (id == "system-monitor") {
-        if (current_package == "system-monitor") {
-          create_transition_package(root, public_dir,
-                                    "linux-system-monitor", "system-monitor",
-                                    packages.front().version, "System Monitor");
-        } else if (current_package == "infiltrator-system-monitor") {
-          create_transition_package(root, public_dir,
-                                    "system-monitor", "infiltrator-system-monitor",
-                                    packages.front().version, "System Monitor");
-          create_transition_package(root, public_dir,
-                                    "linux-system-monitor", "infiltrator-system-monitor",
-                                    packages.front().version, "System Monitor");
+      // Transition metadata is part of each catalogue identity. Only emit
+      // forward upgrades after the canonical package has been published.
+      // Retained historical artifacts never cause a reverse rename.
+      const auto transition_source = command_output(
+          "jq -r --arg id " + quote(id) +
+          " '.[] | select(.id == $id) | [(.canonical_package // \"\"),"
+          "((.legacy_packages // []) | join(\",\"))] | @tsv' " +
+          quote((root / "catalogue/apps-source.json").string()));
+      const auto separator = transition_source.find('\t');
+      const std::string canonical_package =
+          trim_eol(transition_source.substr(0, separator));
+      if (!canonical_package.empty() && current_package == canonical_package &&
+          separator != std::string::npos) {
+        std::istringstream legacy_names(trim_eol(transition_source.substr(separator + 1)));
+        std::string legacy_package;
+        while (std::getline(legacy_names, legacy_package, ',')) {
+          if (!std::regex_match(legacy_package, std::regex("^[a-z0-9][a-z0-9+.-]+$")) ||
+              legacy_package == canonical_package)
+            throw std::runtime_error(name + ": invalid legacy package transition");
+          create_transition_package(root, public_dir, legacy_package,
+                                    canonical_package, packages.front().version, name);
         }
       }
-      // Calculator intentionally has one public APT identity.  The renamed
-      // package itself carries Breaks/Replaces/Provides for old installations;
-      // do not emit an empty infiltrator-calc transition package because Mint
-      // Software Manager exposes transition packages as duplicate applications.
-      if (id == "defragger" &&
-          current_package == "infiltrator-defragmenter")
-        create_transition_package(root, public_dir,
-                                  "linux-defragger", "infiltrator-defragmenter",
-                                  packages.front().version, "Defragmenter");
-      if (id == "runnerscope" &&
-          current_package == "infiltrator-runner-monitor")
-        create_transition_package(root, public_dir,
-                                  "runnerscope", "infiltrator-runner-monitor",
-                                  packages.front().version, "Runner Monitor");
       if (packages.size() > 5) packages.resize(5);
       package_version_count += packages.size();
       std::ostringstream history;
@@ -941,7 +924,7 @@ static void retain_index_history(const fs::path& current, std::string previous_b
         "-o APT::FTPArchive::Release::Label='Infiltrator " + suite_label + "' "
         "-o APT::FTPArchive::Release::Suite=" + suite + " -o APT::FTPArchive::Release::Codename=" + suite +
         " -o APT::FTPArchive::Release::Architectures=amd64 -o APT::FTPArchive::Release::Components=main "
-        "-o APT::FTPArchive::Release::Description='Infiltrator Software Repository " + suite + "' release dists/" + suite;
+        "-o APT::FTPArchive::Release::Description='Software Repository " + suite + "' release dists/" + suite;
       if (run(command + " > " + quote(temp.string()))) throw std::runtime_error("apt-ftparchive failed");
       auto release_text = read(temp); fs::remove(temp);
       const auto marker = "Codename: " + suite + "\n";
@@ -978,7 +961,7 @@ static void retain_index_history(const fs::path& current, std::string previous_b
     }
     const auto generated_at = trim_eol(command_output("date -u +%Y-%m-%dT%H:%M:%SZ"));
     write(public_dir / "catalogue" / "repository.json",
-          "{\"name\":\"Infiltrator Software\",\"suite\":\"beta\","
+          "{\"name\":\"Software\",\"suite\":\"beta\","
           "\"stable_reserved\":true,"
           "\"signed\":" + std::string(signed_repo ? "true" : "false") +
           ",\"history_limit\":5,\"app_count\":" +
