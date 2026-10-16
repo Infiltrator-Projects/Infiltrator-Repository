@@ -89,12 +89,7 @@ Expire-Date: 1d
     env["TMPDIR"] = str(scratch)
     run([str(BINARY), "publish"], env=env, cwd=root)
     assert not list(scratch.iterdir()), "private signing scratch survived publication"
-    failed_env = dict(env, APT_SIGNING_KEY_FINGERPRINT="0" * 40)
-    failed = subprocess.run([str(BINARY), "publish"], env=failed_env, cwd=root,
-                            capture_output=True, text=True)
-    assert failed.returncode != 0, "wrong signing fingerprint was accepted"
-    assert not list(scratch.iterdir()), "private signing scratch survived failure"
-    assert not (root / ".repository-signing-key.b64").exists()
+
 
     repository = json.loads((root / "public" / "catalogue" / "repository.json").read_text())
     assert repository["signed"] is True, repository
@@ -113,5 +108,12 @@ Expire-Date: 1d
         directory = root / "public" / "dists" / suite
         run(["gpg", "--batch", "--verify", str(directory / "InRelease")], env=verify_env)
         run(["gpg", "--batch", "--verify", str(directory / "Release.gpg"), str(directory / "Release")], env=verify_env)
+
+    failed_env = dict(env, APT_SIGNING_KEY_FINGERPRINT="0" * 40)
+    failed = subprocess.run([str(BINARY), "publish"], env=failed_env, cwd=root,
+                            capture_output=True, text=True)
+    assert failed.returncode != 0, "wrong signing fingerprint was accepted"
+    assert not list(scratch.iterdir()), "private signing scratch survived failure"
+    assert not (root / ".repository-signing-key.b64").exists()
 
 print("PASS: compiled C++ publisher signs and verifies alpha and beta suites")
