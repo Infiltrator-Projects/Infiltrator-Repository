@@ -29,7 +29,10 @@ with tempfile.TemporaryDirectory(prefix='product-naming-') as temporary:
         item['local_deb_glob'] = f"fixtures/{item['id']}/*.deb"
         fixture = root / 'fixtures' / item['id']
         fixture.mkdir(parents=True)
-        for package, version in [(item['canonical_package'], '9.0.1'), (item['legacy_packages'][0], '9.0.0')]:
+        versions = [(item['canonical_package'], '9.0.1')]
+        if item['legacy_packages']:
+            versions.append((item['legacy_packages'][0], '9.0.0'))
+        for package, version in versions:
             stage = root / 'stage'
             (stage / 'DEBIAN').mkdir(parents=True, exist_ok=True)
             (stage / 'DEBIAN/control').write_text(
@@ -60,6 +63,11 @@ with tempfile.TemporaryDirectory(prefix='product-naming-') as temporary:
     for item in fixtures:
         for package in (root / 'fixtures' / item['id']).glob('*_9.0.1_amd64.deb'):
             package.unlink()
+    # Products without a co-installable transition require an explicit install
+    # of their canonical package; they have no legacy fallback in this fixture.
+    (root / 'catalogue/apps-source.json').write_text(json.dumps([
+        item for item in fixtures if item['legacy_packages']
+    ]))
     subprocess.run([str(TOOL), 'publish'], cwd=root, check=True, stdout=subprocess.DEVNULL)
     for entry in entries:
         assert not (root / f"public/pool/main/{entry['canonical_package']}_9.0.0_all.deb").exists()

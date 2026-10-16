@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish the corrected Slicer release without importing its inherited version."""
+"""Publish one Slicer identity while retiring every old-name package."""
 import hashlib
 import json
 import os
@@ -16,7 +16,8 @@ def validate_published(public, expected_version=None):
     slicers = [app for app in apps if app["id"] == "slicer"]
     assert len(slicers) == 1, "The published catalogue must contain Slicer"
     app = slicers[0]
-    assert app["package"] in {"slicer", "infiltrator-slicer"} and app["architecture"] == "amd64", app
+    assert app["name"] == "Slicer" and app["package"] == "slicer" and app["architecture"] == "amd64", app
+    assert app["asset"].startswith("slicer_"), app
     assert app["version"] != "2.9.6", app
     if expected_version is not None:
         assert app["version"] == expected_version, app
@@ -26,11 +27,12 @@ def validate_published(public, expected_version=None):
         for stanza in index.split("\n\n"):
             fields = dict(line.split(": ", 1) for line in stanza.splitlines()
                           if ": " in line and not line.startswith(" "))
-            if fields.get("Package") == app["package"]:
+            assert fields.get("Package") != "infiltrator-slicer", "Old name must not appear as another Software Manager application"
+            if fields.get("Package") == "slicer":
                 assert fields["Architecture"] == "amd64", fields
                 versions.append(fields["Version"])
         assert app["version"] in versions and "2.9.6" not in versions, versions
-        assert set(versions) == {item["version"] for item in app["history"] if item["package"] == app["package"]}, versions
+        assert set(versions) == {item["version"] for item in app["history"]}, versions
         for version in versions:
             assert subprocess.run(["dpkg", "--compare-versions", version, "le", app["version"]]).returncode == 0
         print(f"PASS: {suite} APT selects Slicer {app['version']}; indexed versions: {', '.join(versions)}")
@@ -47,18 +49,19 @@ matches = [entry for entry in entries if entry["id"] == "slicer"]
 assert len(matches) == 1, "Slicer must remain an explicit catalogue application"
 entry = matches[0]
 assert entry["repo"] == "Slicer"
-assert re.fullmatch(entry["expected_package_regex"], "slicer")
-assert re.fullmatch(entry["expected_package_regex"], "infiltrator-slicer")
+assert entry["expected_package_regex"] == "^slicer$"
 assert entry["canonical_package"] == "slicer"
+assert entry["legacy_packages"] == [], "Slicer conflicts with the old name; an alias would not be co-installable"
 assert entry["expected_architecture"] == "amd64"
 assert not entry.get("optional_until_release"), "Published Slicer must not silently disappear"
 active = re.compile(entry["deb_regex"])
-for version in ("0.0.1", "0.0.2", "1.0.0"):
-    assert active.fullmatch(f"infiltrator-slicer_{version}_amd64.deb")
-old_asset = "infiltrator-slicer_2.9.6_amd64.deb"
-assert not active.fullmatch(old_asset), "The inherited version must never outrank 0.0.1"
-assert any(re.fullmatch(pattern, old_asset)
-           for pattern in entry["retired_release_deb_regexes"])
+for version in ("0.0.5", "0.0.6", "1.0.0"):
+    assert active.fullmatch(f"slicer_{version}_amd64.deb")
+old_assets = [f"infiltrator-slicer_{version}_amd64.deb" for version in ("0.0.1", "0.0.4", "2.9.6")]
+for old_asset in old_assets:
+    assert not active.fullmatch(old_asset), "Old names must never create duplicate applications"
+    assert any(re.fullmatch(pattern, old_asset)
+               for pattern in entry["retired_release_deb_regexes"])
 
 with tempfile.TemporaryDirectory(prefix="slicer-publication-") as td:
     root = Path(td)
@@ -69,24 +72,26 @@ with tempfile.TemporaryDirectory(prefix="slicer-publication-") as td:
     fixture = root / "fixture"
     fixture.mkdir()
     releases = []
-    for release_id, version in enumerate(("0.0.1", "2.9.6"), 1):
+    for release_id, (package, version) in enumerate((("infiltrator-slicer", "0.0.4"),
+                                                   ("infiltrator-slicer", "2.9.6"),
+                                                   ("slicer", "0.0.5")), 1):
         stage = fixture / f"stage-{version}"
         (stage / "DEBIAN").mkdir(parents=True)
         (stage / "DEBIAN/control").write_text(
-            "Package: infiltrator-slicer\n"
+            f"Package: {package}\n"
             f"Version: {version}\n"
             "Architecture: amd64\n"
             "Maintainer: Test <test@example.invalid>\n"
-            "Description: Slicer publication fixture\n"
+            "Description: Slicer\n"
         )
-        asset = f"infiltrator-slicer_{version}_amd64.deb"
+        asset = f"{package}_{version}_amd64.deb"
         deb = fixture / asset
         subprocess.run(["dpkg-deb", "--build", "--root-owner-group", str(stage), str(deb)],
                        check=True, stdout=subprocess.DEVNULL)
         releases.append({
             "id": release_id, "tag_name": f"v{version}", "draft": False,
             "prerelease": False, "published_at": (
-                "2026-10-16T00:00:00Z" if version == "0.0.1" else "2026-10-15T14:34:35Z"),
+                "2026-10-17T00:00:00Z" if version == "0.0.5" else "2026-10-15T14:34:35Z"),
             "html_url": f"https://github.com/Infiltrator-Projects/Slicer/releases/tag/v{version}",
             "assets_url": f"https://api.github.com/repos/Infiltrator-Projects/Slicer/releases/{release_id}/assets",
         })
@@ -96,13 +101,13 @@ with tempfile.TemporaryDirectory(prefix="slicer-publication-") as td:
             "digest": "sha256:" + hashlib.sha256(deb.read_bytes()).hexdigest(),
             "size": deb.stat().st_size,
         }]))
-    # Reproduce the real API response: the inherited higher version appears first.
-    releases.reverse()
+    # A higher inherited version must not override the new product release.
+    releases.sort(key=lambda release: release["tag_name"], reverse=True)
     (fixture / "releases.json").write_text(json.dumps(releases))
     original_api = coverage.api_json
     try:
         coverage.api_json = lambda path: releases
-        assert coverage.latest_release("Infiltrator-Projects", "Slicer")["tag_name"] == "v0.0.1"
+        assert coverage.latest_release("Infiltrator-Projects", "Slicer")["tag_name"] == "v0.0.5"
     finally:
         coverage.api_json = original_api
     bin_dir = root / "bin"
@@ -137,15 +142,16 @@ shutil.copyfile(source, output)
     for key in ("APT_SIGNING_KEY_B64", "APT_SIGNING_KEY_FINGERPRINT", "APT_SIGNING_PASSPHRASE"):
         env.pop(key, None)
     subprocess.run([str(TOOL), "publish"], cwd=root, env=env, check=True)
-    validate_published(root / "public", expected_version="0.0.1")
+    validate_published(root / "public", expected_version="0.0.5")
     apps = json.loads((root / "public/catalogue/apps.json").read_text())
     assert len(apps) == 1 and apps[0]["id"] == "slicer", apps
-    assert apps[0]["version"] == "0.0.1", apps
-    assert [item["version"] for item in apps[0]["history"]] == ["0.0.1"], apps
-    assert not (root / "public/pool/main" / old_asset).exists()
+    assert apps[0]["version"] == "0.0.5", apps
+    assert [item["version"] for item in apps[0]["history"]] == ["0.0.5"], apps
+    for old_asset in old_assets:
+        assert not (root / "public/pool/main" / old_asset).exists()
     for suite in ("alpha", "beta"):
         index = (root / f"public/dists/{suite}/main/binary-amd64/Packages").read_text()
-        assert "Package: infiltrator-slicer\n" in index, index
-        assert "Version: 0.0.1\n" in index and "Version: 2.9.6\n" not in index, index
+        assert "Package: slicer\n" in index and "Package: infiltrator-slicer\n" not in index, index
+        assert "Version: 0.0.5\n" in index and "Version: 2.9.6\n" not in index, index
 
-print("PASS: Slicer 0.0.1 is required in the catalogue and APT; inherited 2.9.6 stays retired")
+print("PASS: Slicer uses one package identity; all old-name releases remain retired")

@@ -95,17 +95,15 @@
     "repo": "Slicer",
     "category": "Productivity",
     "description": "3D-print preparation, model slicing and G-code generation for FFF and resin printers.",
-    "deb_regex": "^(slicer|infiltrator-slicer)_(?!2\\.9\\.6_)[^_]+_amd64\\.deb$",
+    "deb_regex": "^slicer_[^_]+_amd64\\.deb$",
     "icon": "slicer",
-    "expected_package_regex": "^(slicer|infiltrator-slicer)$",
+    "expected_package_regex": "^slicer$",
     "expected_architecture": "amd64",
     "retired_release_deb_regexes": [
-      "^infiltrator-slicer_2\\.9\\.6_amd64\\.deb$"
+      "^infiltrator-slicer_[^_]+_amd64\\.deb$"
     ],
     "canonical_package": "slicer",
-    "legacy_packages": [
-      "infiltrator-slicer"
-    ]
+    "legacy_packages": []
   },
   {
     "id": "defragger",
