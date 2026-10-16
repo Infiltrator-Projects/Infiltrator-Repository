@@ -10,6 +10,11 @@
 - added cross-site family acceptance validation to publication.
 # Changelog
 
+## Unreleased
+
+- Publish the InfiltratorOS and Filesystems names and their renamed source repository links.
+- Publish only the current filesystems and infiltratoros APT identities; classify their previous package assets as retired.
+
 This file records user-visible, compatibility, architecture and validation changes for Package Repository.
 
 ## Unreleased

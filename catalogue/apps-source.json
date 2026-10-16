@@ -44,15 +44,18 @@
     "expected_architecture": "amd64"
   },
   {
-    "id": "infiltrator-os-plymouth-theme",
+    "id": "infiltratoros",
     "name": "InfiltratorOS",
     "repo": "InfiltratorOS",
     "category": "System",
-    "description": "Infiltrator OS boot branding and native System Monitor integration.",
+    "description": "InfiltratorOS boot branding and native System Monitor and Calculator provisioning for Debian and Linux Mint.",
     "deb_regex": "^infiltratoros_.*_amd64\\.deb$",
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "retired_release_deb_regexes": [
+      "^infiltrator-os-plymouth-theme_.*_amd64\\.deb$"
+    ]
   },
   {
     "id": "calendar",
@@ -91,15 +94,18 @@
     "expected_architecture": "amd64"
   },
   {
-    "id": "filesystem-support",
-    "name": "Filesystem Support",
+    "id": "filesystems",
+    "name": "Filesystems",
     "repo": "Filesystems",
     "category": "Filesystems",
     "description": "Debian-first manager for discovering, installing, removing, loading and unloading filesystem support.",
-    "deb_regex": "^Filesystem-Support-.*-amd64\\.deb$",
+    "deb_regex": "^Filesystems-.*-amd64\\.deb$",
     "icon": "filesystem",
-    "expected_package_regex": "^infiltrator-filesystem-support$",
-    "expected_architecture": "amd64"
+    "expected_package_regex": "^filesystems$",
+    "expected_architecture": "amd64",
+    "retired_release_deb_regexes": [
+      "^Filesystem-Support-.*-amd64\\.deb$"
+    ]
   },
   {
     "id": "infiltratorfs",

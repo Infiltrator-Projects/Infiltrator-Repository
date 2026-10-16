@@ -121,6 +121,10 @@ jobs:
               echo "Retired Filesystem Support desktop dependency reappeared in $channel" >&2
               exit 1
             fi
+            if grep -Eq '^Package: (infiltrator-filesystem-support|infiltrator-os-plymouth-theme)$' "$index"; then
+              echo "Retired alpha component identity reappeared in $channel" >&2
+              exit 1
+            fi
           done
 
           # Every published catalogue entry must be present in APT, regardless
