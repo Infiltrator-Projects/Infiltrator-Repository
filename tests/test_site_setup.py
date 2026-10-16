@@ -18,8 +18,8 @@ assert "infiltrator-app-install-data" not in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
 assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
 assert "assets/infiltrator-web-v1.css?v=common-1.19.42" in site
-assert "assets/site.css?v=family-20261016-brand-locked" in site
-assert "assets/site-overrides.css?v=family-20261016-brand-locked" in site
+assert "assets/site.css?v=family-20261016-editorial" in site
+assert "assets/site-overrides.css?v=family-20261016-editorial" in site
 assert "if(!repoReady||!repoInfo)return" in block
 assert 'id="copyRepo" disabled' in site
 assert "\\#\"+legacyBase+\"#d" in block
@@ -37,7 +37,7 @@ assert ':iconSvg(a.icon);}' in site, "non-automotive catalogue artwork must use 
 assert 'software:' in site, "Software needs its own canonical generic glyph"
 assert '"raster-card"' not in site and '"raster-dialog"' not in site, "catalogue typography must not bypass the canonical MB Corpo website family"
 assert '"Cascadia Mono"' not in site and '"DejaVu Sans Mono"' not in site and '"Liberation Mono"' not in site, "catalogue cards must inherit the canonical MB Corpo family instead of a private monospace stack"
-assert 'font:400 27px/1.08 var(--display)' in site, "application titles must use the canonical MB Corpo A display role"
+assert 'font:400 30px/1.15 var(--display)' in site, "application titles must use the canonical MB Corpo A display role"
 assert ':appIcon(a);}' not in site, "appIcon must not recursively call itself"
 assert "calculator:" in site
 
