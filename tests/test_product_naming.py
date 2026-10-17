@@ -40,7 +40,7 @@ if sys.argv[1] == '--published':
     raise SystemExit(0)
 
 TOOL = Path(sys.argv[1]).resolve()
-assert len(entries) == 10
+assert len(entries) == 17
 for identifier, name in {'mblink':'MBLink','jaglink':'JAGLink','bmwlink':'BMWLink','audilink':'AUDILink','fordlink':'FORDLink'}.items():
     entry = next(item for item in all_entries if item['id'] == identifier)
     assert entry['name'] == name and entry['repo'] == name, entry

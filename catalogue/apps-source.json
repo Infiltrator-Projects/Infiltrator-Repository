@@ -56,7 +56,8 @@
     "deb_regex": "^infiltratoros_.*_amd64\\.deb$",
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "1.0.7"
   },
   {
     "id": "calendar",
@@ -93,8 +94,7 @@
     "icon": "disk",
     "expected_package_regex": "^defragmenter$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.8.0-269",
-    "optional_until_release": true
+    "minimum_version": "1.8.0-269"
   },
   {
     "id": "filesystems",
@@ -105,7 +105,8 @@
     "deb_regex": "^Filesystems-.*-amd64\\.deb$",
     "icon": "filesystem",
     "expected_package_regex": "^filesystems$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "0.5.29"
   },
   {
     "id": "infiltratorfs",
@@ -141,7 +142,8 @@
     "deb_regex": "^MBLink-.*-linux-amd64\\.deb$",
     "icon": "car",
     "expected_package_regex": "^mblink$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "0.7.295"
   },
   {
     "id": "jaglink",
@@ -152,7 +154,8 @@
     "deb_regex": "^JAGLink-.*-linux-amd64\\.deb$",
     "icon": "car",
     "expected_package_regex": "^jaglink$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "0.2.90"
   },
   {
     "id": "wheres-wally",
@@ -175,7 +178,8 @@
     "icon": "car",
     "deb_regex": "^FORDLink-.*-linux-amd64\\.deb$",
     "expected_package_regex": "^fordlink$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "0.2.31"
   },
   {
     "id": "audilink",
@@ -186,7 +190,8 @@
     "icon": "car",
     "deb_regex": "^AUDILink-.*-linux-amd64\\.deb$",
     "expected_package_regex": "^audilink$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "0.2.31"
   },
   {
     "id": "bmwlink",
@@ -197,7 +202,8 @@
     "icon": "car",
     "deb_regex": "^BMWLink-.*-linux-amd64\\.deb$",
     "expected_package_regex": "^bmwlink$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "0.2.30"
   },
   {
     "id": "egypt",
@@ -220,8 +226,7 @@
     "icon": "workflow",
     "expected_package_regex": "^runnerscope$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.3.17",
-    "optional_until_release": true
+    "minimum_version": "1.3.17"
   },
   {
     "id": "intune-zabbix-bridge",
