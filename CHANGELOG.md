@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-18 — Files 0.1.38 APT refresh
+
+- Republish the verified Files 0.1.38 package after its source release, including the filesystem-root startup correction and consistent Day/Night GTK contrast. Keep the existing five-version APT retention policy and package name `files` unchanged.
+
+
 ## 2026-10-16 — Publication robustness
 
 - Refresh the pinned website family for balanced typography, the original locked MB fonts, palette and wordmark (including #00ADEF) and readable supporting text; keep the Software Centre introduction on the same heading and label scale.
