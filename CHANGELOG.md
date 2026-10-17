@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-18 — Files 0.1.41 APT publication
+
+- Refresh the beta APT catalogue after the successful Files v0.1.41 release, preserving the existing package name `files`, verified package metadata, SHA checks and retention policy. This revision corrects measured GTK Details-row density, restores neutral Day view controls and unifies the navigation header and tab strip without changes to file-operation engines.
+
+
 ## 2026-10-18 — Files 0.1.38 APT refresh
 
 - Republish the verified Files 0.1.38 package after its source release, including the filesystem-root startup correction and consistent Day/Night GTK contrast. Keep the existing five-version APT retention policy and package name `files` unchanged.
