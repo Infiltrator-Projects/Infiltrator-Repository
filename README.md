@@ -17,6 +17,7 @@ The project values deterministic, explainable publication over novelty. A new de
 - System Monitor
 - System Settings
 - Software
+- Files
 - Calendar
 - Slicer
 - Defragmenter
@@ -54,6 +55,25 @@ Every publish run:
 A missing latest package, ambiguous release asset or SHA-256 mismatch fails the publication rather than silently publishing questionable content.
 
 Slicer starts its Infiltrator product version at `0.0.1`. The mistakenly inherited `2.9.6` DEB is explicitly retired from APT discovery; it must not outrank the corrected product version. Its original GitHub tag and assets remain intact.
+
+## APT installation diagnostics
+
+Files is published as Debian package `files` (the graphical executable is
+also named `files`). To check whether the package is already installed and
+which version the beta repository exposes:
+
+```bash
+dpkg-query -W files
+sudo apt update
+apt-cache policy files
+sudo apt install files
+```
+
+An installed package is not proof that APT can upgrade it: `apt-cache policy`
+must show the Infiltrator beta source and a candidate version. New GitHub
+releases are not automatically visible until the central APT publisher has
+generated and deployed the index. APT sources must reference the current
+`infiltrator-projects.github.io` beta URL, not an old organisation URL.
 
 ## Add to Linux Mint
 
