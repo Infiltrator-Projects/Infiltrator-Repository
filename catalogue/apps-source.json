@@ -130,7 +130,7 @@
     "icon": "calculator",
     "expected_package_regex": "^calculator$",
     "expected_architecture": "amd64",
-    "minimum_version": "0.2.46"
+    "minimum_version": "0.2.49"
   },
   {
     "id": "mblink",
