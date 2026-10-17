@@ -69,7 +69,14 @@
     "icon": "calendar",
     "expected_package_regex": "^calendar$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.106"
+    "minimum_version": "1.0.107",
+    "supplemental_packages": [
+      {
+        "deb_regex": "^infiltrator-calendar-resources_[^_]+_amd64\\.deb$",
+        "expected_package_regex": "^infiltrator-calendar-resources$",
+        "expected_architecture": "amd64"
+      }
+    ]
   },
   {
     "id": "slicer",
