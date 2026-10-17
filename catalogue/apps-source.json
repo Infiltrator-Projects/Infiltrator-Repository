@@ -57,7 +57,7 @@
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.7"
+    "minimum_version": "1.0.10"
   },
   {
     "id": "calendar",
