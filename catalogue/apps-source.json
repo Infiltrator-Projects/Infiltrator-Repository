@@ -118,7 +118,7 @@
     "icon": "filesystem",
     "expected_package_regex": "^infiltratorfs$",
     "expected_architecture": "amd64",
-    "minimum_version": "0.18.108"
+    "minimum_version": "0.18.109"
   },
   {
     "id": "calculator",
