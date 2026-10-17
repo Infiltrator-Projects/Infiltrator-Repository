@@ -74,7 +74,12 @@ with tempfile.TemporaryDirectory(prefix='product-naming-') as temporary:
     apps = json.loads((root / 'public/catalogue/apps.json').read_text())
     assert len(apps) == len(entries), 'Each canonical application has one catalogue card'
     pool = list((root / 'public/pool/main').glob('*.deb'))
-    assert len(pool) == 2 * len(entries), 'Publication must not generate extra packages'
+    supplemental_count = sum(len(entry.get('supplemental_packages', [])) for entry in entries)
+    expected_pool_size = (2 * len(entries)) + supplemental_count
+    assert len(pool) == expected_pool_size, (
+        f'Publication must contain two fixture versions per application plus one current '
+        f'package per supplemental rule: expected {expected_pool_size}, found {len(pool)}'
+    )
     for entry in entries:
         app = next(app for app in apps if app['id'] == entry['id'])
         assert app['package'] == entry['id'] and app['version'] == '9.0.1', app
