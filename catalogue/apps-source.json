@@ -21,8 +21,7 @@
     "icon": "software",
     "expected_package_regex": "^software$",
     "expected_architecture": "amd64",
-    "minimum_version": "0.3.102",
-    "optional_until_release": true
+    "minimum_version": "0.3.102"
   },
   {
     "id": "files",
@@ -69,8 +68,7 @@
     "icon": "calendar",
     "expected_package_regex": "^calendar$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.105",
-    "optional_until_release": true
+    "minimum_version": "1.0.105"
   },
   {
     "id": "slicer",

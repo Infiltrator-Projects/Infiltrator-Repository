@@ -140,12 +140,6 @@ jobs:
           test -f "$mirror"
           test "$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .asset' public/catalogue/apps.json)" = "$(basename "$mirror")"
 
-          # Current catalogue entries and indexed packages use one declared identity.
-          while IFS=$'\t' read -r id expected; do
-            package="$(jq -r --arg id "$id" '.[] | select(.id == $id) | .package' public/catalogue/apps.json)"
-            [[ -n "$package" ]] || continue
-            [[ "$package" =~ $expected ]]
-          done < <(jq -r '.[] | [.id,.expected_package_regex] | @tsv' catalogue/apps-source.json)
           if grep -q '^Section: oldlibs$' public/dists/beta/main/binary-amd64/Packages; then
             echo 'Unexpected package transition in the current alpha repository' >&2
             exit 1

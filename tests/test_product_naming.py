@@ -23,6 +23,9 @@ def validate_published(public):
         name = subprocess.check_output(['dpkg-deb', '-f', str(deb), 'Package'], text=True).strip()
         assert sum(bool(pattern.fullmatch(name)) for pattern in patterns) == 1, (deb, name)
         if name in clean_names:
+            minimum = next(item['minimum_version'] for item in entries if item['id'] == name)
+            version = subprocess.check_output(['dpkg-deb', '-f', str(deb), 'Version'], text=True).strip()
+            assert subprocess.run(['dpkg', '--compare-versions', version, 'ge', minimum]).returncode == 0, (deb, version, minimum)
             for field in ('Provides', 'Breaks', 'Replaces'):
                 value = subprocess.check_output(['dpkg-deb', '-f', str(deb), field], text=True).strip()
                 assert not value, (deb, field, value)

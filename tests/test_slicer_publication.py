@@ -72,7 +72,7 @@ with tempfile.TemporaryDirectory(prefix="slicer-publication-") as td:
     fixture = root / "fixture"
     fixture.mkdir()
     releases = []
-    for release_id, version in enumerate(("0.0.6", "2.9.6"), 1):
+    for release_id, version in enumerate(("0.0.6", "0.0.5", "2.9.6"), 1):
         stage = fixture / f"stage-{version}"
         (stage / "DEBIAN").mkdir(parents=True)
         (stage / "DEBIAN/control").write_text(
@@ -146,6 +146,7 @@ shutil.copyfile(source, output)
     assert apps[0]["version"] == "0.0.6", apps
     assert [item["version"] for item in apps[0]["history"]] == ["0.0.6"], apps
     assert not (root / "public/pool/main" / old_asset).exists()
+    assert not (root / "public/pool/main/slicer_0.0.5_amd64.deb").exists()
     for suite in ("alpha", "beta"):
         index = (root / f"public/dists/{suite}/main/binary-amd64/Packages").read_text()
         assert "Package: slicer\n" in index, index
