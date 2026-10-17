@@ -74,11 +74,30 @@ with tempfile.TemporaryDirectory(prefix='product-naming-') as temporary:
     apps = json.loads((root / 'public/catalogue/apps.json').read_text())
     assert len(apps) == len(entries), 'Each canonical application has one catalogue card'
     pool = list((root / 'public/pool/main').glob('*.deb'))
-    supplemental_count = sum(len(entry.get('supplemental_packages', [])) for entry in entries)
-    expected_pool_size = (2 * len(entries)) + supplemental_count
-    assert len(pool) == expected_pool_size, (
-        f'Publication must contain two fixture versions per application plus one current '
-        f'package per supplemental rule: expected {expected_pool_size}, found {len(pool)}'
+    package_names = [
+        subprocess.check_output(['dpkg-deb', '-f', str(deb), 'Package'], text=True).strip()
+        for deb in pool
+    ]
+    for entry in entries:
+        assert package_names.count(entry['id']) == 2, (
+            entry['id'], package_names.count(entry['id'])
+        )
+    supplemental_patterns = [
+        re.compile(package['expected_package_regex'])
+        for entry in entries
+        for package in entry.get('supplemental_packages', [])
+    ]
+    supplemental_total = 0
+    for pattern in supplemental_patterns:
+        count = sum(bool(pattern.fullmatch(name)) for name in package_names)
+        assert 1 <= count <= 5, (
+            f'Each supplemental package must publish one to five retained versions; '
+            f'{pattern.pattern} published {count}'
+        )
+        supplemental_total += count
+    assert len(pool) == (2 * len(entries)) + supplemental_total, (
+        'Publication must contain exactly two fixture versions per application plus '
+        'the retained supplemental-package history'
     )
     for entry in entries:
         app = next(app for app in apps if app['id'] == entry['id'])
