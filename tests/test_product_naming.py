@@ -26,7 +26,7 @@ def validate_published(public):
             minimum = next(item['minimum_version'] for item in entries if item['id'] == name)
             version = subprocess.check_output(['dpkg-deb', '-f', str(deb), 'Version'], text=True).strip()
             assert subprocess.run(['dpkg', '--compare-versions', version, 'ge', minimum]).returncode == 0, (deb, version, minimum)
-            for field in ('Provides', 'Breaks', 'Replaces'):
+            for field in ('Provides', 'Breaks', 'Replaces', 'Conflicts'):
                 value = subprocess.check_output(['dpkg-deb', '-f', str(deb), field], text=True).strip()
                 assert not value, (deb, field, value)
     for suite in ('alpha', 'beta'):
@@ -40,7 +40,7 @@ if sys.argv[1] == '--published':
     raise SystemExit(0)
 
 TOOL = Path(sys.argv[1]).resolve()
-assert len(entries) == 9
+assert len(entries) == 10
 for identifier, name in {'mblink':'MBLink','jaglink':'JAGLink','bmwlink':'BMWLink','audilink':'AUDILink','fordlink':'FORDLink'}.items():
     entry = next(item for item in all_entries if item['id'] == identifier)
     assert entry['name'] == name and entry['repo'] == name, entry

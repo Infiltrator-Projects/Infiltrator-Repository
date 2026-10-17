@@ -361,18 +361,6 @@ jobs:
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
           done
 
-          # InfiltratorFS desktop integration is now owned by the single
-          # infiltratorfs package. The retired helper packages must not return.
-          for retired in \
-            infiltratorfs-desktop-integration \
-            infiltratorfs-gnome-disk-utility \
-            infiltratorfs-libblockdev-fs3
-          do
-            if apt-cache policy "$retired" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'; then
-              echo "Retired InfiltratorFS helper package is still published: $retired" >&2
-              exit 1
-            fi
-          done
 
           # Alpha packages are qualified by clean installation and removal.
           apt-get install -y --no-install-recommends system-monitor

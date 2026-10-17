@@ -116,7 +116,9 @@
     "deb_regex": "^infiltratorfs_.*_amd64\\.deb$",
     "icon": "filesystem",
     "expected_package_regex": "^infiltratorfs$",
-    "expected_architecture": "amd64"
+    "expected_architecture": "amd64",
+    "minimum_version": "0.18.108",
+    "optional_until_release": true
   },
   {
     "id": "calculator",

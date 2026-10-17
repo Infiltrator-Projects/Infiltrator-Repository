@@ -43,25 +43,25 @@ with tempfile.TemporaryDirectory() as td:
     assert validate(wrong_version) != 0
     assert validate(wrong_arch) != 0
 
-    component = build("infiltratorfs-libblockdev-fs3", "3.1.1-1ubuntu0.1+infiltratorfs1", "amd64")
+    component = build("runtime-component", "3.1.1-1ubuntu0.1+infiltratorfs1", "amd64")
 
     def validate_component(asset_name):
         return subprocess.run(
             [
                 str(tool), "validate-deb", str(component), "v0.18.65",
-                "^infiltratorfs-libblockdev-fs3$", "amd64",
+                "^runtime-component$", "amd64",
                 asset_name,
-                r"^infiltratorfs-libblockdev-fs3_([^_]+)_amd64\.deb$",
+                r"^runtime-component_([^_]+)_amd64\.deb$",
             ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         ).returncode
 
     assert validate_component(
-        "infiltratorfs-libblockdev-fs3_3.1.1-1ubuntu0.1+infiltratorfs1_amd64.deb"
+        "runtime-component_3.1.1-1ubuntu0.1+infiltratorfs1_amd64.deb"
     ) == 0
     assert validate_component(
-        "infiltratorfs-libblockdev-fs3_wrong_amd64.deb"
+        "runtime-component_wrong_amd64.deb"
     ) != 0
 
 print("Independent release/package and bundled-asset identity validation passed")
