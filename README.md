@@ -75,6 +75,18 @@ releases are not automatically visible until the central APT publisher has
 generated and deployed the index. APT sources must reference the current
 `infiltrator-projects.github.io` beta URL, not an old organisation URL.
 
+When investigating a newly tagged Files release (such as 0.1.38), verify the
+*public catalogue* independently of the source repository's green release run:
+
+```bash
+curl -fsSL https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json |
+  jq -r '.[] | select(.id == "files") | .version'
+```
+
+Only after that version reaches the central catalogue should a fresh
+`sudo apt update` be expected to expose it through `apt-cache policy files`.
+This distinguishes a source-release success from an actual APT publication.
+
 ## Add to Linux Mint
 
 The primary beta suite is:
