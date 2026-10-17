@@ -39,22 +39,22 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
-      - name: Check out pinned Libraries 1.19.42
+      - name: Check out pinned Libraries 1.19.46
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/Libraries
-          ref: 086b79504e3480167a23fe620820f074002413a7
+          ref: fc2c72cb038a8e4c1e0bc62145adf533fbfd7923
           path: _common
 
       - name: Check out pinned ssmithnet.net website family
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/ssmithnet.net
-          ref: 532f48229e7f80a4bfbdee52a5f21f2a34fc3638
+          ref: 989b6a9ddfe46b83156d54fc43cac134b8056cfc
           path: _family
 
       - name: Verify website family pin
-        run: test "$(git -C _family rev-parse HEAD)" = "532f48229e7f80a4bfbdee52a5f21f2a34fc3638"
+        run: test "$(git -C _family rev-parse HEAD)" = "989b6a9ddfe46b83156d54fc43cac134b8056cfc"
 
       - name: Install repository tools
         run: |
@@ -115,23 +115,7 @@ jobs:
           test -s public/catalogue/repository.json
           python3 tests/test_slicer_publication.py --published public
 
-          # Filesystem Support owns desktop integration in its main package.
-          # Never republish the retired helper or a package that depends on it.
-          if find public/pool -type f -name 'infiltrator-filesystem-support-udisks_*.deb' | grep -q .; then
-            echo 'Retired Filesystem Support desktop package reappeared in the pool' >&2
-            exit 1
-          fi
-          for channel in alpha beta; do
-            index="public/dists/$channel/main/binary-amd64/Packages"
-            if grep -Eq '^Package: infiltrator-filesystem-support-udisks$|^Depends:.*infiltrator-filesystem-support-udisks' "$index"; then
-              echo "Retired Filesystem Support desktop dependency reappeared in $channel" >&2
-              exit 1
-            fi
-            if grep -Eq '^Package: (infiltrator-filesystem-support|infiltrator-os-plymouth-theme)$' "$index"; then
-              echo "Retired alpha component identity reappeared in $channel" >&2
-              exit 1
-            fi
-          done
+          python3 tests/test_product_naming.py --published public
 
           # Every published catalogue entry must be present in APT, regardless
           # of whether the application package carries custom artwork.
@@ -139,15 +123,6 @@ jobs:
             grep -Fq "Package: $package_name" public/dists/alpha/main/binary-amd64/Packages
             grep -Fq "Package: $package_name" public/dists/beta/main/binary-amd64/Packages
           done < <(jq -r '.[].package' public/catalogue/apps.json)
-          if find public/pool/main -maxdepth 1 -type f -name 'app-install-data-ssmithnet_*' | grep -q .; then
-            echo 'Unexpected app-install-data-ssmithnet metadata package' >&2
-            exit 1
-          fi
-          if find public/pool/main -maxdepth 1 -type f -name 'infiltrator-app-install-data_*' | grep -q .; then
-            echo 'Unexpected infiltrator-app-install-data metadata package' >&2
-            exit 1
-          fi
-
           rm -rf public/assets
           mkdir -p public/assets
           cp -a _family/assets/. public/assets/
@@ -165,36 +140,16 @@ jobs:
           test -f "$mirror"
           test "$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .asset' public/catalogue/apps.json)" = "$(basename "$mirror")"
 
-          # Verify every forward transition declared by the catalogue. During
-          # rollout a product can still have its previous immutable release.
-          while IFS=$'\t' read -r id canonical legacy; do
-            current="$(jq -r --arg id "$id" '.[] | select(.id == $id) | .package' public/catalogue/apps.json)"
-            [[ "$current" == "$canonical" ]] || continue
-            version="$(jq -r --arg id "$id" '.[] | select(.id == $id) | .version' public/catalogue/apps.json)"
-            transition="public/pool/main/${legacy}_${version}_all.deb"
-            test -s "$transition"
-            test "$(dpkg-deb -f "$transition" Package)" = "$legacy"
-            test "$(dpkg-deb -f "$transition" Depends)" = "$canonical (= $version)"
-          done < <(jq -r '.[] | select(.canonical_package) | . as $app | .legacy_packages[] | [$app.id,$app.canonical_package,.] | @tsv' catalogue/apps-source.json)
-
-          calendar_version="$(jq -r '.[] | select(.id == "calendar") | .version' public/catalogue/apps.json)"
-          calendar_asset="$(jq -r '.[] | select(.id == "calendar") | .asset' public/catalogue/apps.json)"
-          test -n "$calendar_version"
-          test -n "$calendar_asset"
-          calendar_package="$(dpkg-deb -f "public/pool/main/$calendar_asset" Package)"
-          [[ "$calendar_package" == calendar || "$calendar_package" == infiltrator-calendar ]]
-          for candidate in public/pool/main/*.deb; do
-            package_name="$(dpkg-deb -f "$candidate" Package)"
-            test "$package_name" != "calendar-plus"
-            test "$package_name" != "cinnamon-calendar"
-          done
-
-          # The catalogue declares every accepted current/legacy identity and
-          # the generic checks above validate all forward transitions.
+          # Current catalogue entries and indexed packages use one declared identity.
           while IFS=$'\t' read -r id expected; do
             package="$(jq -r --arg id "$id" '.[] | select(.id == $id) | .package' public/catalogue/apps.json)"
+            [[ -n "$package" ]] || continue
             [[ "$package" =~ $expected ]]
-          done < <(jq -r '.[] | select(.canonical_package) | [.id,.expected_package_regex] | @tsv' catalogue/apps-source.json)
+          done < <(jq -r '.[] | [.id,.expected_package_regex] | @tsv' catalogue/apps-source.json)
+          if grep -q '^Section: oldlibs$' public/dists/beta/main/binary-amd64/Packages; then
+            echo 'Unexpected package transition in the current alpha repository' >&2
+            exit 1
+          fi
 
       - name: Detect Calendar publication change
         id: release-delta
@@ -215,7 +170,7 @@ jobs:
       - name: Deploy Pages through pinned COMMON
         id: deployment
         continue-on-error: true
-        uses: Infiltrator-Projects/Libraries/.github/actions/deploy-pages@086b79504e3480167a23fe620820f074002413a7
+        uses: Infiltrator-Projects/Libraries/.github/actions/deploy-pages@fc2c72cb038a8e4c1e0bc62145adf533fbfd7923
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
@@ -273,20 +228,6 @@ jobs:
           echo "Published Software Centre did not expose the canonical MB Corpo typography in time." >&2
           exit 1
 
-  retire-filesystem-desktop-artifacts:
-    needs: build-and-deploy
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      actions: write
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
-      - name: Withdraw archived APT snapshots containing the retired desktop package
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 tools/retire-filesystem-desktop-artifacts.py
-
   signing-self-test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -295,11 +236,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
-      - name: Check out pinned Libraries 1.19.42
+      - name: Check out pinned Libraries 1.19.46
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/Libraries
-          ref: 086b79504e3480167a23fe620820f074002413a7
+          ref: fc2c72cb038a8e4c1e0bc62145adf533fbfd7923
           path: _common
 
       - name: Install signing test tools
@@ -419,15 +360,8 @@ jobs:
           apt-get update
 
           for pkg in \
-            infiltrator-system-monitor system-monitor linux-system-monitor \
-            software system-settings calendar calculator defragmenter files \
-            infiltrator-software infiltrator-system-settings infiltrator-calendar \
-            infiltrator-defragmenter linux-defragger \
-            infiltratorfs \
-            infiltrator-calculator \
-            mblink jaglink fordlink audilink bmwlink \
-            egypt \
-            infiltrator-runner-monitor runnerscope \
+            system-monitor software system-settings calendar calculator defragmenter files \
+            infiltratorfs mblink jaglink fordlink audilink bmwlink egypt runnerscope \
             nps-wheres-wally-zabbix intune-zabbix-bridge
           do
             apt-cache policy "$pkg" | grep -q 'https://infiltrator-projects.github.io/Infiltrator-Repository'
@@ -446,27 +380,12 @@ jobs:
             fi
           done
 
-          # Install the last retained package with the previous public name,
-          # then exercise the forward upgrade into canonical system-monitor.
-          previous="1.0.205"
-          latest="$(apt-cache policy system-monitor | awk '/Candidate:/ {print $2; exit}')"
-          test -n "$previous"
-          test -n "$latest"
-
-          apt-get install -y --no-install-recommends "infiltrator-system-monitor=$previous"
-          test "$(dpkg-query -W -f='${Version}' infiltrator-system-monitor)" = "$previous"
+          # Alpha packages are qualified by clean installation and removal.
+          apt-get install -y --no-install-recommends system-monitor
           test -x /usr/bin/system-monitor
-
-          apt-get install -y --no-install-recommends "system-monitor=$latest"
-          test "$(dpkg-query -W -f='${Version}' system-monitor)" = "$latest"
-          test -x /usr/bin/system-monitor
-          test ! -e /usr/bin/linux-system-monitor
           apt-get check
-
-          apt-get purge -y infiltrator-system-monitor system-monitor linux-system-monitor
-          ! dpkg-query -W -f='${db:Status-Abbrev}' infiltrator-system-monitor 2>/dev/null | grep -q '^ii'
+          apt-get purge -y system-monitor
           ! dpkg-query -W -f='${db:Status-Abbrev}' system-monitor 2>/dev/null | grep -q '^ii'
-          ! dpkg-query -W -f='${db:Status-Abbrev}' linux-system-monitor 2>/dev/null | grep -q '^ii'
           apt-get check
           for pkg in system-settings calendar defragmenter calculator files mblink jaglink fordlink audilink bmwlink; do
             apt-get install -y --no-install-recommends "$pkg"

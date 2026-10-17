@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Fail closed when a release DEB is neither publishable nor explicitly retired."""
+"""Require current release DEBs to match canonical catalogue identities."""
 
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.error
 import urllib.request
@@ -62,33 +63,30 @@ def compile_regex(pattern, label, errors):
         return None
 
 
-def validate_assets(owner, repo, assets, repo_rules, repo_retired, errors):
+def validate_assets(owner, repo, assets, repo_rules, errors):
     for asset in assets:
         active = [rule_id for rule_id, regex in repo_rules if regex.fullmatch(asset)]
-        retired = [rule_id for rule_id, regex in repo_retired if regex.fullmatch(asset)]
-        if active and retired:
+        if len(active) != 1:
             errors.append(
-                f"{owner}/{repo} latest DEB {asset!r} matches both active and retired rules: "
-                + ", ".join(active + retired)
+                f"{owner}/{repo} latest DEB {asset!r} must match one canonical catalogue rule; "
+                f"matched {active}"
             )
-        elif len(active) == 1:
-            continue
-        elif len(retired) == 1:
-            continue
-        elif len(active) > 1 or len(retired) > 1:
-            errors.append(
-                f"{owner}/{repo} latest DEB {asset!r} has ambiguous catalogue classification"
-            )
-        else:
-            errors.append(
-                f"{owner}/{repo} latest DEB {asset!r} matches no active or retired catalogue rule"
-            )
+
+
+def pending_clean_release(entry, release):
+    if not entry.get("optional_until_release") or not entry.get("minimum_version") or not release:
+        return False
+    version = release.get("tag_name", "").removeprefix("v")
+    return subprocess.run(
+        ["dpkg", "--compare-versions", version, "lt", entry["minimum_version"]],
+        check=False,
+    ).returncode == 0
 
 
 def main():
     entries = json.loads(SOURCE.read_text())
     rules = {}
-    retired_rules = {}
+    configurations = {}
     errors = []
 
     for entry in entries:
@@ -98,6 +96,7 @@ def main():
         owner = entry.get("owner", ORG)
         repo = entry["repo"]
         key = (owner, repo)
+        configurations[key] = entry
 
         compiled = compile_regex(regex, f"{owner}/{repo} ({entry['id']})", errors)
         if compiled:
@@ -120,18 +119,6 @@ def main():
                     (f"{entry['id']}:supplemental:{index}", supplemental_compiled)
                 )
 
-        for index, retired_regex in enumerate(
-                entry.get("retired_release_deb_regexes", []), start=1):
-            retired_compiled = compile_regex(
-                retired_regex,
-                f"{owner}/{repo} ({entry['id']} retired #{index})",
-                errors,
-            )
-            if retired_compiled:
-                retired_rules.setdefault(key, []).append(
-                    (f"{entry['id']}:retired:{index}", retired_compiled)
-                )
-
     repos = api_json(f"/orgs/{ORG}/repos?per_page=100&type=all")
     if len(repos) >= 100:
         errors.append("organisation repository inventory reached the 100-repository page limit")
@@ -143,24 +130,25 @@ def main():
         owner = repository["owner"]["login"]
         repo = repository["name"]
         release = latest_release(owner, repo)
+        if pending_clean_release(configurations.get((owner, repo), {}), release):
+            continue
         assets = deb_assets(release)
         if not assets:
             continue
         key = (owner, repo)
         checked.add(key)
         repo_rules = rules.get(key, [])
-        repo_retired = retired_rules.get(key, [])
-        if not repo_rules and not repo_retired:
+        if not repo_rules:
             errors.append(
                 f"{owner}/{repo} publishes DEB assets but has no catalogue rule: "
                 + ", ".join(assets)
             )
             continue
-        validate_assets(owner, repo, assets, repo_rules, repo_retired, errors)
+        validate_assets(owner, repo, assets, repo_rules, errors)
 
     # Configured external release-backed repositories are checked too. Local
     # mirrors are deliberately excluded because they have no GitHub release DEB.
-    configured_keys = set(rules) | set(retired_rules)
+    configured_keys = set(rules)
     for key in configured_keys:
         if key in checked or key[0] == ORG:
             continue
@@ -172,7 +160,6 @@ def main():
             repo,
             assets,
             rules.get(key, []),
-            retired_rules.get(key, []),
             errors,
         )
 
@@ -182,7 +169,7 @@ def main():
             print(f"  - {error}", file=sys.stderr)
         return 1
 
-    print("Latest-release DEB catalogue coverage is complete; retired assets remain unpublished.")
+    print("Latest-release DEB catalogue coverage matches canonical product identities.")
     return 0
 
 

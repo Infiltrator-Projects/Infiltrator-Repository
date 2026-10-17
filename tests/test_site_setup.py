@@ -11,18 +11,14 @@ assert "\\\\n" not in block, "setupCommand() contains a double-escaped newline"
 assert "infiltrator-beta.list\\n" in block
 assert "infiltrator.list\\n" in block
 assert "sudo apt update" in block
-assert "app-install-data-ssmithnet" not in block
 assert "sudo rm -f /var/cache/mintinstall/pkginfo.json" in block
 assert "mintinstall/pkginfo.json" in block
-assert "infiltrator-app-install-data" not in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
-assert 'var legacyBase="https://the-first-infiltrator.github.io/Infiltrator-Repository";' in site
 assert "assets/infiltrator-web-v1.css?v=common-1.19.42" in site
 assert "assets/site.css?v=family-20261016-refined" in site
 assert "assets/site-overrides.css?v=family-20261016-refined" in site
 assert "if(!repoReady||!repoInfo)return" in block
 assert 'id="copyRepo" disabled' in site
-assert "\\#\"+legacyBase+\"#d" in block
 assert "\\#\"+base+\"#d" in block
 assert "s# alpha main# beta main#g" not in block
 assert "s# stable main# beta main#g" not in block

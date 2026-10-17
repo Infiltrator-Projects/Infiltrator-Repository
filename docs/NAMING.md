@@ -28,20 +28,11 @@ Manufacturer abbreviations are uppercase and the suffix is always `Link`.
 The shared product is `Link`. InfiltratorFS and InfiltratorOS retain their
 established product names.
 
-`catalogue/apps-source.json` declares each current package identity and its
-legacy package names. Retained historical artifacts keep their original names
-and bytes. Once a canonical package is published, empty versioned transition
-packages upgrade installations from previous package names into that package.
-Compatibility packages do not create additional catalogue cards or launchers.
-The publisher never generates a transition back into an obsolete name.
+Current source, package metadata, commands, services, settings identifiers,
+repository URLs and documentation use the canonical product names. Alpha
+packages do not provide aliases or transition packages for previous names.
+The catalogue publishes releases at or above each product's clean naming
+baseline; earlier package identities are not mirrored or indexed.
 
-Slicer 0.0.5 conflicts with `infiltrator-slicer`, so it cannot coexist with an
-empty transition package under that name. Its legacy package list stays empty;
-`sudo apt install slicer` replaces the previous application package directly.
-Historical Slicer release artifacts remain unchanged on GitHub.
-
-Stable application IDs, bundle identifiers, saved-data paths, C/CMake APIs,
-service names and compatibility executable names can retain historical
-identifiers. They must not replace the human-facing product name or the current
-published package identity. Published release tags and artifact bytes remain
-immutable; naming changes ship in a new qualified release.
+Published release tags and artifact bytes remain immutable. Current naming
+changes ship in newly qualified releases.

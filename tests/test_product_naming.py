@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify canonical package selection and one-way upgrades from published names."""
+"""Verify canonical alpha packages without aliases or transition packages."""
 import json
 from pathlib import Path
 import re
@@ -8,14 +8,41 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-TOOL = Path(sys.argv[1]).resolve()
-entries = [item for item in json.loads((ROOT / 'catalogue/apps-source.json').read_text())
-           if item.get('canonical_package')]
-assert len(entries) == 9
 all_entries = json.loads((ROOT / 'catalogue/apps-source.json').read_text())
+entries = [item for item in all_entries if item.get('minimum_version')]
+
+def validate_published(public):
+    patterns = []
+    for app in all_entries:
+        for package in [app, *app.get('supplemental_packages', [])]:
+            patterns.append(re.compile(package['expected_package_regex']))
+    pool = list((public / 'pool/main').glob('*.deb'))
+    assert pool, 'Publication must contain application packages'
+    clean_names = {item['id'] for item in entries}
+    for deb in pool:
+        name = subprocess.check_output(['dpkg-deb', '-f', str(deb), 'Package'], text=True).strip()
+        assert sum(bool(pattern.fullmatch(name)) for pattern in patterns) == 1, (deb, name)
+        if name in clean_names:
+            for field in ('Provides', 'Breaks', 'Replaces'):
+                value = subprocess.check_output(['dpkg-deb', '-f', str(deb), field], text=True).strip()
+                assert not value, (deb, field, value)
+    for suite in ('alpha', 'beta'):
+        index = (public / f'dists/{suite}/main/binary-amd64/Packages').read_text()
+        names = re.findall(r'^Package: (.+)$', index, re.MULTILINE)
+        assert names and all(sum(bool(pattern.fullmatch(name)) for pattern in patterns) == 1 for name in names)
+    print(f'Published canonical identities verified for {len(pool)} package versions; no migration aliases')
+
+if sys.argv[1] == '--published':
+    validate_published(Path(sys.argv[2]))
+    raise SystemExit(0)
+
+TOOL = Path(sys.argv[1]).resolve()
+assert len(entries) == 9
 for identifier, name in {'mblink':'MBLink','jaglink':'JAGLink','bmwlink':'BMWLink','audilink':'AUDILink','fordlink':'FORDLink'}.items():
     entry = next(item for item in all_entries if item['id'] == identifier)
     assert entry['name'] == name and entry['repo'] == name, entry
+for entry in entries:
+    assert entry['expected_package_regex'] == '^' + re.escape(entry['id']) + '$'
 
 with tempfile.TemporaryDirectory(prefix='product-naming-') as temporary:
     root = Path(temporary)
@@ -29,47 +56,27 @@ with tempfile.TemporaryDirectory(prefix='product-naming-') as temporary:
         item['local_deb_glob'] = f"fixtures/{item['id']}/*.deb"
         fixture = root / 'fixtures' / item['id']
         fixture.mkdir(parents=True)
-        versions = [(item['canonical_package'], '9.0.1')]
-        if item['legacy_packages']:
-            versions.append((item['legacy_packages'][0], '9.0.0'))
-        for package, version in versions:
+        for version in ['9.0.0', '9.0.1']:
             stage = root / 'stage'
             (stage / 'DEBIAN').mkdir(parents=True, exist_ok=True)
             (stage / 'DEBIAN/control').write_text(
-                f'Package: {package}\nVersion: {version}\nArchitecture: amd64\n'
+                f"Package: {item['id']}\nVersion: {version}\nArchitecture: amd64\n"
                 'Maintainer: Test <test@example.invalid>\nDescription: naming fixture\n')
             subprocess.run(['dpkg-deb', '--build', '--root-owner-group', str(stage),
-                            str(fixture / f'{package}_{version}_amd64.deb')],
+                            str(fixture / f"{item['id']}_{version}_amd64.deb")],
                            check=True, stdout=subprocess.DEVNULL)
         fixtures.append(item)
     (root / 'catalogue/apps-source.json').write_text(json.dumps(fixtures))
     subprocess.run([str(TOOL), 'publish'], cwd=root, check=True, stdout=subprocess.DEVNULL)
     apps = json.loads((root / 'public/catalogue/apps.json').read_text())
-    assert len(apps) == len(entries), 'Compatibility packages must not create application cards'
+    assert len(apps) == len(entries), 'Each canonical application has one catalogue card'
+    pool = list((root / 'public/pool/main').glob('*.deb'))
+    assert len(pool) == 2 * len(entries), 'Publication must not generate extra packages'
     for entry in entries:
         app = next(app for app in apps if app['id'] == entry['id'])
-        canonical = entry['canonical_package']
-        assert app['package'] == canonical and app['version'] == '9.0.1', app
-        for legacy in entry['legacy_packages']:
-            transition = root / f'public/pool/main/{legacy}_9.0.1_all.deb'
-            assert transition.is_file(), transition
-            dependency = subprocess.check_output(['dpkg-deb', '-f', str(transition), 'Depends'], text=True).strip()
-            assert dependency == f'{canonical} (= 9.0.1)', dependency
-            files = subprocess.check_output(['dpkg-deb', '-c', str(transition)], text=True)
-            assert 'usr/share/applications' not in files, 'Transition packages must not add launchers'
+        assert app['package'] == entry['id'] and app['version'] == '9.0.1', app
+        assert all(item['package'] == entry['id'] for item in app['history'])
+    assert all(subprocess.check_output(['dpkg-deb', '-f', str(deb), 'Architecture'],
+                                      text=True).strip() == 'amd64' for deb in pool)
 
-    # Before a renamed release is available, keep the last qualified release
-    # usable and never generate a reverse transition into the old name.
-    for item in fixtures:
-        for package in (root / 'fixtures' / item['id']).glob('*_9.0.1_amd64.deb'):
-            package.unlink()
-    # Products without a co-installable transition require an explicit install
-    # of their canonical package; they have no legacy fallback in this fixture.
-    (root / 'catalogue/apps-source.json').write_text(json.dumps([
-        item for item in fixtures if item['legacy_packages']
-    ]))
-    subprocess.run([str(TOOL), 'publish'], cwd=root, check=True, stdout=subprocess.DEVNULL)
-    for entry in entries:
-        assert not (root / f"public/pool/main/{entry['canonical_package']}_9.0.0_all.deb").exists()
-
-print('Canonical names, legacy upgrades and single application-card publication passed.')
+print('Canonical product names and direct package publication passed.')

@@ -478,7 +478,8 @@ static int sync_intune(const fs::path& root) {
                                               const std::string& repo, const std::string& rx_text,
                                               const std::string& expected_package_regex,
                                               const std::string& expected_architecture,
-                                              const std::string& version_regex) {
+                                              const std::string& version_regex,
+                                              const std::string& minimum_version = {}) {
     const fs::path json = root / (".releases-" + repo + ".json");
     const auto api = "https://api.github.com/repos/" + owner + "/" + repo + "/releases?per_page=100";
     if (run("curl -fsSL --retry 5 " + github_headers() + " " + quote(api) +
@@ -573,6 +574,12 @@ static int sync_intune(const fs::path& root) {
       p.sha = p.sha.substr(7);
       p.version = package_version_from_identity(
           p.release_tag, p.asset, version_regex);
+      if (!minimum_version.empty() &&
+          run("dpkg --compare-versions " + quote(p.version) + " lt " +
+              quote(minimum_version)) == 0) {
+        ++release_index;
+        continue;
+      }
 
       const auto existing = std::find_if(
           packages.begin(), packages.end(),
@@ -634,44 +641,6 @@ static int sync_intune(const fs::path& root) {
         });
     return packages;
   }
-
-static void create_transition_package(const fs::path& root,
-                                      const fs::path& public_dir,
-                                      const std::string& old_package,
-                                      const std::string& new_package,
-                                      const std::string& version,
-                                      const std::string& product_name) {
-  const fs::path staging = root / "build" / (old_package + "-transition");
-  fs::remove_all(staging);
-  fs::create_directories(staging / "DEBIAN");
-
-  std::ostringstream control;
-  control << "Package: " << old_package << "\n"
-          << "Version: " << version << "\n"
-          << "Section: oldlibs\n"
-          << "Priority: optional\n"
-          << "Architecture: all\n"
-          << "Depends: " << new_package << " (= " << version << ")\n"
-          << "Maintainer: Shannon Smith <The-First-Infiltrator@users.noreply.github.com>\n"
-          << "Description: transitional package for " << product_name << "\n"
-          << " This empty package migrates installations from the previous package name.\n";
-  write(staging / "DEBIAN" / "control", control.str());
-
-  const fs::path target = public_dir / "pool" / "main" /
-      (old_package + "_" + version + "_all.deb");
-  fs::remove(target);
-  const std::string command =
-      "SOURCE_DATE_EPOCH=315532800 dpkg-deb -Zxz --build --root-owner-group " +
-      quote(staging.string()) + " " + quote(target.string());
-  if (run(command))
-    throw std::runtime_error("unable to build " + product_name + " transition package");
-
-  check_deb(target, version, old_package, "all");
-  const std::string expected_depends = new_package + " (= " + version + ")";
-  if (deb_field(target, "Depends") != expected_depends)
-    throw std::runtime_error(product_name + " transition dependency is incorrect");
-  fs::remove_all(staging);
-}
 
 static std::string publish_package_icon(const fs::path& root,
                                         const fs::path& public_dir,
@@ -786,25 +755,26 @@ static void retain_index_history(const fs::path& current, std::string previous_b
     fs::copy_file(root / "site" / "index.html", public_dir / "index.html");
     write(public_dir / ".nojekyll", "");
 
-    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.version_regex // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\"),(.optional_until_release // false)] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
+    const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.version_regex // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\"),(.optional_until_release // false),(.minimum_version // \"\")] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));
     std::istringstream app_lines(source);
     std::vector<std::string> catalogue_items;
     size_t package_version_count = 0;
     std::string line;
     while (std::getline(app_lines, line)) {
-      std::istringstream f(line); std::vector<std::string> v(13);
+      std::istringstream f(line); std::vector<std::string> v(14);
       for (auto& value : v) std::getline(f, value, '\t');
       const auto& id=v[0]; const auto& name=v[1]; const auto& repo=v[2]; const auto& category=v[3];
       for (auto& value : v) value = tsv_unescape(value);
       const auto& description=v[4]; const auto& regex_text=v[5]; const auto& local_glob=v[6]; const auto& owner=v[7];
       const auto& version_regex=v[9]; const auto& expected_package_regex=v[10]; const auto& expected_architecture=v[11];
       const bool optional_until_release = v[12] == "true";
+      const auto& minimum_version = v[13];
       if (expected_package_regex.empty() || expected_architecture.empty())
         throw std::runtime_error(name + ": expected package identity is not configured");
       std::vector<Package> packages;
       try {
         packages = local_glob.empty()
-          ? remote_packages(root, owner, repo, regex_text, expected_package_regex, expected_architecture, version_regex)
+          ? remote_packages(root, owner, repo, regex_text, expected_package_regex, expected_architecture, version_regex, minimum_version)
           : local_packages(root, local_glob);
       } catch (const std::exception& error) {
         if (!optional_until_release) throw;
@@ -820,31 +790,6 @@ static void retain_index_history(const fs::path& current, std::string previous_b
         const auto target = public_dir / "pool" / "main" / package.asset;
         if (package.path != target) fs::copy_file(package.path, target, fs::copy_options::overwrite_existing);
         package.path = target; package.sha = digest(target);
-      }
-      const std::string current_package =
-          deb_field(packages.front().path, "Package");
-      // Transition metadata is part of each catalogue identity. Only emit
-      // forward upgrades after the canonical package has been published.
-      // Retained historical artifacts never cause a reverse rename.
-      const auto transition_source = command_output(
-          "jq -r --arg id " + quote(id) +
-          " '.[] | select(.id == $id) | [(.canonical_package // \"\"),"
-          "((.legacy_packages // []) | join(\",\"))] | @tsv' " +
-          quote((root / "catalogue/apps-source.json").string()));
-      const auto separator = transition_source.find('\t');
-      const std::string canonical_package =
-          trim_eol(transition_source.substr(0, separator));
-      if (!canonical_package.empty() && current_package == canonical_package &&
-          separator != std::string::npos) {
-        std::istringstream legacy_names(trim_eol(transition_source.substr(separator + 1)));
-        std::string legacy_package;
-        while (std::getline(legacy_names, legacy_package, ',')) {
-          if (!std::regex_match(legacy_package, std::regex("^[a-z0-9][a-z0-9+.-]+$")) ||
-              legacy_package == canonical_package)
-            throw std::runtime_error(name + ": invalid legacy package transition");
-          create_transition_package(root, public_dir, legacy_package,
-                                    canonical_package, packages.front().version, name);
-        }
       }
       if (packages.size() > 5) packages.resize(5);
       package_version_count += packages.size();
