@@ -39,11 +39,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
-      - name: Check out pinned Libraries 1.19.46
+      - name: Check out pinned Libraries 1.19.64
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/Libraries
-          ref: fc2c72cb038a8e4c1e0bc62145adf533fbfd7923
+          ref: f099551fd290199367fe0c7aee823415c104de39
           path: _common
 
       - name: Check out pinned ssmithnet.net website family
@@ -164,7 +164,7 @@ jobs:
       - name: Deploy Pages through pinned COMMON
         id: deployment
         continue-on-error: true
-        uses: Infiltrator-Projects/Libraries/.github/actions/deploy-pages@fc2c72cb038a8e4c1e0bc62145adf533fbfd7923
+        uses: Infiltrator-Projects/Libraries/.github/actions/deploy-pages@f099551fd290199367fe0c7aee823415c104de39
         with:
           path: public
           artifact-name: github-pages-${{ github.run_attempt }}
@@ -230,11 +230,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
 
-      - name: Check out pinned Libraries 1.19.46
+      - name: Check out pinned Libraries 1.19.64
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/Libraries
-          ref: fc2c72cb038a8e4c1e0bc62145adf533fbfd7923
+          ref: f099551fd290199367fe0c7aee823415c104de39
           path: _common
 
       - name: Install signing test tools
@@ -373,8 +373,20 @@ jobs:
             apt-get install -y --no-install-recommends "$pkg"
             dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
             apt-get check
+            case "$pkg" in system-settings|calendar|files)
+              # Shared temporal implementations belong to their independent
+              # package and must survive every consumer's uninstall scripts.
+              test "$(dpkg-query -W -f='${Status}' infiltrator-calendar-resources)" = 'install ok installed'
+              test "$(find /System/Resources/Calendars -maxdepth 1 -name '*.so' | wc -l)" -ge 30
+              test "$(find /System/Resources/Clocks -maxdepth 1 -name '*.so' | wc -l)" -ge 23
+              sha256sum /System/Resources/Calendars/*.so /System/Resources/Clocks/*.so > /tmp/temporal-resources.sha256
+              ;; esac
             apt-get purge -y "$pkg"
             ! dpkg-query -W "$pkg" >/dev/null 2>&1
+            case "$pkg" in system-settings|calendar|files)
+              test "$(dpkg-query -W -f='${Status}' infiltrator-calendar-resources)" = 'install ok installed'
+              sha256sum --check /tmp/temporal-resources.sha256
+              ;; esac
             apt-get check
           done
 
