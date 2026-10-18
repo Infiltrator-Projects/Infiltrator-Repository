@@ -364,7 +364,7 @@ jobs:
 
           # Alpha packages are qualified by clean installation and removal.
           apt-get install -y --no-install-recommends system-monitor
-          test -x /usr/bin/system-monitor
+          test -x /Programs/system-monitor
           apt-get check
           apt-get purge -y system-monitor
           ! dpkg-query -W -f='${db:Status-Abbrev}' system-monitor 2>/dev/null | grep -q '^ii'
