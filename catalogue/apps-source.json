@@ -67,7 +67,7 @@
     "description": "InfiltratorOS UEFI boot manager. Debian-managed firmware files with explicitly confirmed ESP deployment.",
     "deb_regex": "^infiltrator-boot_[^_]+_amd64\\.deb$",
     "icon": "settings",
-    "expected_package_regex": "^infiltrator-boot$",
+    "expected_package_regex": "^infiltrator\\-boot$",
     "expected_architecture": "amd64",
     "minimum_version": "0.1.18"
   },
