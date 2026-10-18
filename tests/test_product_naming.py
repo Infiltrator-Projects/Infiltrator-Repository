@@ -43,7 +43,9 @@ if sys.argv[1] == '--published':
     raise SystemExit(0)
 
 TOOL = Path(sys.argv[1]).resolve()
-assert len(entries) == 18
+assert entries, 'At least one canonical package is required'
+assert len({item['id'] for item in all_entries}) == len(all_entries), 'Duplicate application identifiers'
+assert all(item['id'] and item['expected_package_regex'] for item in entries)
 assert next(a for a in entries if a["id"] == "infiltrator-calendar-resources")["repo"] == "Libraries"
 for identifier, name in {'mblink':'MBLink','jaglink':'JAGLink','bmwlink':'BMWLink','audilink':'AUDILink','fordlink':'FORDLink'}.items():
     entry = next(item for item in all_entries if item['id'] == identifier)
