@@ -95,7 +95,7 @@
     "id": "defragmenter",
     "name": "Defragmenter",
     "repo": "Defragmenter",
-    "category": "System",
+    "category": "Filesystems",
     "description": "Direct filesystem analysis and layout optimisation tooling.",
     "deb_regex": "^Defragmenter-.*-amd64\\.deb$",
     "icon": "disk",
