@@ -37,4 +37,11 @@ assert 'font:400 30px/1.15 var(--display)' in site, "application titles must use
 assert ':appIcon(a);}' not in site, "appIcon must not recursively call itself"
 assert "calculator:" in site
 
+# Catalogue cards are sorted by name, independent of input/release ordering.
+assert 'var visible=apps.filter(matches).sort(compareApps);' in site
+assert 'function compareApps(a,b){return compareLabels(a.name,b.name)' in site
+assert 'var categoryOrder=["System","Productivity","Filesystems","Development","Automotive","Infrastructure","Games"];' in site
+assert '.sort(compareCategories)' in site
+assert 'if(ai<0)ai=categoryOrder.length;' in site and 'if(bi<0)bi=categoryOrder.length;' in site
+
 print("Software Centre setup, accessibility and family-source regression tests passed")
