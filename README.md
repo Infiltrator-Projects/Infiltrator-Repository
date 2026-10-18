@@ -77,7 +77,7 @@ releases are not automatically visible until the central APT publisher has
 generated and deployed the index. APT sources must reference the current
 `infiltrator-projects.github.io` beta URL, not an old organisation URL.
 
-When investigating a newly tagged Files release (such as 0.1.40), verify the
+When investigating a newly tagged Files release (such as 0.1.42), verify the
 *public catalogue* independently of the source repository's green release run.
 The central publisher accepts application-release dispatches and performs
 periodic recovery checks, but GitHub Actions scheduled runs can be delayed or
