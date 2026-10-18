@@ -33,7 +33,7 @@
     "icon": "filesystem",
     "expected_package_regex": "^files$",
     "expected_architecture": "amd64",
-    "minimum_version": "0.1.33"
+    "minimum_version": "0.1.53"
   },
   {
     "id": "system-settings",
@@ -45,7 +45,7 @@
     "icon": "settings",
     "expected_package_regex": "^system\\-settings$",
     "expected_architecture": "amd64",
-    "minimum_version": "0.4.111"
+    "minimum_version": "0.4.119"
   },
   {
     "id": "infiltratoros",
@@ -57,7 +57,7 @@
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.10"
+    "minimum_version": "1.0.25"
   },
   {
     "id": "calendar",
@@ -69,14 +69,7 @@
     "icon": "calendar",
     "expected_package_regex": "^calendar$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.111",
-    "supplemental_packages": [
-      {
-        "deb_regex": "^infiltrator-calendar-resources_[^_]+_amd64\\.deb$",
-        "expected_package_regex": "^infiltrator-calendar-resources$",
-        "expected_architecture": "amd64"
-      }
-    ]
+    "minimum_version": "1.0.117"
   },
   {
     "id": "slicer",
@@ -257,5 +250,17 @@
     "expected_package_regex": "^backyard-racer$",
     "expected_architecture": "amd64",
     "optional_until_release": true
+  },
+  {
+    "id": "infiltrator-calendar-resources",
+    "name": "System Clocks and Calendars",
+    "repo": "Libraries",
+    "category": "System",
+    "description": "Shared system clock and calendar implementations, built and published by Common for all applications.",
+    "deb_regex": "^infiltrator-calendar-resources_[^_]+_amd64\\.deb$",
+    "icon": "settings",
+    "expected_package_regex": "^infiltrator\\-calendar\\-resources$",
+    "expected_architecture": "amd64",
+    "minimum_version": "1.19.67"
   }
 ]

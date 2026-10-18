@@ -28,7 +28,10 @@ def validate_published(public):
             assert subprocess.run(['dpkg', '--compare-versions', version, 'ge', minimum]).returncode == 0, (deb, version, minimum)
             for field in ('Provides', 'Breaks', 'Replaces', 'Conflicts'):
                 value = subprocess.check_output(['dpkg-deb', '-f', str(deb), field], text=True).strip()
-                assert not value, (deb, field, value)
+                if name == "calendar" and field in ("Breaks", "Replaces"):
+                    assert value == "infiltrator-calendar-resources (<< 1.19.65)", (deb, field, value)
+                else:
+                    assert not value, (deb, field, value)
     for suite in ('alpha', 'beta'):
         index = (public / f'dists/{suite}/main/binary-amd64/Packages').read_text()
         names = re.findall(r'^Package: (.+)$', index, re.MULTILINE)
@@ -40,7 +43,8 @@ if sys.argv[1] == '--published':
     raise SystemExit(0)
 
 TOOL = Path(sys.argv[1]).resolve()
-assert len(entries) == 17
+assert len(entries) == 18
+assert next(a for a in entries if a["id"] == "infiltrator-calendar-resources")["repo"] == "Libraries"
 for identifier, name in {'mblink':'MBLink','jaglink':'JAGLink','bmwlink':'BMWLink','audilink':'AUDILink','fordlink':'FORDLink'}.items():
     entry = next(item for item in all_entries if item['id'] == identifier)
     assert entry['name'] == name and entry['repo'] == name, entry
