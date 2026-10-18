@@ -11,6 +11,9 @@ assert "\\\\n" not in block, "setupCommand() contains a double-escaped newline"
 assert "infiltrator-beta.list\\n" in block
 assert "infiltrator.list\\n" in block
 assert "sudo apt update" in block
+assert "/infiltrator-calendar.pref" in block
+assert "return clean+preference+" in block
+assert 'var cmd="sudo apt install "+a.package+"="+a.version;' in site
 assert "sudo rm -f /var/cache/mintinstall/pkginfo.json" in block
 assert "mintinstall/pkginfo.json" in block
 assert 'var base="https://infiltrator-projects.github.io/Infiltrator-Repository";' in site
@@ -45,3 +48,8 @@ assert '.sort(compareCategories)' in site
 assert 'if(ai<0)ai=categoryOrder.length;' in site and 'if(bi<0)bi=categoryOrder.length;' in site
 
 print("Software Centre setup, accessibility and family-source regression tests passed")
+
+preference = Path("site/infiltrator-calendar.pref").read_text()
+assert "Package: calendar\n" in preference
+assert "Pin: release o=Infiltrator\n" in preference
+assert "Pin-Priority: 1001\n" in preference

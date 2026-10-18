@@ -753,6 +753,9 @@ static void retain_index_history(const fs::path& current, std::string previous_b
     fs::create_directories(public_dir / "pool" / "main");
     fs::create_directories(public_dir / "catalogue");
     fs::copy_file(root / "site" / "index.html", public_dir / "index.html");
+    const auto calendar_preference = root / "site" / "infiltrator-calendar.pref";
+    if (fs::exists(calendar_preference))
+      fs::copy_file(calendar_preference, public_dir / "infiltrator-calendar.pref");
     write(public_dir / ".nojekyll", "");
 
     const auto source = command_output("jq -r '.[] | [.id,.name,.repo,.category,.description,(.deb_regex // \"\"),(.local_deb_glob // \"\"),(.owner // \"Infiltrator-Projects\"),(.icon // \"\"),(.version_regex // \"\"),(.expected_package_regex // \"\"),(.expected_architecture // \"\"),(.optional_until_release // false),(.minimum_version // \"\")] | @tsv' " + quote((root / "catalogue/apps-source.json").string()));

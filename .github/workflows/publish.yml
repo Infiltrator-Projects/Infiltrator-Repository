@@ -80,6 +80,7 @@ jobs:
           ./build/apt-index-history-test
           python3 tests/test_signing.py build/repository-tool
           python3 tests/test_site_setup.py
+          python3 tests/test_calendar_candidate.py
           python3 tests/test_publish_workflow.py
           python3 tests/test_private_mirror_policy.py
           python3 tests/test_retention.py build/repository-tool
@@ -113,6 +114,7 @@ jobs:
           test -s public/dists/beta/main/binary-amd64/Packages.gz
           test -s public/catalogue/apps.json
           test -s public/catalogue/repository.json
+          cmp site/infiltrator-calendar.pref public/infiltrator-calendar.pref
           python3 tests/test_slicer_publication.py --published public
 
           python3 tests/test_product_naming.py --published public
@@ -351,7 +353,13 @@ jobs:
           done
 
           echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' > /etc/apt/sources.list.d/infiltrator-e2e.list
+          install -d /etc/apt/preferences.d
+          curl -fsSL https://infiltrator-projects.github.io/Infiltrator-Repository/infiltrator-calendar.pref > /etc/apt/preferences.d/infiltrator-calendar
           apt-get update
+          curl -fsSL https://infiltrator-projects.github.io/Infiltrator-Repository/catalogue/apps.json > /tmp/infiltrator-published-apps.json
+          published_version() {
+            python3 -c 'import json,sys; print(next(a["version"] for a in json.load(open(sys.argv[1])) if a["package"] == sys.argv[2]))' /tmp/infiltrator-published-apps.json "$1"
+          }
 
           for pkg in \
             system-monitor software system-settings calendar calculator defragmenter files \
@@ -363,15 +371,26 @@ jobs:
 
 
           # Alpha packages are qualified by clean installation and removal.
-          apt-get install -y --no-install-recommends system-monitor
+          monitor_version=$(published_version system-monitor)
+          apt-get install -y --no-install-recommends "system-monitor=$monitor_version"
+          test "$(dpkg-query -W -f='${Version}' system-monitor)" = "$monitor_version"
           test -x /Programs/system-monitor
           apt-get check
           apt-get purge -y system-monitor
           ! dpkg-query -W -f='${db:Status-Abbrev}' system-monitor 2>/dev/null | grep -q '^ii'
           apt-get check
           for pkg in system-settings calendar defragmenter calculator files mblink jaglink fordlink audilink bmwlink; do
-            apt-get install -y --no-install-recommends "$pkg"
+            version=$(published_version "$pkg")
+            if [ "$pkg" = calendar ]; then
+              candidate=$(apt-cache policy calendar | awk '/Candidate:/ {print $2; exit}')
+              test "$candidate" = "$version"
+            fi
+            apt-get install -y --no-install-recommends "$pkg=$version"
             dpkg-query -W -f='${Status}\n' "$pkg" | grep -q '^install ok installed$'
+            test "$(dpkg-query -W -f='${Version}' "$pkg")" = "$version"
+            if [ "$pkg" = calendar ]; then
+              /usr/libexec/calendar-about --print-metadata | grep -qx "version=$version"
+            fi
             apt-get check
             case "$pkg" in system-settings|calendar|files)
               # Shared temporal implementations belong to their independent

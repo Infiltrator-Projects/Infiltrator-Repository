@@ -143,15 +143,17 @@ function showToast(text){var t=document.getElementById("toast");t.textContent=te
 function setupCommand(){
   if(!repoReady||!repoInfo)return "";
   var clean="for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list; do [ -f \"$f\" ] || continue; sudo sed -i -e '\\#"+base+"#d' \"$f\"; done\n";
+  var preference="sudo install -d -m 0755 /etc/apt/preferences.d\n"+
+    "curl -fsSL "+base+"/infiltrator-calendar.pref | sudo tee /etc/apt/preferences.d/infiltrator-calendar >/dev/null\n";
   if(repoInfo.signed){
-    return clean+"sudo install -d -m 0755 /etc/apt/keyrings\n"+
+    return clean+preference+"sudo install -d -m 0755 /etc/apt/keyrings\n"+
       "curl -fsSL "+base+"/repository-key.gpg | sudo tee /etc/apt/keyrings/infiltrator-repository.gpg >/dev/null\n"+
       "echo 'deb [signed-by=/etc/apt/keyrings/infiltrator-repository.gpg arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator.list\n"+
       "sudo apt update\n"+
       "sudo rm -f /var/cache/mintinstall/pkginfo.json\n"+
       "rm -f \"$HOME/.cache/mintinstall/pkginfo.json\"";
   }
-  return clean+"echo 'deb [trusted=yes arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list\n"+
+  return clean+preference+"echo 'deb [trusted=yes arch=amd64] "+base+" beta main' | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list\n"+
     "sudo apt update\n"+
     "sudo rm -f /var/cache/mintinstall/pkginfo.json\n"+
     "rm -f \"$HOME/.cache/mintinstall/pkginfo.json\"";
@@ -218,7 +220,7 @@ function showDetails(a,installFirst){
   document.getElementById("modalCategory").textContent=a.category;
   document.getElementById("modalName").textContent=a.name;
   document.getElementById("modalVersion").textContent="Version "+a.version;
-  var cmd="sudo apt install "+a.package;
+  var cmd="sudo apt install "+a.package+"="+a.version;
   var history=(a.history||[]).map(function(v){
     return '<tr><td>'+esc(v.version)+'</td><td>'+esc(v.architecture)+'</td><td>'+fmtBytes(v.download_size)+'</td><td>'+fmtDate(v.published_at)+'</td><td><a href="'+esc(v.release_url)+'">Release</a></td></tr>';
   }).join("");

@@ -112,10 +112,15 @@ for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list; do
 done
 echo 'deb [trusted=yes arch=amd64] https://infiltrator-projects.github.io/Infiltrator-Repository beta main' \
   | sudo tee /etc/apt/sources.list.d/infiltrator-beta.list
+sudo install -d -m 0755 /etc/apt/preferences.d
+curl -fsSL "$NEW/infiltrator-calendar.pref" \
+  | sudo tee /etc/apt/preferences.d/infiltrator-calendar >/dev/null
 sudo apt update
 sudo rm -f /var/cache/mintinstall/pkginfo.json
 rm -f "$HOME/.cache/mintinstall/pkginfo.json"
 ```
+
+Mint/Ubuntu also publishes an unrelated `calendar` utility with a higher numeric version. Setup installs a preference for `Package: calendar`, `Pin: release o=Infiltrator`, priority 1001, so APT selects Infiltrator Calendar and keeps it selected during upgrades. This policy applies only to `calendar`. The Software Centre's install command also names the displayed package version explicitly. Mint qualification verifies the candidate and installed version against the published catalogue before testing Calendar's native runtime and resource preservation.
 
 Linux Mint Software Manager keeps its own package cache. The setup command invalidates both the system and invoking user's Mint Software Manager caches after refreshing APT so newly added or renamed repository applications are rebuilt from the current APT package set. No repository metadata package is installed.
 

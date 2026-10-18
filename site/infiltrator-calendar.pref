@@ -1,0 +1,5 @@
+# Infiltrator Calendar shares its Debian package name with a Mint/Ubuntu utility.
+# Prefer the approved Infiltrator implementation, including its independent resources.
+Package: calendar
+Pin: release o=Infiltrator
+Pin-Priority: 1001
