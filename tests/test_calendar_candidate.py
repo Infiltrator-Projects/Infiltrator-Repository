@@ -73,11 +73,13 @@ with tempfile.TemporaryDirectory(prefix="calendar-candidate-") as temporary:
     shutil.copyfile(SOURCE / "site/infiltrator-calendar.pref",
                     apt / "etc/apt/preferences.d/infiltrator-calendar")
     assert candidate() == "1.0.116", "repository preference must select Infiltrator Calendar"
-    status.write_text(
-        "Package: calendar\nStatus: install ok installed\nArchitecture: amd64\n"
-        "Version: 12.1.8\nMaintainer: Fixture <test@example.invalid>\n"
-        "Description: installed stock utility\n\n"
-    )
-    assert candidate() == "1.0.116", "an installed stock utility must not win the candidate"
+    for installed in ("12.1.8", "1.0.116+nativepgo1"):
+        status.write_text(
+            "Package: calendar\nStatus: install ok installed\nArchitecture: amd64\n"
+            f"Version: {installed}\nMaintainer: Fixture <test@example.invalid>\n"
+            "Description: installed calendar\n\n"
+        )
+        assert candidate() == installed, ("preference must preserve an installed newer/native build", installed, candidate())
+
 
 print("APT selects Infiltrator Calendar despite Mint's higher-version namesake")

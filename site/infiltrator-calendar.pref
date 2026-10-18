@@ -1,5 +1,10 @@
 # Infiltrator Calendar shares its Debian package name with a Mint/Ubuntu utility.
 # Prefer the approved Infiltrator implementation, including its independent resources.
+# Keep a deliberately installed local PGO build as the selected profile.
+Package: calendar
+Pin: version /.*[+]nativepgo.*/
+Pin-Priority: 1000
+
 Package: calendar
 Pin: release o=Infiltrator
-Pin-Priority: 1001
+Pin-Priority: 999

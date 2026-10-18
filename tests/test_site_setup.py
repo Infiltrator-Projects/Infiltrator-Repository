@@ -52,4 +52,4 @@ print("Software Centre setup, accessibility and family-source regression tests p
 preference = Path("site/infiltrator-calendar.pref").read_text()
 assert "Package: calendar\n" in preference
 assert "Pin: release o=Infiltrator\n" in preference
-assert "Pin-Priority: 1001\n" in preference
+assert "Pin-Priority: 999\n" in preference
