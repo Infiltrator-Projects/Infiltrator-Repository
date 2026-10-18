@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-18 — Files 0.1.43 menu repair
+
+- Refresh the beta APT index for verified Files 0.1.43 after its published GitHub release. The hamburger menu now has a bounded, scrollable File actions list with clipboard commands still accessible, plus a GTK directory-monitoring safeguard during own clipboard mutations. Preserve the canonical `files` package name, validated metadata, checksums and retention rules.
+
+
 ## 2026-10-18 — Files 0.1.42 APT publication
 
 - Refresh the verified beta index for released Files v0.1.42. This release adds bounded filename filtering, Open With associations, private recent locations, safely journalled empty-file creation and MIME-aware Linux clipboard interoperability. Its final GTK lifetime fix passed standard and aggressive-native qualification. Keep the existing package name `files`, signatures/metadata validation and retention policy unchanged.
