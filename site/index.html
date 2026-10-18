@@ -170,8 +170,17 @@ function updateRepoInfo(){
   document.getElementById("repoCommand").textContent=setupCommand();
   document.getElementById("copyRepo").disabled=false;
 }
+var categoryOrder=["System","Productivity","Filesystems","Development","Automotive","Infrastructure","Games"];
+function compareLabels(a,b){return String(a).localeCompare(String(b),"en",{sensitivity:"base",numeric:true});}
+function compareCategories(a,b){
+  var ai=categoryOrder.indexOf(a),bi=categoryOrder.indexOf(b);
+  if(ai<0)ai=categoryOrder.length;
+  if(bi<0)bi=categoryOrder.length;
+  return ai-bi||compareLabels(a,b);
+}
+function compareApps(a,b){return compareLabels(a.name,b.name)||compareLabels(a.package||a.id,b.package||b.id);}
 function buildFilters(){
-  var cats=["All"].concat(Array.from(new Set(apps.map(function(a){return a.category;}))).sort());
+  var cats=["All"].concat(Array.from(new Set(apps.map(function(a){return a.category;}))).sort(compareCategories));
   var root=document.getElementById("filters");root.innerHTML="";
   cats.forEach(function(cat){
     var b=document.createElement("button");b.className="filter"+(cat===activeCategory?" active":"");b.textContent=cat;
@@ -199,7 +208,7 @@ function card(a){
 }
 function render(){
   var root=document.getElementById("apps");root.innerHTML="";
-  var visible=apps.filter(matches);
+  var visible=apps.filter(matches).sort(compareApps);
   document.getElementById("resultCount").textContent=visible.length+" of "+apps.length+" applications";
   if(!visible.length){root.innerHTML='<div class="empty">No applications match this search.</div>';return;}
   visible.forEach(function(a){root.appendChild(card(a));});
