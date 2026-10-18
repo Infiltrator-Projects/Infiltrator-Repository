@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-18 — Files 0.1.42 APT publication
+
+- Refresh the verified beta index for released Files v0.1.42. This release adds bounded filename filtering, Open With associations, private recent locations, safely journalled empty-file creation and MIME-aware Linux clipboard interoperability. Its final GTK lifetime fix passed standard and aggressive-native qualification. Keep the existing package name `files`, signatures/metadata validation and retention policy unchanged.
+
+
 ## 2026-10-18 — Files 0.1.41 APT publication
 
 - Refresh the beta APT catalogue after the successful Files v0.1.41 release, preserving the existing package name `files`, verified package metadata, SHA checks and retention policy. This revision corrects measured GTK Details-row density, restores neutral Day view controls and unifies the navigation header and tab strip without changes to file-operation engines.
