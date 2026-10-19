@@ -394,8 +394,13 @@ jobs:
           test "$(dpkg-query -W -f='${Version}' infiltrator-calendar-resources)" = "$resources_version"
           test "$(find /System/Resources/Calendars -maxdepth 1 -name '*.so' | wc -l)" -eq 30
           test "$(find /System/Resources/Clocks -maxdepth 1 -name '*.so' | wc -l)" -eq 23
-          dpkg-query -S /System/Resources/Calendars/hebrew.so | grep -q '^infiltrator-calendar-resources:'
-          dpkg-query -S /System/Resources/Clocks/roman-temporal.so | grep -q '^infiltrator-calendar-resources:'
+          # Ownership is asserted from real compiler-produced filenames; the
+          # temporal provider's stable ID is not its filesystem basename.
+          for kind in Calendars Clocks; do
+            module=$(find "/System/Resources/$kind" -maxdepth 1 -type f -name '*.so' -print -quit)
+            test -n "$module"
+            dpkg-query -S "$module" | grep -q '^infiltrator-calendar-resources:'
+          done
 
           # Alpha packages are qualified by clean installation and removal.
           monitor_version=$(published_version system-monitor)
