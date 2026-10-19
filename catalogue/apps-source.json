@@ -273,6 +273,6 @@
     "icon": "settings",
     "expected_package_regex": "^infiltrator\\-calendar\\-resources$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.19.67"
+    "minimum_version": "1.19.68"
   }
 ]
