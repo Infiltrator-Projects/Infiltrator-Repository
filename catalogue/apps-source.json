@@ -125,7 +125,7 @@
     "name": "InfiltratorFS",
     "repo": "InfiltratorFS",
     "category": "Filesystems",
-    "description": "Experimental native Infiltrator filesystem implementation and tools.",
+    "description": "Native Format 0.19 filesystem, Linux VFS/DKMS integration and recovery tools; hardware durability and native Windows mounting remain in qualification.",
     "deb_regex": "^infiltratorfs_.*_amd64\\.deb$",
     "icon": "filesystem",
     "expected_package_regex": "^infiltratorfs$",
