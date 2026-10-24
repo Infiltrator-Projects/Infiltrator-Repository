@@ -28,7 +28,7 @@
     "name": "Files",
     "repo": "Files",
     "category": "System",
-    "description": "InfiltratorOS file manager with asynchronous browsing, deterministic operation architecture and InfiltratorFS-aware design.",
+    "description": "InfiltratorOS file manager with asynchronous browsing, deterministic file operations and an independently installable aggressive CPU-native PGO build.",
     "deb_regex": "^files_[^_]+_amd64\\.deb$",
     "icon": "filesystem",
     "expected_package_regex": "^files$",
