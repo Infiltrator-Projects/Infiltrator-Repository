@@ -1,5 +1,5 @@
 {
-  "reason": "publish File Manager 0.1.27",
+  "reason": "publish File Manager 0.1.62",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -21,9 +21,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Files",
-      "version": "0.1.27",
-      "release_sha": "41b67f40632a75e44df8b610408642d86393d0c4",
-      "release_published_at": "2026-10-15T04:27:26Z"
+      "version": "0.1.62",
+      "release_sha": "865ef176f4ae14082e4b60d923f459f82073e916",
+      "release_published_at": "2026-10-24T04:22:48Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
