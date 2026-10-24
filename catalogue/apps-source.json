@@ -52,7 +52,7 @@
     "name": "InfiltratorOS",
     "repo": "InfiltratorOS",
     "category": "System",
-    "description": "InfiltratorOS boot branding and native System Monitor and Calculator provisioning for Debian and Linux Mint.",
+    "description": "InfiltratorOS desktop integration and native System Monitor, Calculator, Files and Defragmenter provisioning for Debian and Linux Mint.",
     "deb_regex": "^infiltratoros_.*_amd64\\.deb$",
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
