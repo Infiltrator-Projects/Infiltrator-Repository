@@ -6,12 +6,12 @@ It is not a claim of physical Mint/Debian host qualification.
 
 | Project | Released tag | Expected package |
 | --- | --- | --- |
-| InfiltratorOS | [v1.0.29](https://github.com/Infiltrator-Projects/InfiltratorOS/releases/tag/v1.0.29) | `infiltratoros_1.0.29_amd64.deb` |
+| InfiltratorOS | [v1.0.30](https://github.com/Infiltrator-Projects/InfiltratorOS/releases/tag/v1.0.30) | `infiltratoros_1.0.30_amd64.deb` |
 | Files | [v0.1.71](https://github.com/Infiltrator-Projects/Files/releases/tag/v0.1.71) | `files_0.1.71_amd64.deb` |
 | Calculator | [v0.2.60](https://github.com/Infiltrator-Projects/Calculator/releases/tag/v0.2.60) | `calculator_0.2.60_amd64.deb` |
 | Defragmenter | [v1.8.0-274](https://github.com/Infiltrator-Projects/Defragmenter/releases/tag/v1.8.0-274) | `Defragmenter-1.8.0-274-amd64.deb` |
 
-InfiltratorOS 1.0.29 also depends on separately published Calendar 1.0.125
+InfiltratorOS 1.0.30 also depends on separately published Calendar 1.0.125
 and `infiltrator-calendar-resources` 1.19.75.
 
 The InfiltratorOS Debian payload constructs `/System`, `/Programs`,
@@ -55,3 +55,7 @@ unchanged. Debian's package upgrade removes the twelve obsolete package-owned
 `/System` executable files without manual deletion. The full package data
 payload contains 34 regular files instead of 46. Source/runtime validation is
 green, but physical installation on the target Mint host remains to be proven.
+
+## Mint /run noexec native installer fix
+
+The initial physical Mint attempt to install InfiltratorOS 1.0.29 failed verifying its native installer executables because executable workers had been staged under `/run` on a host where `/run` may be mounted `noexec`. Published InfiltratorOS 1.0.30 keeps status under `/run` but stages executable binaries under the host's executable `/var/lib` filesystem in a transient `infiltratoros-native-worker.*` directory, which is cleaned up after installations terminate. This patch does not change the permanent file layout, `/Volumes`, application replacement policy or shared resource contents. A physical retest on the Latitude Mint host is still required. When the host's `/System` hierarchy was manually cleared, `calendar` and `infiltrator-calendar-resources` remained installed in dpkg and need package reinstallation to restore package-owned native calendar/clock resources.
