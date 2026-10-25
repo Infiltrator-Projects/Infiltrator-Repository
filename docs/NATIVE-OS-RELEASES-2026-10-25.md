@@ -6,12 +6,12 @@ It is not a claim of physical Mint/Debian host qualification.
 
 | Project | Released tag | Expected package |
 | --- | --- | --- |
-| InfiltratorOS | [v1.0.32](https://github.com/Infiltrator-Projects/InfiltratorOS/releases/tag/v1.0.32) | `infiltratoros_1.0.32_amd64.deb` |
+| InfiltratorOS | [v1.0.33](https://github.com/Infiltrator-Projects/InfiltratorOS/releases/tag/v1.0.33) | `infiltratoros_1.0.33_amd64.deb` |
 | Files | [v0.1.71](https://github.com/Infiltrator-Projects/Files/releases/tag/v0.1.71) | `files_0.1.71_amd64.deb` |
 | Calculator | [v0.2.60](https://github.com/Infiltrator-Projects/Calculator/releases/tag/v0.2.60) | `calculator_0.2.60_amd64.deb` |
 | Defragmenter | [v1.8.0-274](https://github.com/Infiltrator-Projects/Defragmenter/releases/tag/v1.8.0-274) | `Defragmenter-1.8.0-274-amd64.deb` |
 
-InfiltratorOS 1.0.32 also depends on separately published Calendar 1.0.125
+InfiltratorOS 1.0.33 also depends on separately published Calendar 1.0.125
 and `infiltrator-calendar-resources` 1.19.75.
 
 The InfiltratorOS Debian payload constructs `/System`, `/Programs`,
@@ -67,3 +67,7 @@ The revised package routes all **InfiltratorOS-owned temporary installation stat
 ## 1.0.32 — No resource Seed directories; complete native setup cleanup
 
 InfiltratorOS 1.0.32 packages the full 23-font set and 1,233 flat icons **directly into their native final resource directories**, with checksum inventories under `/System/Resources/Documentation/InfiltratorOS`. The intermediate font and icon `Seed` directories and installed icon archive are **removed**. No duplicate or staging copy of either resource collection remains. On successful completion of all four application installers the OS removes the temporary `/Temporary/InfiltratorOS` setup area; unsuccessful installs retain status/log diagnostics. Only actual filesystem implementation drivers should be placed under `/System/Filesystems`; the separately versioned Defragmenter package presently places private workers there and must be corrected in that package without moving files under a live installed application. Files/Nemo coexistence and `/Volumes` are unchanged. Published v1.0.32 DEB SHA-256: `b3e846e77cd20589ca94c49bbf642b42d69c5afdd15b80a6fe239173e370beff`. Physical Mint installation still requires validation.
+
+## 1.0.33 — automatic Nemo user-session icon integration
+
+Cinnamon XDG autostart now registers the matching per-user GVfs custom icons on real `/Programs` executables from packaged `/System/Resources/Icons` assets. It preserves explicit user overrides, falls back to installed theme names only where an app does not provide a native icon, and requires **no user `gio set` terminal commands**. This resolves Nemo's raw executable icon problem without installing duplicate executable launchers or using root to write another user's metadata. Applications installed after a login are associated on the next Cinnamon login. InfiltratorOS also validates the corrected two-program Defragmenter package layout in `/System/Commands/Defragmenter` instead of rejecting it. The published InfiltratorOS v1.0.33 DEB SHA-256 is `68264ead353a0f24633b7235ec47cd6a9133b229bab9373019a92d20199413aa`. Physical Mint UI integration not yet verified.
