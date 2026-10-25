@@ -6,12 +6,12 @@ It is not a claim of physical Mint/Debian host qualification.
 
 | Project | Released tag | Expected package |
 | --- | --- | --- |
-| InfiltratorOS | [v1.0.31](https://github.com/Infiltrator-Projects/InfiltratorOS/releases/tag/v1.0.31) | `infiltratoros_1.0.31_amd64.deb` |
+| InfiltratorOS | [v1.0.32](https://github.com/Infiltrator-Projects/InfiltratorOS/releases/tag/v1.0.32) | `infiltratoros_1.0.32_amd64.deb` |
 | Files | [v0.1.71](https://github.com/Infiltrator-Projects/Files/releases/tag/v0.1.71) | `files_0.1.71_amd64.deb` |
 | Calculator | [v0.2.60](https://github.com/Infiltrator-Projects/Calculator/releases/tag/v0.2.60) | `calculator_0.2.60_amd64.deb` |
 | Defragmenter | [v1.8.0-274](https://github.com/Infiltrator-Projects/Defragmenter/releases/tag/v1.8.0-274) | `Defragmenter-1.8.0-274-amd64.deb` |
 
-InfiltratorOS 1.0.31 also depends on separately published Calendar 1.0.125
+InfiltratorOS 1.0.32 also depends on separately published Calendar 1.0.125
 and `infiltrator-calendar-resources` 1.19.75.
 
 The InfiltratorOS Debian payload constructs `/System`, `/Programs`,
@@ -63,3 +63,7 @@ The initial physical Mint attempt to install InfiltratorOS 1.0.29 failed verifyi
 ## 1.0.31 — Restore canonical native temporary layout
 
 The revised package routes all **InfiltratorOS-owned temporary installation state** (verified temporary worker binaries, worker downloads, statuses, diagnostic logs and lockfiles) through `/Temporary/InfiltratorOS`. This temporary native directory is created **before** fonts/icons and the four app workers are started; `TMPDIR` is exported for setup and worker processes. No InfiltratorOS-owned files are staged under `/run`, `/run/lock`, `/var/lib`, `/var/log`, or `/tmp` (Linux's own dpkg/XDG interoperability is unchanged). The prior 1.0.30 Linux-path workaround is superseded and is **not recommended for the user's native-layout reinstall**. The published 1.0.31 package SHA-256 is `8b64b741062f7bcdb6927af8f9fa2e2bfead4a67c477b179ce61ee265d8cdd55`. `/Volumes` is preserved, and the 34 permanent InfiltratorOS package files, app distribution policies and Nemo coexistence do not change. Physical installation on the Dell Latitude Mint system remains to be proven.
+
+## 1.0.32 — No resource Seed directories; complete native setup cleanup
+
+InfiltratorOS 1.0.32 packages the full 23-font set and 1,233 flat icons **directly into their native final resource directories**, with checksum inventories under `/System/Resources/Documentation/InfiltratorOS`. The intermediate font and icon `Seed` directories and installed icon archive are **removed**. No duplicate or staging copy of either resource collection remains. On successful completion of all four application installers the OS removes the temporary `/Temporary/InfiltratorOS` setup area; unsuccessful installs retain status/log diagnostics. Only actual filesystem implementation drivers should be placed under `/System/Filesystems`; the separately versioned Defragmenter package presently places private workers there and must be corrected in that package without moving files under a live installed application. Files/Nemo coexistence and `/Volumes` are unchanged. Published v1.0.32 DEB SHA-256: `b3e846e77cd20589ca94c49bbf642b42d69c5afdd15b80a6fe239173e370beff`. Physical Mint installation still requires validation.
