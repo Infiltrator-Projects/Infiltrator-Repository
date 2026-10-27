@@ -57,7 +57,7 @@
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.25"
+    "minimum_version": "1.0.34"
   },
   {
     "id": "infiltrator-boot",
