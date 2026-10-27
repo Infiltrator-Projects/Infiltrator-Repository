@@ -213,3 +213,7 @@ and system timezones. Installing the Common-owned resource package through APT
 adds shared capabilities. Calendar, Files and System Settings suggest that pack
 and contain no custom fallback implementation. InfiltratorOS requires the current
 resource release so its normal install populates the system resource folders.
+
+## Independent calendar and clock releases
+
+The source catalogue includes all 31 calendar and 23 clock repositories. Each contributes exactly one generic amd64 Debian package; its native source RUN and complete source ZIP stay in that repository’s three-asset release. InfiltratorOS downloads the RUN and builds each provider aggressively on the target machine. Native package versions include `+native1`, so an equal-version generic repository package does not replace local CPU tuning. Provider packages declare `Replaces: infiltrator-calendar-resources` for their own module’s ownership transition, while Common source and its existing release remain available. All 54 providers now have qualified 1.0.0 releases and are required catalogue sources.

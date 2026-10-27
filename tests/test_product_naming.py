@@ -30,6 +30,8 @@ def validate_published(public):
                 value = subprocess.check_output(['dpkg-deb', '-f', str(deb), field], text=True).strip()
                 if name == "calendar" and field in ("Breaks", "Replaces"):
                     assert value == "infiltrator-calendar-resources (<< 1.19.65)", (deb, field, value)
+                elif name.startswith(("infiltrator-calendar-", "infiltrator-clock-")) and name != "infiltrator-calendar-resources" and field == "Replaces":
+                    assert value == "infiltrator-calendar-resources", (deb, field, value)
                 else:
                     assert not value, (deb, field, value)
     for suite in ('alpha', 'beta'):

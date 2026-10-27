@@ -1,5 +1,9 @@
 # Changelog
 
+## Independent temporal providers
+
+Publish the generic Debian packages from all 31 calendar and 23 clock repositories, alongside their product-owned native RUN and complete source ZIP releases. Preserve locally compiled +native1 versions and accept the narrowly scoped legacy module ownership transfer.
+
 ## 2026-10-18 — Files 0.1.43 menu repair
 
 - Refresh the beta APT index for verified Files 0.1.43 after its published GitHub release. The hamburger menu now has a bounded, scrollable File actions list with clipboard commands still accessible, plus a GTK directory-monitoring safeguard during own clipboard mutations. Preserve the canonical `files` package name, validated metadata, checksums and retention rules.
