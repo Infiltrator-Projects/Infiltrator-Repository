@@ -1,5 +1,11 @@
 # Changelog
 
+## Retire Common’s combined temporal producer
+
+- Remove the legacy combined resource package from current APT catalogue/index generation; preserve historical GitHub release assets.
+- Require provider-owned translations from the 14 localized calendars’ 1.0.1 releases.
+- Qualify independent ownership and consumer-removal survival using all 54 individual packages in the Mint lifecycle test.
+
 ## Independent temporal providers
 
 Publish the generic Debian packages from all 31 calendar and 23 clock repositories, alongside their product-owned native RUN and complete source ZIP releases. Preserve locally compiled +native1 versions and accept the narrowly scoped legacy module ownership transfer.

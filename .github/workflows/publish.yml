@@ -362,7 +362,7 @@ jobs:
           }
 
           for pkg in \
-            system-monitor software system-settings calendar calculator defragmenter files infiltrator-calendar-resources \
+            system-monitor software system-settings calendar calculator defragmenter files \
             infiltratorfs mblink jaglink fordlink audilink bmwlink egypt runnerscope \
             nps-wheres-wally-zabbix intune-zabbix-bridge
           do
@@ -384,22 +384,28 @@ jobs:
             apt-get purge -y "$pkg"
           done
 
-          # Common is the independent APT producer. Installing the OS must pull
-          # this package even when none of its application consumers is present.
-          resources_version=$(published_version infiltrator-calendar-resources)
-          dpkg --compare-versions "$resources_version" ge 1.19.67
-          apt-cache show infiltratoros | grep -Fq 'infiltrator-calendar-resources (>= 1.19.67)'
-          apt-get -s install infiltratoros | grep -q '^Inst infiltrator-calendar-resources '
-          apt-get install -y --no-install-recommends "infiltrator-calendar-resources=$resources_version"
-          test "$(dpkg-query -W -f='${Version}' infiltrator-calendar-resources)" = "$resources_version"
-          test "$(find /System/Resources/Calendars -maxdepth 1 -name '*.so' | wc -l)" -eq 30
+          # Each capability comes from its owning provider repository. Common's
+          # SDK release is source-only and is not an APT resource producer.
+          provider_specs=$(python3 - <<'PROVIDER_SPECS'
+          import json
+          entries=json.load(open('/tmp/infiltrator-published-apps.json'))
+          providers=[x for x in entries if x['package'].startswith(('infiltrator-calendar-', 'infiltrator-clock-')) and x['package'] != 'infiltrator-calendar-resources']
+          assert len(providers) == 54
+          print(' '.join(x['package'] + '=' + x['version'] for x in providers))
+          PROVIDER_SPECS
+          )
+          provider_packages=$(printf '%s\n' "$provider_specs" | tr ' ' '\n' | cut -d= -f1 | tr '\n' ' ')
+          ! apt-cache show infiltratoros | grep -Eq '^Depends:.*infiltrator-calendar-resources'
+          apt-get install -y --no-install-recommends $provider_specs
+          for provider_package in $provider_packages; do
+            test "$(dpkg-query -W -f='${Status}' "$provider_package")" = 'install ok installed'
+          done
+          test "$(find /System/Resources/Calendars -maxdepth 1 -name '*.so' | wc -l)" -eq 31
           test "$(find /System/Resources/Clocks -maxdepth 1 -name '*.so' | wc -l)" -eq 23
-          # Ownership is asserted from real compiler-produced filenames; the
-          # temporal provider's stable ID is not its filesystem basename.
           for kind in Calendars Clocks; do
-            module=$(find "/System/Resources/$kind" -maxdepth 1 -type f -name '*.so' -print -quit)
-            test -n "$module"
-            dpkg-query -S "$module" | grep -q '^infiltrator-calendar-resources:'
+            while IFS= read -r module; do
+              dpkg-query -S "$module" | grep -Eq '^infiltrator-(calendar|clock)-[^:]+:'
+            done < <(find "/System/Resources/$kind" -maxdepth 1 -type f -name '*.so')
           done
 
           # Alpha packages are qualified by clean installation and removal.
@@ -427,15 +433,15 @@ jobs:
             case "$pkg" in system-settings|calendar|files)
               # Shared temporal implementations belong to their independent
               # package and must survive every consumer's uninstall scripts.
-              test "$(dpkg-query -W -f='${Status}' infiltrator-calendar-resources)" = 'install ok installed'
-              test "$(find /System/Resources/Calendars -maxdepth 1 -name '*.so' | wc -l)" -ge 30
+              for provider_package in $provider_packages; do test "$(dpkg-query -W -f='${Status}' "$provider_package")" = 'install ok installed'; done
+              test "$(find /System/Resources/Calendars -maxdepth 1 -name '*.so' | wc -l)" -ge 31
               test "$(find /System/Resources/Clocks -maxdepth 1 -name '*.so' | wc -l)" -ge 23
               sha256sum /System/Resources/Calendars/*.so /System/Resources/Clocks/*.so > /tmp/temporal-resources.sha256
               ;; esac
             apt-get purge -y "$pkg"
             ! dpkg-query -W "$pkg" >/dev/null 2>&1
             case "$pkg" in system-settings|calendar|files)
-              test "$(dpkg-query -W -f='${Status}' infiltrator-calendar-resources)" = 'install ok installed'
+              for provider_package in $provider_packages; do test "$(dpkg-query -W -f='${Status}' "$provider_package")" = 'install ok installed'; done
               sha256sum --check /tmp/temporal-resources.sha256
               ;; esac
             apt-get check

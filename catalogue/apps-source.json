@@ -264,18 +264,6 @@
     "optional_until_release": true
   },
   {
-    "id": "infiltrator-calendar-resources",
-    "name": "System Clocks and Calendars",
-    "repo": "Libraries",
-    "category": "System",
-    "description": "Shared system clock and calendar implementations, built and published by Common for all applications.",
-    "deb_regex": "^infiltrator-calendar-resources_[^_]+_amd64\\.deb$",
-    "icon": "settings",
-    "expected_package_regex": "^infiltrator\\-calendar\\-resources$",
-    "expected_architecture": "amd64",
-    "minimum_version": "1.19.68"
-  },
-  {
     "id": "infiltrator-calendar-armenian-traditional",
     "name": "Traditional Armenian Calendar",
     "repo": "Calendar-Armenian-Traditional",
@@ -284,7 +272,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-armenian\\-traditional_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-armenian\\-traditional$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -296,7 +284,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-bahai_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-bahai$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -320,7 +308,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-byzantine_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-byzantine$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -368,7 +356,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-egyptian\\-nabonassar_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-egyptian\\-nabonassar$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -404,7 +392,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-french\\-republican_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-french\\-republican$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -440,7 +428,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-iso\\-week_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-iso\\-week$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -464,7 +452,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-international\\-fixed_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-international\\-fixed$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -536,7 +524,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-julian_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-julian$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -548,7 +536,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-mayan_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-mayan$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -584,7 +572,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-positivist_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-positivist$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -596,7 +584,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-revised\\-julian_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-revised\\-julian$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -608,7 +596,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-roman_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-roman$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -620,7 +608,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-swedish\\-historical_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-swedish\\-historical$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {
@@ -644,7 +632,7 @@
     "deb_regex": "^infiltrator\\-calendar\\-world_[^_]+_amd64\\.deb$",
     "expected_package_regex": "^infiltrator\\-calendar\\-world$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.0",
+    "minimum_version": "1.0.1",
     "icon": "calendar"
   },
   {

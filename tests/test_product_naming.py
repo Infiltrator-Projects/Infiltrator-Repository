@@ -48,7 +48,9 @@ TOOL = Path(sys.argv[1]).resolve()
 assert entries, 'At least one canonical package is required'
 assert len({item['id'] for item in all_entries}) == len(all_entries), 'Duplicate application identifiers'
 assert all(item['id'] and item['expected_package_regex'] for item in entries)
-assert next(a for a in entries if a["id"] == "infiltrator-calendar-resources")["repo"] == "Libraries"
+assert not any(a["id"] == "infiltrator-calendar-resources" or a["repo"] == "Libraries" for a in all_entries)
+assert sum(a["repo"].startswith("Calendar-") for a in entries) == 31
+assert sum(a["repo"].startswith("Clock-") for a in entries) == 23
 for identifier, name in {'mblink':'MBLink','jaglink':'JAGLink','bmwlink':'BMWLink','audilink':'AUDILink','fordlink':'FORDLink'}.items():
     entry = next(item for item in all_entries if item['id'] == identifier)
     assert entry['name'] == name and entry['repo'] == name, entry
