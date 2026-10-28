@@ -92,7 +92,15 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
         expected = {run, "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
         if names != expected:
             raise ValueError(repository + ": incomplete independent filesystem release")
-    return {"tag_name": tag, "draft": False, "prerelease": False, "assets": assets}
+    result = {"tag_name": tag, "draft": False, "prerelease": False, "assets": assets}
+    if repository.startswith(("Calendar-", "Clock-")):
+        # The native-build cache must compare its recorded source revision to
+        # the exact published commit, not merely the human-readable version.
+        revision = raw.get("target_commitish")
+        if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
+            raise ValueError(repository + ": temporal release is not pinned to a commit")
+        result["target_commitish"] = revision
+    return result
 
 
 def build(source: Path) -> dict:
