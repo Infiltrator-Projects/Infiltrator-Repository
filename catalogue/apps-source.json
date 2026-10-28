@@ -52,7 +52,7 @@
     "name": "InfiltratorOS",
     "repo": "InfiltratorOS",
     "category": "System",
-    "description": "InfiltratorOS desktop integration and native application provisioning, including 54 independent calendar/clock native installer jobs, run-scoped status, and safe installation cleanup.",
+    "description": "InfiltratorOS desktop integration and native provisioning with one consolidated progress window, serialized native installs, and 60 individually verified jobs including FAT12 and FAT16 shared-object modules.",
     "deb_regex": "^infiltratoros_.*_amd64\\.deb$",
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
