@@ -52,12 +52,12 @@
     "name": "InfiltratorOS",
     "repo": "InfiltratorOS",
     "category": "System",
-    "description": "InfiltratorOS desktop integration and native application provisioning, including all 31 calendars and 23 clocks compiled aggressively from their independent source installers.",
+    "description": "InfiltratorOS desktop integration and native application provisioning, including 54 independent calendar/clock native installer jobs, run-scoped status, and safe installation cleanup.",
     "deb_regex": "^infiltratoros_.*_amd64\\.deb$",
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
     "expected_architecture": "amd64",
-    "minimum_version": "1.0.34"
+    "minimum_version": "1.0.35"
   },
   {
     "id": "infiltrator-boot",
