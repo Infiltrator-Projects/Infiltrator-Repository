@@ -147,6 +147,38 @@ jobs:
             exit 1
           fi
 
+      - name: Publish signed 60-component native installer snapshot
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          APT_SIGNING_KEY_B64: ${{ secrets.APT_SIGNING_KEY_B64 }}
+          APT_SIGNING_KEY_FINGERPRINT: ${{ secrets.APT_SIGNING_KEY_FINGERPRINT }}
+          APT_SIGNING_PASSPHRASE: ${{ secrets.APT_SIGNING_PASSPHRASE }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${APT_SIGNING_KEY_B64:?Native snapshot requires repository signing key}"
+          : "${APT_SIGNING_KEY_FINGERPRINT:?Native snapshot requires pinned signing fingerprint}"
+          test -s public/repository-key.gpg
+          python3 scripts/publish-native-installers.py --output public/catalogue/native-installers.json
+          test "$(jq '.releases | length' public/catalogue/native-installers.json)" = 60
+          umask 077
+          export GNUPGHOME
+          GNUPGHOME="$(mktemp -d)"
+          trap 'rm -rf -- "$GNUPGHOME"' EXIT
+          chmod 700 "$GNUPGHOME"
+          printf '%s' "$APT_SIGNING_KEY_B64" | base64 --decode | gpg --batch --import
+          gpg --batch --list-secret-keys "$APT_SIGNING_KEY_FINGERPRINT" >/dev/null
+          gpg --batch --yes --pinentry-mode loopback \
+            --passphrase "$APT_SIGNING_PASSPHRASE" \
+            --local-user "$APT_SIGNING_KEY_FINGERPRINT" \
+            --armor --detach-sign \
+            --output public/catalogue/native-installers.json.asc \
+            public/catalogue/native-installers.json
+          gpgv --keyring public/repository-key.gpg \
+            public/catalogue/native-installers.json.asc \
+            public/catalogue/native-installers.json
+          test -s public/catalogue/native-installers.json.asc
+
       - name: Detect Calendar publication change
         id: release-delta
         env:
