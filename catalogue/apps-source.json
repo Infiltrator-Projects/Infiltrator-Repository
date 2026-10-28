@@ -109,6 +109,30 @@
     "minimum_version": "1.8.0-269"
   },
   {
+    "id": "infiltrator-filesystem-fat12",
+    "name": "FAT12",
+    "repo": "Filesystem-FAT12",
+    "category": "Filesystems",
+    "description": "Independent FAT12 filesystem shared-object module under /System/Filesystems/FAT12.so; Linux .ko and UEFI .efi drivers are not included in this release.",
+    "deb_regex": "^infiltrator\\-filesystem\\-fat12_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-fat12$",
+    "expected_architecture": "amd64",
+    "minimum_version": "0.1.1"
+  },
+  {
+    "id": "infiltrator-filesystem-fat16",
+    "name": "FAT16",
+    "repo": "Filesystem-FAT16",
+    "category": "Filesystems",
+    "description": "Independent FAT16 filesystem shared-object module under /System/Filesystems/FAT16.so; Linux .ko and UEFI .efi drivers are not included in this release.",
+    "deb_regex": "^infiltrator\\-filesystem\\-fat16_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-fat16$",
+    "expected_architecture": "amd64",
+    "minimum_version": "0.1.1"
+  },
+  {
     "id": "filesystems",
     "name": "Filesystems",
     "repo": "Filesystems",
