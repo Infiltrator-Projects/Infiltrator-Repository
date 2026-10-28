@@ -51,9 +51,9 @@ assert all(item['id'] and item['expected_package_regex'] for item in entries)
 assert not any(a["id"] == "infiltrator-calendar-resources" or a["repo"] == "Libraries" for a in all_entries)
 assert sum(a["repo"].startswith("Calendar-") for a in entries) == 31
 assert sum(a["repo"].startswith("Clock-") for a in entries) == 23
-# Two independent FAT packages must have exactly one canonical catalogue
-# mapping each. They are .so releases, not qualified kernel/EFI drivers.
-for fat in ("12", "16"):
+# Each independent FAT driver has one canonical package mapping.
+# Minimum versions are the first qualified SO/EFI/KO release milestones.
+for fat, minimum in (("12", "0.1.3"), ("16", "0.1.3"), ("32", "0.1.2")):
     identifier = f"infiltrator-filesystem-fat{fat}"
     matched = [item for item in all_entries if item["id"] == identifier]
     assert len(matched) == 1, (identifier, len(matched))
@@ -61,9 +61,9 @@ for fat in ("12", "16"):
     assert item["repo"] == f"Filesystem-FAT{fat}", item
     assert item["category"] == "Filesystems", item
     assert item["expected_package_regex"] == '^' + re.escape(identifier) + '$', item
-    expected_asset = f"{identifier}_0.1.1_amd64.deb"
+    expected_asset = f"{identifier}_{minimum}_amd64.deb"
     assert re.fullmatch(item["deb_regex"], expected_asset), (identifier, expected_asset)
-    assert item["minimum_version"] == "0.1.1", item
+    assert item["minimum_version"] == minimum, item
 
 for identifier, name in {'mblink':'MBLink','jaglink':'JAGLink','bmwlink':'BMWLink','audilink':'AUDILink','fordlink':'FORDLink'}.items():
     entry = next(item for item in all_entries if item['id'] == identifier)
