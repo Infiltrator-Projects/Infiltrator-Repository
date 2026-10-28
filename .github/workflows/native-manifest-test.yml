@@ -24,14 +24,14 @@ jobs:
           import json,sys
           data=json.load(open(sys.argv[1]))
           assert data["schema"] == 1
-          assert len(data["releases"]) == 60
+          assert len(data["releases"]) == 61
           assert sum(k.startswith("Calendar-") for k in data["releases"]) == 31
           assert sum(k.startswith("Clock-") for k in data["releases"]) == 23
           import re
           for repo,release in data["releases"].items():
               if repo.startswith(("Calendar-", "Clock-")):
                   assert re.fullmatch(r"[0-9a-f]{40}", release["target_commitish"])
-          assert sum(k.startswith("Filesystem-") for k in data["releases"]) == 2
+          assert sum(k.startswith("Filesystem-") for k in data["releases"]) == 3
           assert sum(k in {"System-Monitor","Calculator","Files","Defragmenter"} for k in data["releases"]) == 4
-          print("Qualified 60 real release metadata records")
+          print("Qualified 61 real release metadata records")
           PY

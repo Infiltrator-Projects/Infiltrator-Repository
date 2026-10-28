@@ -26,8 +26,8 @@ def discover(source: Path) -> dict[str, dict]:
     entries = json.loads(source.read_text(encoding="utf-8"))
     selected = {item["repo"]: item for item in entries
                 if item["repo"] in APPLICATIONS or item["repo"].startswith(("Calendar-", "Clock-", "Filesystem-"))}
-    if len(selected) != 60 or len([x for x in selected if x.startswith("Calendar-")]) != 31 or len([x for x in selected if x.startswith("Clock-")]) != 23 or len([x for x in selected if x.startswith("Filesystem-")]) != 2:
-        raise ValueError("Expected precisely four applications, 31 calendars, 23 clocks and two FAT filesystems")
+    if len(selected) != 61 or len([x for x in selected if x.startswith("Calendar-")]) != 31 or len([x for x in selected if x.startswith("Clock-")]) != 23 or len([x for x in selected if x.startswith("Filesystem-")]) != 3:
+        raise ValueError("Expected precisely four applications, 31 calendars, 23 clocks and three FAT filesystems")
     return selected
 
 
@@ -89,9 +89,18 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
         if names != expected:
             raise ValueError(repository + ": incomplete independent temporal release")
     if repository.startswith("Filesystem-"):
+        bits = repository.removeprefix("Filesystem-FAT")
+        if bits not in ("12", "16", "32"):
+            raise ValueError(repository + ": unknown independent FAT variant")
         expected = {run, "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
+        # Older immutable releases contain only .so installers. Once a
+        # format's triple-driver milestone is reached, its kernel-specific
+        # and firmware artifacts become mandatory, not optional labels.
+        milestone = (0, 1, 2) if bits == "32" else (0, 1, 3)
+        if tuple(map(int, version.split("."))) >= milestone:
+            expected.update({f"FAT{bits}.efi", f"fat{bits}-linux-6.12.107.ko"})
         if names != expected:
-            raise ValueError(repository + ": incomplete independent filesystem release")
+            raise ValueError(repository + ": incomplete or unexpected filesystem driver release")
     result = {"tag_name": tag, "draft": False, "prerelease": False, "assets": assets}
     if repository.startswith(("Calendar-", "Clock-")):
         # The native-build cache must compare its recorded source revision to
@@ -126,7 +135,7 @@ def main() -> None:
     pending = args.output.with_suffix(".json.tmp")
     pending.write_text(json.dumps(snapshot, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     pending.replace(args.output)
-    print("Verified 60 independent native installers; release snapshot complete", flush=True)
+    print("Verified 61 independent native installers; release snapshot complete", flush=True)
 
 
 if __name__ == "__main__":

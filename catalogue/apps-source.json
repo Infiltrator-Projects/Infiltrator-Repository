@@ -133,6 +133,18 @@
     "minimum_version": "0.1.1"
   },
   {
+    "id": "infiltrator-filesystem-fat32",
+    "name": "FAT32",
+    "repo": "Filesystem-FAT32",
+    "category": "Filesystems",
+    "description": "Independent FAT32 source-first filesystem; native .so and separately qualified EFI and kernel-specific drivers.",
+    "deb_regex": "^infiltrator\\-filesystem\\-fat32_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-fat32$",
+    "expected_architecture": "amd64",
+    "minimum_version": "0.1.1"
+  },
+  {
     "id": "filesystems",
     "name": "Filesystems",
     "repo": "Filesystems",
