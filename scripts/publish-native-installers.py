@@ -2,7 +2,7 @@
 """Produce one verifiable native release snapshot for InfiltratorOS provisioning.
 
 Only the publisher calls the GitHub REST API; installed systems consume the
-result from Pages with a detached OpenPGP signature.
+validated metadata over HTTPS from GitHub Pages.
 """
 from __future__ import annotations
 
@@ -114,7 +114,7 @@ def main() -> None:
     args = parser.parse_args()
     snapshot = build(args.catalogue)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    # Sign the exact deterministic bytes written here. Never sign a partial snapshot.
+    # Publish complete deterministic metadata only. Never write a partial snapshot.
     pending = args.output.with_suffix(".json.tmp")
     pending.write_text(json.dumps(snapshot, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     pending.replace(args.output)
