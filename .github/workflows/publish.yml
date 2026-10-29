@@ -147,15 +147,17 @@ jobs:
             exit 1
           fi
 
-      - name: Publish verified 61-component native installer snapshot
+      - name: Publish verified native installer native installer snapshot
         env:
           GITHUB_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          python3 scripts/publish-native-installers.py --output public/catalogue/native-installers.json
+          python3 scripts/publish-native-installers.py --output public/catalogue/native-installers-v2.json --legacy-output public/catalogue/native-installers.json
           test "$(jq '.releases | length' public/catalogue/native-installers.json)" = 61
-          python3 -m json.tool public/catalogue/native-installers.json >/dev/null
+          test "$(jq '.releases | length' public/catalogue/native-installers-v2.json)" = 62
+          python3 -m json.tool public/catalogue/native-installers-v2.json >/dev/null
+          python3 tests/test_native_installers.py
 
       - name: Detect Calendar publication change
         id: release-delta

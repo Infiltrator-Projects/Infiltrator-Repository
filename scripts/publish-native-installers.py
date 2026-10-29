@@ -26,8 +26,8 @@ def discover(source: Path) -> dict[str, dict]:
     entries = json.loads(source.read_text(encoding="utf-8"))
     selected = {item["repo"]: item for item in entries
                 if item["repo"] in APPLICATIONS or item["repo"].startswith(("Calendar-", "Clock-", "Filesystem-"))}
-    if len(selected) != 61 or len([x for x in selected if x.startswith("Calendar-")]) != 31 or len([x for x in selected if x.startswith("Clock-")]) != 23 or len([x for x in selected if x.startswith("Filesystem-")]) != 3:
-        raise ValueError("Expected precisely four applications, 31 calendars, 23 clocks and three FAT filesystems")
+    if len(selected) != 62 or len([x for x in selected if x.startswith("Calendar-")]) != 31 or len([x for x in selected if x.startswith("Clock-")]) != 23 or len([x for x in selected if x.startswith("Filesystem-")]) != 4:
+        raise ValueError("Expected precisely four applications, 31 calendars, 23 clocks and four independent filesystems")
     return selected
 
 
@@ -88,7 +88,11 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
                     "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
         if names != expected:
             raise ValueError(repository + ": incomplete independent temporal release")
-    if repository.startswith("Filesystem-"):
+    if repository == "Filesystem-OFS":
+        expected = {run, "infiltrator-filesystem-ofs_" + version + "_amd64.deb", "OFS.so", "SHA256SUMS"}
+        if names != expected:
+            raise ValueError(repository + ": incomplete OFS shared-module release")
+    elif repository.startswith("Filesystem-"):
         bits = repository.removeprefix("Filesystem-FAT")
         if bits not in ("12", "16", "32"):
             raise ValueError(repository + ": unknown independent FAT variant")
@@ -124,18 +128,28 @@ def build(source: Path) -> dict:
     return {"schema": 1, "releases": {key: releases[key] for key in sorted(releases)}}
 
 
+def write_snapshot(path: Path, snapshot: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    pending = path.with_suffix(".json.tmp")
+    pending.write_text(json.dumps(snapshot, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    pending.replace(path)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalogue", type=Path, default=Path("catalogue/apps-source.json"))
-    parser.add_argument("--output", type=Path, default=Path("public/catalogue/native-installers.json"))
+    parser.add_argument("--output", type=Path, default=Path("public/catalogue/native-installers-v2.json"))
+    parser.add_argument("--legacy-output", type=Path)
     args = parser.parse_args()
     snapshot = build(args.catalogue)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    # Publish complete deterministic metadata only. Never write a partial snapshot.
-    pending = args.output.with_suffix(".json.tmp")
-    pending.write_text(json.dumps(snapshot, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    pending.replace(args.output)
-    print("Verified 61 independent native installers; release snapshot complete", flush=True)
+    write_snapshot(args.output, snapshot)
+    # Existing immutable OS releases require their exact 61-component set.
+    # Both views derive from the same verified release objects and catalogue.
+    if args.legacy_output:
+        legacy = {"schema": 1, "releases": {key: value for key, value in snapshot["releases"].items()
+                                              if key != "Filesystem-OFS"}}
+        write_snapshot(args.legacy_output, legacy)
+    print("Verified 62 independent native installers; release snapshot complete", flush=True)
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@
     "name": "InfiltratorOS",
     "repo": "InfiltratorOS",
     "category": "System",
-    "description": "InfiltratorOS desktop integration and native provisioning with one consolidated progress window, serialized native installs, and 60 individually verified jobs including FAT12 and FAT16 shared-object modules.",
+    "description": "InfiltratorOS desktop integration and native provisioning with one progress window and independently verified application, calendar, clock and filesystem modules.",
     "deb_regex": "^infiltratoros_.*_amd64\\.deb$",
     "icon": "settings",
     "expected_package_regex": "^infiltratoros$",
@@ -143,6 +143,18 @@
     "expected_package_regex": "^infiltrator\\-filesystem\\-fat32$",
     "expected_architecture": "amd64",
     "minimum_version": "0.1.2"
+  },
+  {
+    "id": "infiltrator-filesystem-ofs",
+    "name": "Amiga Original File System",
+    "repo": "Filesystem-OFS",
+    "category": "Filesystems",
+    "description": "Read/write OFS.so for DOS0, DOS2, DOS4 and DOS6 at every 512-byte to 32-KB block size, with formatting, metadata, links, verification and bitmap recovery; the same shared object is consumed by Boot.",
+    "deb_regex": "^infiltrator\\-filesystem\\-ofs_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-ofs$",
+    "expected_architecture": "amd64",
+    "minimum_version": "0.1.0"
   },
   {
     "id": "filesystems",

@@ -217,3 +217,9 @@ resource release so its normal install populates the system resource folders.
 ## Independent calendar and clock releases
 
 The source catalogue includes all 31 calendar and 23 clock repositories. Each contributes exactly one generic amd64 Debian package; its native source RUN and complete source ZIP stay in that repository’s three-asset release. InfiltratorOS downloads the RUN and builds each provider aggressively on the target machine. Native package versions include `+native1`, so an equal-version generic repository package does not replace local CPU tuning. Provider packages declare `Replaces: infiltrator-calendar-resources` for their own module’s ownership transition. Common preserves its original source and historical releases while its new SDK releases contain no resource Debian package. Custom calendars own their filtered translation catalogues. All 54 providers now have qualified 1.0.0 releases and are required catalogue sources.
+
+OFS is published as `infiltrator-filesystem-ofs` from `Filesystem-OFS`.
+The native snapshot at `catalogue/native-installers-v2.json` adds OFS to the
+62-component set. The original `native-installers.json` retains its exact
+61-component set for existing OS releases. Both are generated in one pass
+from the same catalogue and verified immutable assets.
