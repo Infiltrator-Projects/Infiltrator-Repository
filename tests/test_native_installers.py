@@ -17,7 +17,8 @@ spec.loader.exec_module(publisher)
 class NativeInstallers(unittest.TestCase):
     def release(self):
         names = ["filesystem-ofs-0.1.1-native-installer.run",
-                 "infiltrator-filesystem-ofs_0.1.1_amd64.deb", "OFS.so", "SHA256SUMS"]
+                 "infiltrator-filesystem-ofs_0.1.1_amd64.deb", "OFS.so", "SHA256SUMS",
+                 "ofs-linux-6.12.107.ko"]
         prefix = "https://github.com/Infiltrator-Projects/Filesystem-OFS/releases/download/v0.1.1/"
         return {"tag_name": "v0.1.1", "assets": [
             {"name": name, "browser_download_url": prefix + name,

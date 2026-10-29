@@ -90,6 +90,8 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
             raise ValueError(repository + ": incomplete independent temporal release")
     if repository == "Filesystem-OFS":
         expected = {run, "infiltrator-filesystem-ofs_" + version + "_amd64.deb", "OFS.so", "SHA256SUMS"}
+        if tuple(map(int, version.split("."))) >= (0, 1, 1):
+            expected.add("ofs-linux-6.12.107.ko")
         if names != expected:
             raise ValueError(repository + ": incomplete OFS shared-module release")
     elif repository.startswith("Filesystem-"):
