@@ -87,6 +87,7 @@ jobs:
           python3 tests/test_release_identity.py build/repository-tool
           python3 tests/test_slicer_publication.py build/repository-tool
           python3 tests/test_product_naming.py build/repository-tool
+          python3 tests/test_deb_catalogue.py
           python3 tests/test_latest_release_deb_coverage.py
 
       - name: Read currently published Calendar version

@@ -18,6 +18,9 @@ import urllib.request
 
 OWNER = "Infiltrator-Projects"
 APPLICATIONS = {"System-Monitor", "Calculator", "Files", "Defragmenter"}
+# Exactly four filesystem jobs have been qualified for OS automatic provisioning.
+# Additional released filesystem packages belong to Software discovery, not this OS bundle.
+OS_FILESYSTEMS = {"Filesystem-FAT12", "Filesystem-FAT16", "Filesystem-FAT32", "Filesystem-OFS"}
 VERSION = re.compile(r"v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$")
 HEX = re.compile(r"sha256:[a-f0-9]{64}$")
 
@@ -25,7 +28,8 @@ HEX = re.compile(r"sha256:[a-f0-9]{64}$")
 def discover(source: Path) -> dict[str, dict]:
     entries = json.loads(source.read_text(encoding="utf-8"))
     selected = {item["repo"]: item for item in entries
-                if item["repo"] in APPLICATIONS or item["repo"].startswith(("Calendar-", "Clock-", "Filesystem-"))}
+                if item["repo"] in APPLICATIONS or item["repo"] in OS_FILESYSTEMS
+                or item["repo"].startswith(("Calendar-", "Clock-"))}
     if len(selected) != 62 or len([x for x in selected if x.startswith("Calendar-")]) != 31 or len([x for x in selected if x.startswith("Clock-")]) != 23 or len([x for x in selected if x.startswith("Filesystem-")]) != 4:
         raise ValueError("Expected precisely four applications, 31 calendars, 23 clocks and four independent filesystems")
     return selected

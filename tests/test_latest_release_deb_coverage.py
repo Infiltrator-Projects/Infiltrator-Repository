@@ -35,6 +35,25 @@ def api_json(path):
         raise RuntimeError(f"GitHub API {path} failed with HTTP {exc.code}") from exc
 
 
+def org_repositories():
+    """Enumerate every organisation repository; never certify a partial first page."""
+    repositories = []
+    seen = set()
+    for page in range(1, 101):
+        batch = api_json(f"/orgs/{ORG}/repos?per_page=100&type=all&page={page}")
+        if not isinstance(batch, list) or len(batch) > 100:
+            raise ValueError("Invalid organisation repository inventory page")
+        for repository in batch:
+            name = (repository["owner"]["login"], repository["name"])
+            if name in seen:
+                raise ValueError("Organisation repository inventory contains duplicate pages")
+            seen.add(name)
+            repositories.append(repository)
+        if len(batch) < 100:
+            return repositories
+    raise RuntimeError("Organisation repository inventory exceeds the supported pagination limit")
+
+
 def latest_release(owner, repo):
     releases = api_json(f"/repos/{owner}/{repo}/releases?per_page=100")
     return max(
@@ -119,9 +138,7 @@ def main():
                     (f"{entry['id']}:supplemental:{index}", supplemental_compiled)
                 )
 
-    repos = api_json(f"/orgs/{ORG}/repos?per_page=100&type=all")
-    if len(repos) >= 100:
-        errors.append("organisation repository inventory reached the 100-repository page limit")
+    repos = org_repositories()
 
     checked = set()
     for repository in repos:
