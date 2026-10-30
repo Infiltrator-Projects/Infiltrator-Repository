@@ -20,7 +20,7 @@ OWNER = "Infiltrator-Projects"
 APPLICATIONS = {"System-Monitor", "Calculator", "Files", "Defragmenter"}
 # Exactly four filesystem jobs have been qualified for OS automatic provisioning.
 # Additional released filesystem packages belong to Software discovery, not this OS bundle.
-OS_FILESYSTEMS = {"Filesystem-FAT12", "Filesystem-FAT16", "Filesystem-FAT32", "Filesystem-OFS"}
+OS_FILESYSTEMS = {"Filesystem-FAT12", "Filesystem-FAT16", "Filesystem-FAT32", "Filesystem-OFS", "Filesystem-exFAT"}
 VERSION = re.compile(r"v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$")
 HEX = re.compile(r"sha256:[a-f0-9]{64}$")
 
@@ -30,8 +30,8 @@ def discover(source: Path) -> dict[str, dict]:
     selected = {item["repo"]: item for item in entries
                 if item["repo"] in APPLICATIONS or item["repo"] in OS_FILESYSTEMS
                 or item["repo"].startswith(("Calendar-", "Clock-"))}
-    if len(selected) != 62 or len([x for x in selected if x.startswith("Calendar-")]) != 31 or len([x for x in selected if x.startswith("Clock-")]) != 23 or len([x for x in selected if x.startswith("Filesystem-")]) != 4:
-        raise ValueError("Expected precisely four applications, 31 calendars, 23 clocks and four independent filesystems")
+    if len(selected) != 63 or len([x for x in selected if x.startswith("Calendar-")]) != 31 or len([x for x in selected if x.startswith("Clock-")]) != 23 or len([x for x in selected if x.startswith("Filesystem-")]) != 5:
+        raise ValueError("Expected precisely four applications, 31 calendars, 23 clocks and five independent filesystems")
     return selected
 
 
@@ -92,7 +92,14 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
                     "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
         if names != expected:
             raise ValueError(repository + ": incomplete independent temporal release")
-    if repository == "Filesystem-OFS":
+    if repository == "Filesystem-exFAT":
+        expected = {
+            run, "infiltrator-filesystem-exfat_" + version + "_amd64.deb",
+            "exFAT.so", "exfat-linux-6.12.107.ko", "SHA256SUMS",
+        }
+        if names != expected:
+            raise ValueError(repository + ": missing native source RUN, portable DEB or qualified KO")
+    elif repository == "Filesystem-OFS":
         expected = {run, "infiltrator-filesystem-ofs_" + version + "_amd64.deb", "OFS.so", "SHA256SUMS"}
         if tuple(map(int, version.split("."))) >= (0, 1, 1):
             expected.add("ofs-linux-6.12.107.ko")
@@ -146,16 +153,21 @@ def main() -> None:
     parser.add_argument("--catalogue", type=Path, default=Path("catalogue/apps-source.json"))
     parser.add_argument("--output", type=Path, default=Path("public/catalogue/native-installers-v2.json"))
     parser.add_argument("--legacy-output", type=Path)
+    parser.add_argument("--v2-output", type=Path)
     args = parser.parse_args()
     snapshot = build(args.catalogue)
     write_snapshot(args.output, snapshot)
-    # Existing immutable OS releases require their exact 61-component set.
-    # Both views derive from the same verified release objects and catalogue.
+    # Keep both published legacy views immutable in scope: 61 and 62 jobs.
+    # New exFAT support is advertised only in native-installers-v3.json.
+    v2 = {"schema": 1, "releases": {key: value for key, value in snapshot["releases"].items()
+                                     if key != "Filesystem-exFAT"}}
+    if args.v2_output:
+        write_snapshot(args.v2_output, v2)
     if args.legacy_output:
-        legacy = {"schema": 1, "releases": {key: value for key, value in snapshot["releases"].items()
+        legacy = {"schema": 1, "releases": {key: value for key, value in v2["releases"].items()
                                               if key != "Filesystem-OFS"}}
         write_snapshot(args.legacy_output, legacy)
-    print("Verified 62 independent native installers; release snapshot complete", flush=True)
+    print("Verified 63 native installers; 62/61 legacy views preserved", flush=True)
 
 
 if __name__ == "__main__":

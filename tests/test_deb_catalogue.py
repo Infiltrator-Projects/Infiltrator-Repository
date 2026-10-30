@@ -60,8 +60,9 @@ class CatalogueCoverage(unittest.TestCase):
             ["infiltrator-filesystem-exfat_0.1.0_amd64.deb"], [(item["id"], regex)], errors)
         self.assertEqual(errors, [])
         os_entries = publisher.discover(ROOT / "catalogue/apps-source.json")
-        self.assertEqual(len(os_entries), 62)
-        self.assertNotIn("Filesystem-exFAT", os_entries)
+        self.assertEqual(len(os_entries), 63)
+        self.assertIn("Filesystem-exFAT", os_entries)
+        self.assertIn("Filesystem-exFAT", os_entries)
         self.assertIn("Filesystem-OFS", os_entries)
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate OFS release admission and the backward-compatible snapshot views."""
+"""Validate OFS/exFAT release admission and three backward-compatible snapshot views."""
 import copy
 import importlib.util
 import json
@@ -38,21 +38,43 @@ class NativeInstallers(unittest.TestCase):
             with self.assertRaises(ValueError):
                 publisher.verify("Filesystem-OFS", {}, bad)
 
+    def test_exfat_must_publish_aggressive_native_run_and_exact_assets(self):
+        version = "0.1.2"
+        names = ["filesystem-exfat-0.1.2-native-installer.run",
+                 "infiltrator-filesystem-exfat_0.1.2_amd64.deb",
+                 "exFAT.so", "exfat-linux-6.12.107.ko", "SHA256SUMS"]
+        prefix = "https://github.com/Infiltrator-Projects/Filesystem-exFAT/releases/download/v0.1.2/"
+        release = {"tag_name": "v" + version, "assets": [
+            {"name": name, "browser_download_url": prefix + name,
+             "digest": "sha256:" + "a" * 64, "size": 101} for name in names]}
+        self.assertEqual(publisher.verify("Filesystem-exFAT", {}, release)["tag_name"], "v0.1.2")
+        for item in names:
+            bad = copy.deepcopy(release)
+            bad["assets"] = [x for x in bad["assets"] if x["name"] != item]
+            with self.assertRaises(ValueError):
+                publisher.verify("Filesystem-exFAT", {}, bad)
+
     def test_new_and_legacy_snapshots_share_exact_release_records(self):
         entries = publisher.discover(ROOT / "catalogue/apps-source.json")
-        self.assertEqual(len(entries), 62)
+        self.assertEqual(len(entries), 63)
         snapshot = {"schema": 1, "releases": {name: self.release() for name in entries}}
         with tempfile.TemporaryDirectory() as tmp:
-            new, old = Path(tmp) / "v2.json", Path(tmp) / "v1.json"
+            new, middle, old = [Path(tmp) / f"v{n}.json" for n in (3, 2, 1)]
             with patch.object(publisher, "build", return_value=snapshot), patch(
-                    "sys.argv", ["publisher", "--output", str(new), "--legacy-output", str(old)]):
+                    "sys.argv", ["publisher", "--output", str(new),
+                                 "--v2-output", str(middle), "--legacy-output", str(old)]):
                 publisher.main()
-            modern, legacy = json.loads(new.read_text()), json.loads(old.read_text())
+            modern, v2, legacy = [json.loads(p.read_text()) for p in (new, middle, old)]
+            self.assertEqual(len(modern["releases"]), 63)
+            self.assertEqual(len(v2["releases"]), 62)
             self.assertEqual(len(legacy["releases"]), 61)
             self.assertEqual(modern, snapshot)
+            self.assertNotIn("Filesystem-exFAT", v2["releases"])
             self.assertNotIn("Filesystem-OFS", legacy["releases"])
-            for name, release in legacy["releases"].items():
+            for name, release in v2["releases"].items():
                 self.assertEqual(release, modern["releases"][name])
+            for name, release in legacy["releases"].items():
+                self.assertEqual(release, v2["releases"][name])
 
 
 if __name__ == "__main__":

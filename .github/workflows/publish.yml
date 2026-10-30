@@ -154,10 +154,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 scripts/publish-native-installers.py --output public/catalogue/native-installers-v2.json --legacy-output public/catalogue/native-installers.json
+          python3 scripts/publish-native-installers.py --output public/catalogue/native-installers-v3.json --v2-output public/catalogue/native-installers-v2.json --legacy-output public/catalogue/native-installers.json
           test "$(jq '.releases | length' public/catalogue/native-installers.json)" = 61
           test "$(jq '.releases | length' public/catalogue/native-installers-v2.json)" = 62
-          python3 -m json.tool public/catalogue/native-installers-v2.json >/dev/null
+          test "$(jq '.releases | length' public/catalogue/native-installers-v3.json)" = 63
+          python3 -m json.tool public/catalogue/native-installers-v3.json >/dev/null
           python3 tests/test_native_installers.py
 
       - name: Detect Calendar publication change
