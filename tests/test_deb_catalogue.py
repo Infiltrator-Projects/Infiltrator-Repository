@@ -29,7 +29,7 @@ class CatalogueCoverage(unittest.TestCase):
         calls = []
         def fake_api(path):
             calls.append(path)
-            return [entry(i) for i in range(100)] if "page=1" in path else [entry(100), entry(101)]
+            return [entry(i) for i in range(100)] if path.endswith("&page=1") else [entry(100), entry(101)]
         with patch.object(coverage, "api_json", side_effect=fake_api):
             repos = coverage.org_repositories()
         self.assertEqual(len(repos), 102)
