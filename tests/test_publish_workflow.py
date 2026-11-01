@@ -12,8 +12,8 @@ assert "cancel-in-progress: true" not in workflow
 # A main-branch push is the immediate, credential-free recovery route when
 # cross-repository dispatch is unavailable and GitHub delays scheduled runs.
 # Keep it alongside the manual and source-release triggers.
-assert "on:\\n  push:\\n    branches: [main]\\n" in workflow
-assert "  workflow_dispatch:\\n" in workflow
+assert "on:\n  push:\n    branches: [main]\n" in workflow
+assert "  workflow_dispatch:\n" in workflow
 
 assert "repository_dispatch:" in workflow
 assert "types: [application-release]" in workflow
