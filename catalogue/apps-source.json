@@ -265,6 +265,18 @@
     "minimum_version": "1.0.1"
   },
   {
+    "id": "infiltrator-filesystem-sfs2",
+    "name": "SFS2",
+    "repo": "Filesystem-SFS2",
+    "category": "Filesystems",
+    "description": "Independent SFS2 native shared library and illustrated PDF. The current implementation is read-only; independent-media defragmentation and recovery are not qualified.",
+    "deb_regex": "^infiltrator\\-filesystem\\-sfs2_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-sfs2$",
+    "expected_architecture": "amd64",
+    "minimum_version": "0.1.0"
+  },
+  {
     "id": "infiltrator-filesystem-pfs3",
     "name": "PFS3",
     "repo": "Filesystem-PFS3",
@@ -323,6 +335,18 @@
     "expected_package_regex": "^infiltrator\\-filesystem\\-ufs2$",
     "expected_architecture": "amd64",
     "minimum_version": "1.0.1"
+  },
+  {
+    "id": "infiltrator-filesystem-ufs1",
+    "name": "UFS1",
+    "repo": "Filesystem-UFS1",
+    "category": "Filesystems",
+    "description": "Independent UFS1 native shared library and illustrated PDF. Experimental implementation; real-media mutation and recovery are not qualified.",
+    "deb_regex": "^infiltrator\\-filesystem\\-ufs1_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-ufs1$",
+    "expected_architecture": "amd64",
+    "minimum_version": "1.0.0"
   },
   {
     "id": "infiltrator-filesystem-zfs",
