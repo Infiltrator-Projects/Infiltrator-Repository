@@ -1,5 +1,5 @@
 {
-  "reason": "publish File Manager 0.1.67",
+  "reason": "Publish InfiltratorOS 1.0.49 to beta APT repository",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -90,6 +90,12 @@
       "version": "1.8.0-254",
       "release_sha": "2c8bee8ce2b2e9dd25c2608c6b56e6339efddc68",
       "release_published_at": "2026-10-12T04:08:32Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/InfiltratorOS",
+      "version": "1.0.49",
+      "release_sha": "556bb2f7ea9f422700fd836d2486835898a14074",
+      "release_published_at": "2026-11-01T10:45:39Z"
     }
   ]
 }
