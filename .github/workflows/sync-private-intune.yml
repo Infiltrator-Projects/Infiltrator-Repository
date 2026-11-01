@@ -47,6 +47,11 @@ jobs:
           g++ -std=c++17 -O2 -Wall -Wextra -pedantic -I"$GITHUB_WORKSPACE/_common/include" scripts/repository-tool.cpp "$GITHUB_WORKSPACE/build/common/libinfiltratr-common.a" -lm -ldl -o build/repository-tool
 
       - name: Pull and verify latest public Intune release
+        # Authenticate GitHub API reads to avoid shared anonymous rate limits.
+        # The repository's ephemeral GITHUB_TOKEN is sufficient for a public release;
+        # no school-organisation credential or long-lived PAT is required.
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: build/repository-tool sync-intune
 
       - name: Commit mirror changes when needed
