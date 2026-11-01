@@ -1,5 +1,5 @@
 {
-  "reason": "Publish InfiltratorOS 1.0.49 to beta APT repository",
+  "reason": "Publish InfiltratorOS 1.0.50 to beta APT repository",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -93,9 +93,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorOS",
-      "version": "1.0.49",
-      "release_sha": "556bb2f7ea9f422700fd836d2486835898a14074",
-      "release_published_at": "2026-11-01T10:45:39Z"
+      "version": "1.0.50",
+      "release_sha": "e7e2142fe0c3d350e761270b48bd54066d4e9ad4",
+      "release_published_at": "2026-11-01T11:37:01Z"
     }
   ]
 }
