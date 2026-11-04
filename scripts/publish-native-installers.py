@@ -18,8 +18,8 @@ import urllib.request
 
 OWNER = "Infiltrator-Projects"
 APPLICATIONS = {"System-Monitor", "Calculator", "Files", "Defragmenter"}
-# Exactly four filesystem jobs have been qualified for OS automatic provisioning.
-# Additional released filesystem packages belong to Software discovery, not this OS bundle.
+# These five filesystem jobs use the central OS snapshot.
+# InfiltratorOS discovers additional filesystem releases independently.
 OS_FILESYSTEMS = {"Filesystem-FAT12", "Filesystem-FAT16", "Filesystem-FAT32", "Filesystem-OFS", "Filesystem-exFAT"}
 VERSION = re.compile(r"v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$")
 HEX = re.compile(r"sha256:[a-f0-9]{64}$")
@@ -119,12 +119,12 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
         if names != expected:
             raise ValueError(repository + ": incomplete or unexpected filesystem driver release")
     result = {"tag_name": tag, "draft": False, "prerelease": False, "assets": assets}
-    if repository.startswith(("Calendar-", "Clock-")):
+    if repository in OS_FILESYSTEMS or repository.startswith(("Calendar-", "Clock-")):
         # The native-build cache must compare its recorded source revision to
         # the exact published commit, not merely the human-readable version.
         revision = raw.get("target_commitish")
         if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
-            raise ValueError(repository + ": temporal release is not pinned to a commit")
+            raise ValueError(repository + ": provider release is not pinned to a commit")
         result["target_commitish"] = revision
     return result
 
