@@ -20,13 +20,18 @@ class NativeInstallers(unittest.TestCase):
                  "infiltrator-filesystem-ofs_0.1.1_amd64.deb", "OFS.so", "SHA256SUMS",
                  "ofs-linux-6.12.107.ko"]
         prefix = "https://github.com/Infiltrator-Projects/Filesystem-OFS/releases/download/v0.1.1/"
-        return {"tag_name": "v0.1.1", "assets": [
+        return {"tag_name": "v0.1.1", "target_commitish": "a" * 40, "assets": [
             {"name": name, "browser_download_url": prefix + name,
              "digest": "sha256:" + "c" * 64, "size": 100} for name in names]}
 
     def test_ofs_requires_complete_checksummed_release(self):
         release = self.release()
-        self.assertEqual(publisher.verify("Filesystem-OFS", {}, release)["tag_name"], "v0.1.1")
+        record = publisher.verify("Filesystem-OFS", {}, release)
+        self.assertEqual(record["tag_name"], "v0.1.1")
+        self.assertEqual(record["target_commitish"], release["target_commitish"])
+        for revision in (None, "main", "a" * 12):
+            with self.subTest(revision=revision), self.assertRaisesRegex(ValueError, "not pinned"):
+                publisher.verify("Filesystem-OFS", {}, dict(release, target_commitish=revision))
         for missing in release["assets"]:
             bad = copy.deepcopy(release)
             bad["assets"].remove(missing)
@@ -44,7 +49,7 @@ class NativeInstallers(unittest.TestCase):
                  "infiltrator-filesystem-exfat_0.1.2_amd64.deb",
                  "exFAT.so", "exfat-linux-6.12.107.ko", "SHA256SUMS"]
         prefix = "https://github.com/Infiltrator-Projects/Filesystem-exFAT/releases/download/v0.1.2/"
-        release = {"tag_name": "v" + version, "assets": [
+        release = {"tag_name": "v" + version, "target_commitish": "b" * 40, "assets": [
             {"name": name, "browser_download_url": prefix + name,
              "digest": "sha256:" + "a" * 64, "size": 101} for name in names]}
         self.assertEqual(publisher.verify("Filesystem-exFAT", {}, release)["tag_name"], "v0.1.2")
