@@ -1,11 +1,11 @@
 {
-  "reason": "Publish the InfiltratorFS user guide in the beta repository",
+  "reason": "Publish the Calendar and InfiltratorFS user guides in the beta repository",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
-      "version": "1.0.69",
-      "release_sha": "28e3a2b652fc1aab7aff735bc272edba72d5a378",
-      "release_published_at": "2026-09-27T09:44:37Z"
+      "version": "1.0.128",
+      "release_sha": "b45f5403c96c3a135a5763b35fbecc4438eaedbd",
+      "release_published_at": "2026-11-05T11:55:49Z"
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
