@@ -1,5 +1,5 @@
 {
-  "reason": "Publish InfiltratorOS 1.0.50 to beta APT repository",
+  "reason": "Publish flat documentation package updates to the beta repository",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -9,9 +9,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.2.26",
-      "release_sha": "5c3e3fc752245e0b439407fe120509a8188ea00b",
-      "release_published_at": "2026-09-22T08:19:49Z"
+      "version": "0.2.65",
+      "release_sha": "0043b2033904b5e53ad8f3ef9398596185130e33",
+      "release_published_at": "2026-11-05T09:37:33Z"
     },
     {
       "repository": "Infiltrator-Projects/Software",
@@ -21,9 +21,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Files",
-      "version": "0.1.67",
-      "release_sha": "7763d43e53ef7c38fec6ef8f5a59f70804c2bb45",
-      "release_published_at": "2026-10-24T08:21:35Z"
+      "version": "0.1.77",
+      "release_sha": "4f12f1f578b38326c1d2d8e2dae001fe0cf531af",
+      "release_published_at": "2026-11-05T09:37:09Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
@@ -93,9 +93,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorOS",
-      "version": "1.0.50",
-      "release_sha": "e7e2142fe0c3d350e761270b48bd54066d4e9ad4",
-      "release_published_at": "2026-11-01T11:37:01Z"
+      "version": "1.0.61",
+      "release_sha": "55e11ba7caf273afa94186b6d359db19ff174b90",
+      "release_published_at": "2026-11-05T09:27:51Z"
     }
   ]
 }
