@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   retire:
-    if: github.event.ref_type == 'branch' && github.event.ref == 'maintenance/retire-reviewed-20261105'
+    if: github.event.ref_type == 'branch' && github.event.ref == 'maintenance/retire-reviewed-20261105-v2'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -110,8 +110,10 @@ jobs:
           
               assert sha("heads", "main") == setup, "main moved before retirement"
               leases = [(item["branch"], item["head"]) for item in plan["branches"]]
+              leases.extend((item["branch"], item["head"]) for item in plan.get("temporaryBranches", []))
               leases.append((plan["trigger"], setup))
               for name, tip in leases:
+                  assert name != "main"
                   assert sha("heads", name) == tip, "branch moved before retirement"
               # Git's receive transaction enforces the expected SHAs atomically. A
               # concurrent branch update makes the whole deletion transaction fail.
@@ -132,6 +134,5 @@ jobs:
               assert [item["name"] for item in branches] == ["main"], "unexpected branches remain"
               print("SINGLE-MAIN-VERIFIED", plan["repo"], "archived", len(plan["branches"]), flush=True)
           
-          
-          retire(json.loads("{\"repo\":\"Infiltrator-Projects/Infiltrator-Repository\",\"main\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"tree\":\"0ee2cf90f706041a55250598c5c856c9f3c9a084\",\"workflow\":\".github/workflows/retire-reviewed-branches-20261105.yml\",\"trigger\":\"maintenance/retire-reviewed-20261105\",\"branches\":[{\"repo\":\"Infiltrator-Projects/Infiltrator-Repository\",\"link_id\":\"link_6aa9eb29612c8191b65880594e38ee41\",\"branch\":\"fix/native-filesystem-release-provenance\",\"head\":\"cc1936c98b5be421e62f0ea14183b014c05c648b\",\"protected\":false,\"main\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"status\":\"diverged\",\"ahead\":1,\"behind\":1,\"mergeBase\":\"a751130119fd4a85e4ef9ece628aa062623723d0\",\"evidenceCommit\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"evidenceTree\":\"0ee2cf90f706041a55250598c5c856c9f3c9a084\"}],\"setupCommits\":2}"))
-                    PY
+          retire(json.loads("{\"repo\":\"Infiltrator-Projects/Infiltrator-Repository\",\"main\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"tree\":\"0ee2cf90f706041a55250598c5c856c9f3c9a084\",\"workflow\":\".github/workflows/retire-reviewed-branches-20261105.yml\",\"trigger\":\"maintenance/retire-reviewed-20261105-v2\",\"branches\":[{\"repo\":\"Infiltrator-Projects/Infiltrator-Repository\",\"link_id\":\"link_6aa9eb29612c8191b65880594e38ee41\",\"branch\":\"fix/native-filesystem-release-provenance\",\"head\":\"cc1936c98b5be421e62f0ea14183b014c05c648b\",\"protected\":false,\"main\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"status\":\"diverged\",\"ahead\":1,\"behind\":1,\"mergeBase\":\"a751130119fd4a85e4ef9ece628aa062623723d0\",\"evidenceCommit\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"evidenceTree\":\"0ee2cf90f706041a55250598c5c856c9f3c9a084\"}],\"setupCommits\":3,\"temporaryBranches\":[{\"branch\":\"maintenance/retire-reviewed-20261105\",\"head\":\"607db88dd9a13e6f07e4c1e0269098d2733bba49\"}]}"))
+          PY
