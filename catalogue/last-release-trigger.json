@@ -1,5 +1,5 @@
 {
-  "reason": "Publish flat documentation package updates to the beta repository",
+  "reason": "Publish the InfiltratorFS user guide in the beta repository",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -27,9 +27,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
-      "version": "0.18.75",
-      "release_sha": "4272ea6cb24bf905678628f989ffed5525dc5ca2",
-      "release_published_at": "2026-09-22T22:41:28Z"
+      "version": "0.19.40",
+      "release_sha": "c8f6431f2de34806d8614a241cab8db5a0daad48",
+      "release_published_at": "2026-11-05T11:30:01Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
