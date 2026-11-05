@@ -70,7 +70,7 @@ jobs:
               assert sha("heads", "main") == setup, "main moved; no branches will be deleted"
               assert sha("heads", plan["trigger"]) == setup
               change = api(prefix + "compare/" + plan["main"] + "..." + setup)
-              assert change["behind_by"] == 0 and change["ahead_by"] == 1
+              assert change["behind_by"] == 0 and change["ahead_by"] == plan.get("setupCommits", 1)
               assert [item["filename"] for item in change["files"]] == [plan["workflow"]]
               original = api(prefix + "git/commits/" + plan["main"])
               assert original["tree"]["sha"] == plan["tree"]
@@ -133,5 +133,5 @@ jobs:
               print("SINGLE-MAIN-VERIFIED", plan["repo"], "archived", len(plan["branches"]), flush=True)
           
           
-          retire({"repo":"Infiltrator-Projects/Infiltrator-Repository","main":"0b823bf4ef0ad835c57aed09028dbfd6c607ff86","tree":"0ee2cf90f706041a55250598c5c856c9f3c9a084","workflow":".github/workflows/retire-reviewed-branches-20261105.yml","trigger":"maintenance/retire-reviewed-20261105","branches":[{"repo":"Infiltrator-Projects/Infiltrator-Repository","link_id":"link_6aa9eb29612c8191b65880594e38ee41","branch":"fix/native-filesystem-release-provenance","head":"cc1936c98b5be421e62f0ea14183b014c05c648b","protected":false,"main":"0b823bf4ef0ad835c57aed09028dbfd6c607ff86","status":"diverged","ahead":1,"behind":1,"mergeBase":"a751130119fd4a85e4ef9ece628aa062623723d0","evidenceCommit":"0b823bf4ef0ad835c57aed09028dbfd6c607ff86","evidenceTree":"0ee2cf90f706041a55250598c5c856c9f3c9a084"}]})
+          retire(json.loads("{\"repo\":\"Infiltrator-Projects/Infiltrator-Repository\",\"main\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"tree\":\"0ee2cf90f706041a55250598c5c856c9f3c9a084\",\"workflow\":\".github/workflows/retire-reviewed-branches-20261105.yml\",\"trigger\":\"maintenance/retire-reviewed-20261105\",\"branches\":[{\"repo\":\"Infiltrator-Projects/Infiltrator-Repository\",\"link_id\":\"link_6aa9eb29612c8191b65880594e38ee41\",\"branch\":\"fix/native-filesystem-release-provenance\",\"head\":\"cc1936c98b5be421e62f0ea14183b014c05c648b\",\"protected\":false,\"main\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"status\":\"diverged\",\"ahead\":1,\"behind\":1,\"mergeBase\":\"a751130119fd4a85e4ef9ece628aa062623723d0\",\"evidenceCommit\":\"0b823bf4ef0ad835c57aed09028dbfd6c607ff86\",\"evidenceTree\":\"0ee2cf90f706041a55250598c5c856c9f3c9a084\"}],\"setupCommits\":2}"))
                     PY
