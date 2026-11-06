@@ -1,5 +1,5 @@
 {
-  "reason": "Publish the Calendar and InfiltratorFS user guides in the beta repository",
+  "reason": "Publish the verified independent FAT12, FAT16, FAT32, OFS and exFAT releases in the native installer catalogue and APT indexes",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -96,6 +96,36 @@
       "version": "1.0.61",
       "release_sha": "55e11ba7caf273afa94186b6d359db19ff174b90",
       "release_published_at": "2026-11-05T09:27:51Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Filesystem-FAT12",
+      "version": "0.1.11",
+      "release_sha": "bb7ad61eef40a0acf41b9c439ee904c0316e8f4a",
+      "release_published_at": "2026-11-06T05:24:01Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Filesystem-FAT16",
+      "version": "0.1.12",
+      "release_sha": "6aa0a5e7fd80d0cd67909bb0231266de461d5c68",
+      "release_published_at": "2026-11-06T05:11:24Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Filesystem-FAT32",
+      "version": "0.1.9",
+      "release_sha": "e9abfaebc34749054063ffc0d26c9c0c246b0de1",
+      "release_published_at": "2026-11-06T05:15:23Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Filesystem-OFS",
+      "version": "0.1.11",
+      "release_sha": "e448e15f977ac71a174dc48811ce0bbb1237729c",
+      "release_published_at": "2026-11-06T05:27:03Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Filesystem-exFAT",
+      "version": "0.1.8",
+      "release_sha": "2c34d5363823ff7be66489b1462a4da8357e2114",
+      "release_published_at": "2026-11-06T05:29:35Z"
     }
   ]
 }
