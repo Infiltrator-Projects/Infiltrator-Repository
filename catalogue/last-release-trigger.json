@@ -1,5 +1,5 @@
 {
-  "reason": "Trigger central APT beta publication of the exact qualified Defragmenter v1.8.0-290 release after GitHub release publication",
+  "reason": "Trigger central APT beta publication of the exact qualified Defragmenter v1.8.0-291 release after GitHub release publication",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -87,9 +87,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Defragmenter",
-      "version": "1.8.0-290",
-      "release_sha": "a049d7235bde24b0c18ecf435475d1b3697a6e87",
-      "release_published_at": "2026-11-07T09:59:10Z"
+      "version": "1.8.0-291",
+      "release_sha": "821da4a822b8fc7c4dd4a421208c0c7d6534700a",
+      "release_published_at": "2026-11-07T12:34:34Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorOS",
