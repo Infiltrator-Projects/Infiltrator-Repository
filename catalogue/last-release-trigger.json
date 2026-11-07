@@ -1,5 +1,5 @@
 {
-  "reason": "Publish the verified independent FAT12, FAT16, FAT32, OFS and exFAT releases in the native installer catalogue and APT indexes",
+  "reason": "Trigger central APT beta publication of the exact qualified Defragmenter v1.8.0-290 release after GitHub release publication",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -87,9 +87,9 @@
     },
     {
       "repository": "Infiltrator-Projects/Defragmenter",
-      "version": "1.8.0-254",
-      "release_sha": "2c8bee8ce2b2e9dd25c2608c6b56e6339efddc68",
-      "release_published_at": "2026-10-12T04:08:32Z"
+      "version": "1.8.0-290",
+      "release_sha": "a049d7235bde24b0c18ecf435475d1b3697a6e87",
+      "release_published_at": "2026-11-07T09:59:10Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorOS",
