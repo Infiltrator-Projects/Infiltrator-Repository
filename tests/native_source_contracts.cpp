@@ -58,6 +58,38 @@ static void publication_contract(const fs::path& root) {
     check(c!=std::string::npos&&a<b&&b<c,"publication concurrency configuration altered");
     std::cout<<"Repository publication concurrency contract passed\n";
 }
+static void private_mirror_contract(const fs::path& root) {
+    const std::string catalog=read(root/"catalogue/apps-source.json");
+    const std::string identity=R"JSON("id": "intune-zabbix-bridge")JSON";
+    const auto match=catalog.find(identity);
+    check(match!=std::string::npos,"Intune-Zabbix-Bridge catalogue identity missing");
+    const auto begin=catalog.rfind('{',match),end=catalog.find('}',match);
+    check(begin!=std::string::npos&&end!=std::string::npos&&begin<match,
+          "Intune-Zabbix-Bridge catalogue entry malformed");
+    const std::string item=catalog.substr(begin,end+1-begin);
+    require(item,R"JSON("local_deb_glob": "mirrored-packages/intune-zabbix-bridge_*_all.deb")JSON",
+            "Version-dynamic private mirror");
+    for(const char* obsolete:{
+        R"JSON("local_deb")JSON",
+        R"JSON("release_tag")JSON",
+        R"JSON("published_at")JSON"
+    })reject(item,obsolete,"Version-dynamic private mirror");
+    const std::string tool=read(root/"scripts/repository-tool.cpp");
+    for(const char* required_token:{
+        R"CPP((.local_deb_glob // \"\"))CPP",
+        "dpkg --compare-versions",
+        "if (result.size() > 5) result.resize(5);",
+        "https://infiltrator-projects.github.io/Infiltrator-Repository/pool/main/",
+        "GITHUB_TOKEN",
+        "#include <infiltratr/escape.h>",
+        "#include <infiltratr/posix.h>",
+        "infiltratr_escape_json",
+        "infiltratr_escape_uri_component",
+        "infiltratr_atomic_file_write_bytes"
+    })require(tool,required_token,"Native private mirror publisher");
+    reject(tool,"std::uppercase","Private mirror URI escaping must be COMMON-owned");
+    std::cout<<"Private mirror publication policy is version-dynamic and COMMON-backed.\n";
+}
 static void site_setup_contract(const fs::path& root) {
     const std::string site=read(root/"site/index.html");
     const auto a=site.find("function setupCommand()");
@@ -129,8 +161,10 @@ int main(int argc,char**argv){
         check(argc<=2,"Usage: native-source-contracts [REPOSITORY_ROOT]");
         const fs::path root=argc==2?fs::path(argv[1]):fs::path(".");
         publication_contract(root);
+        private_mirror_contract(root);
         site_setup_contract(root);
-        for(const char* retired:{"tests/test_publish_workflow.py","tests/test_site_setup.py"})
+        for(const char* retired:{"tests/test_publish_workflow.py","tests/test_site_setup.py",
+                                 "tests/test_private_mirror_policy.py"})
             check(!fs::exists(root/retired),std::string("Retired Python regression still tracked: ")+retired);
         return 0;
     }catch(const std::exception&error){

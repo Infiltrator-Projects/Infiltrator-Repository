@@ -83,7 +83,6 @@ jobs:
             tests/native_source_contracts.cpp -o build/native-source-contracts
           ./build/native-source-contracts
           python3 tests/test_calendar_candidate.py
-          python3 tests/test_private_mirror_policy.py
           python3 tests/test_retention.py build/repository-tool
           python3 tests/test_release_identity.py build/repository-tool
           python3 tests/test_slicer_publication.py build/repository-tool
