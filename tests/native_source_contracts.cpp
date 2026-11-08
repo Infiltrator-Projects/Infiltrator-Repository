@@ -68,8 +68,8 @@ static void site_setup_contract(const fs::path& root) {
     const char* contract="Software Centre setup";
     reject(block,R"JS(\\n)JS",contract);
     for(const char* needle:{
-        "infiltrator-beta.list\n",
-        "infiltrator.list\n",
+        R"JS(infiltrator-beta.list\n)JS",
+        R"JS(infiltrator.list\n)JS",
         "sudo apt update",
         "/infiltrator-calendar.pref",
         "return clean+preference+",
