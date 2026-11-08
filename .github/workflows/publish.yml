@@ -79,9 +79,10 @@ jobs:
           g++ -std=c++17 -O2 -Wall -Wextra -pedantic -I"$GITHUB_WORKSPACE/_common/include" tests/apt_index_history_test.cpp "$GITHUB_WORKSPACE/build/common/libinfiltratr-common.a" -lm -ldl -o build/apt-index-history-test
           ./build/apt-index-history-test
           python3 tests/test_signing.py build/repository-tool
-          python3 tests/test_site_setup.py
+          g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror \
+            tests/native_source_contracts.cpp -o build/native-source-contracts
+          ./build/native-source-contracts
           python3 tests/test_calendar_candidate.py
-          python3 tests/test_publish_workflow.py
           python3 tests/test_private_mirror_policy.py
           python3 tests/test_retention.py build/repository-tool
           python3 tests/test_release_identity.py build/repository-tool
