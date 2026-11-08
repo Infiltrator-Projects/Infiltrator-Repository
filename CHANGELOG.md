@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-08 — InfiltratorOS 1.0.68 APT refresh
+
+- Refresh the beta APT index after the verified InfiltratorOS v1.0.68 GitHub release. This carries bounded retries for transient HTTP 504 failures when retrieving the four application-native RUN installers. Preserve independent application, calendar, clock, filesystem and Intune publication rules; retain existing package history and validation.
+
 ## Retire Common’s combined temporal producer
 
 - Remove the legacy combined resource package from current APT catalogue/index generation; preserve historical GitHub release assets.
