@@ -448,14 +448,21 @@ static int sync_intune(const fs::path& root) {
   fs::create_directories(mirror);
   const std::string api = "https://api.github.com/repos/St-Augustines-College-Kyabram/Intune-Zabbix-Bridge/releases/latest";
   if (run("curl -fsSL --retry 5 " + github_headers() + " " + quote(api) +
-          " -o " + quote(json.string()))) throw std::runtime_error("unable to read Intune release");
+          " -o " + quote(json.string())))
+    throw std::runtime_error("unable to read Intune release");
   const fs::path values = root / ".intune-values";
-  const std::string jq = "jq -er 'select((.draft|not) and (.prerelease|not)) | .tag_name as $tag | [$tag, (.assets[] | select(.name == (\"intune-zabbix-bridge_\" + ($tag|ltrimstr(\"v\")) + \"_all.deb\")) | .browser_download_url), (.assets[] | select(.name == (\"intune-zabbix-bridge_\" + ($tag|ltrimstr(\"v\")) + \"_all.deb\")) | .digest)] | @tsv' " + quote(json.string()) + " > " + quote(values.string());
+  const std::string jq =
+      "jq -er 'select((.draft|not) and (.prerelease|not)) | .tag_name as $tag | "
+      "(.assets[] | select(.name == (\"intune-zabbix-bridge_\" + ($tag|ltrimstr(\"v\")) + \"_all.deb\"))) | "
+      "[$tag, .browser_download_url, .digest, (.id|tostring)] | @tsv' " +
+      quote(json.string()) + " > " + quote(values.string());
   if (run(jq)) throw std::runtime_error("jq failed while reading Intune release");
   std::istringstream line(read(values));
-  std::string tag, url, digest_value; line >> tag >> url >> digest_value;
+  std::string tag, url, digest_value, asset_id;
+  line >> tag >> url >> digest_value >> asset_id;
   fs::remove(json); fs::remove(values);
-  if (tag.rfind("v", 0) != 0 || url.empty() || digest_value.rfind("sha256:", 0) != 0)
+  if (tag.rfind("v", 0) != 0 || url.empty() ||
+      digest_value.rfind("sha256:", 0) != 0)
     throw std::runtime_error("latest Intune release has no valid DEB asset");
   const auto version = tag.substr(1);
   if (version.empty() || version.find_first_of("/\\\r\n") != std::string::npos ||
@@ -463,15 +470,91 @@ static int sync_intune(const fs::path& root) {
       url.rfind("https://github.com/St-Augustines-College-Kyabram/Intune-Zabbix-Bridge/releases/download/", 0) != 0)
     throw std::runtime_error("latest Intune release contains an unsafe tag or asset URL");
   const auto filename = package + "_" + version + "_all.deb";
-  const auto tmp = mirror / ("." + filename);
-  if (run("curl -fsSL --retry 5 " + quote(url) + " -o " + quote(tmp.string())))
-    throw std::runtime_error("unable to download " + filename);
   const auto expected = digest_value.substr(7);
   if (expected.size() != 64 ||
-      !std::all_of(expected.begin(), expected.end(), [](unsigned char c) { return std::isxdigit(c) != 0; }))
+      !std::all_of(expected.begin(), expected.end(),
+                   [](unsigned char c) { return std::isxdigit(c) != 0; }))
     throw std::runtime_error("latest Intune release contains an invalid SHA-256 digest");
-  if (digest(tmp) != expected) throw std::runtime_error("GitHub digest mismatch for " + filename);
-  check_deb(tmp, version);
+  const fs::path tmp = mirror / ("." + filename);
+
+  // A successful mirror is immutable. Reconstruct and check it before
+  // requesting the same public release again; scheduled runs must not depend
+  // on GitHub's asset CDN being available for a package already mirrored.
+  const fs::path saved_sha = mirror / (filename + ".sha256");
+  if (fs::exists(saved_sha)) {
+    if (trim_eol(read(saved_sha)) != expected)
+      throw std::runtime_error("Intune release changed a previously mirrored package digest");
+    std::vector<fs::path> parts;
+    for (const auto& entry : fs::directory_iterator(mirror)) {
+      const auto name = entry.path().filename().string();
+      if (entry.is_regular_file() &&
+          name.rfind(filename + ".b64.part-", 0) == 0)
+        parts.push_back(entry.path());
+    }
+    if (!parts.empty()) {
+      std::sort(parts.begin(), parts.end());
+      std::string encoded;
+      for (const auto& part : parts) encoded += read(part);
+      const fs::path encoded_file = mirror / ("." + filename + ".encoded");
+      write(encoded_file, encoded);
+      const int decode_status =
+          run("base64 --decode " + quote(encoded_file.string()) +
+              " > " + quote(tmp.string()));
+      fs::remove(encoded_file);
+      if (decode_status == 0 && digest(tmp) == expected) {
+        check_deb(tmp, version);
+        fs::remove(tmp);
+        std::cout << "Verified existing Intune mirror " << filename << '\n';
+        return 0;
+      }
+      fs::remove(tmp);
+      // Repair a corrupt or incomplete mirror only from a validated upstream
+      // asset. Never treat recorded SHA-256 text alone as verification.
+      std::cout << "Existing Intune mirror needs re-download: " << filename << '\n';
+    }
+  }
+
+  // Try the authenticated release-assets API, then the browser/CDN URL.
+  // Both routes are verified against GitHub's SHA-256 and DEB identity.
+  const auto try_download = [&](const std::string& source,
+                                const std::string& command) -> bool {
+    fs::remove(tmp);
+    if (run(command) != 0) {
+      fs::remove(tmp);
+      std::cout << source << " download unavailable\n";
+      return false;
+    }
+    if (digest(tmp) != expected) {
+      fs::remove(tmp);
+      std::cout << source << " SHA-256 mismatch; trying next route\n";
+      return false;
+    }
+    check_deb(tmp, version);
+    return true;
+  };
+  const bool valid_asset_id = !asset_id.empty() && asset_id.size() <= 20 &&
+      std::all_of(asset_id.begin(), asset_id.end(),
+                  [](unsigned char c) { return c >= '0' && c <= '9'; });
+  bool downloaded = false;
+  if (valid_asset_id) {
+    const std::string api_asset =
+        "https://api.github.com/repos/St-Augustines-College-Kyabram/Intune-Zabbix-Bridge/releases/assets/" +
+        asset_id;
+    downloaded = try_download(
+        "GitHub release REST API",
+        "curl -fsSL --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 60 " +
+        github_asset_headers() + " " + quote(api_asset) +
+        " -o " + quote(tmp.string()));
+  }
+  if (!downloaded)
+    downloaded = try_download(
+        "GitHub browser asset",
+        "curl -fsSL --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 60 " +
+        quote(url) + " -o " + quote(tmp.string()));
+  if (!downloaded)
+    throw std::runtime_error("unable to download verified " + filename +
+                             " from GitHub REST or browser release asset");
+
   const auto encoded = base64(read(tmp));
   fs::remove(tmp);
   const auto prefix = filename + ".b64.part-";
