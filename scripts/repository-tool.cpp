@@ -42,6 +42,20 @@ static std::string github_headers() {
   return headers;
 }
 
+// Release binary downloads use the GitHub asset API if both public mirror and
+// browser_download_url encounter an upstream gateway error. Unlike list JSON,
+// the endpoint must request octet-stream. The downloaded bytes are always
+// checked against the immutable release asset SHA-256 before publication.
+static std::string github_asset_headers() {
+  std::string headers =
+      "-H 'Accept: application/octet-stream' "
+      "-H 'User-Agent: Infiltrator-Repository' "
+      "-H 'X-GitHub-Api-Version: 2022-11-28'";
+  if (const char* token = std::getenv("GITHUB_TOKEN"); token && *token)
+    headers += " -H \"Authorization: Bearer $GITHUB_TOKEN\"";
+  return headers;
+}
+
 static int run(const std::string& command) {
   std::cout << "+ " << command << '\n';
   return std::system(command.c_str());
@@ -553,7 +567,7 @@ static int sync_intune(const fs::path& root) {
       const std::string asset_query =
           "jq -r --arg rx " + quote(rx_text) +
           " '[.[] | select(.name|test($rx))][0] | "
-          "[.name,.browser_download_url,(.digest // \"\"),(.size // 0)] | @tsv' " +
+          "[.name,.browser_download_url,(.digest // \"\"),(.size // 0),(.id // \"\")] | @tsv' " +
           quote(assets_json.string());
       std::istringstream fields(command_output(asset_query));
       fs::remove(assets_json);
@@ -562,11 +576,12 @@ static int sync_intune(const fs::path& root) {
       p.release_tag = release_tag;
       p.release_url = release_url;
       p.published = published;
-      std::string url, size;
+      std::string url, size, asset_id;
       std::getline(fields, p.asset, '\t');
       std::getline(fields, url, '\t');
       std::getline(fields, p.sha, '\t');
       std::getline(fields, size, '\t');
+      std::getline(fields, asset_id, '\t');
 
       if (p.asset.empty() || url.empty() ||
           p.sha.rfind("sha256:", 0) != 0 || p.sha.size() != 71)
@@ -613,9 +628,38 @@ static int sync_intune(const fs::path& root) {
       }
 
       if (!materialized) {
-        if (run("curl -fsSL --retry 5 " + quote(url) + " -o " +
-                quote(p.path.string())))
-          throw std::runtime_error("unable to download " + p.asset);
+        // Public Pages and github.com asset delivery share caches which can
+        // simultaneously return transient HTTP 504. The documented REST
+        // release-assets API is an independent third retrieval route.
+        // Accept the API asset id only when it is a bounded decimal value;
+        // never construct a download URL from untrusted free-form text.
+        const bool valid_asset_id =
+            !asset_id.empty() && asset_id.size() <= 20 &&
+            std::all_of(asset_id.begin(), asset_id.end(),
+                        [](unsigned char c) { return c >= '0' && c <= '9'; });
+        int download_status = run(
+            "curl -fsSL --retry 5 --max-time 120 " + quote(url) + " -o " +
+            quote(p.path.string()));
+        if (download_status && valid_asset_id) {
+          fs::remove(p.path);  // Never combine partial downloads from routes.
+          const auto api_asset_url =
+              "https://api.github.com/repos/" + owner + "/" + repo +
+              "/releases/assets/" + asset_id;
+          std::cout << "Browser asset unavailable; trying GitHub REST "
+                       "octet-stream for " << p.asset << '\n';
+          download_status = run(
+              "curl -fsSL --retry 5 --max-time 120 " +
+              github_asset_headers() + " " + quote(api_asset_url) +
+              " -o " + quote(p.path.string()));
+        }
+        if (download_status) {
+          fs::remove(p.path);
+          throw std::runtime_error("unable to download " + p.asset +
+                                   " from mirror, browser or GitHub REST asset");
+        }
+        // The third route has exactly the same digest and DEB identity gates
+        // as the normal release-asset route. A JSON error body or stale file
+        // cannot pass this check.
         if (digest(p.path) != p.sha) {
           fs::remove(p.path);
           throw std::runtime_error("SHA-256 mismatch for " + p.asset);
