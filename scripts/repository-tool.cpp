@@ -617,8 +617,10 @@ static int sync_intune(const fs::path& root) {
           "https://infiltrator-projects.github.io/Infiltrator-Repository/pool/main/" +
           url_encode_component(p.asset);
       bool materialized = false;
-      if (!run("curl -fsSL --retry 2 --max-time 30 " + quote(mirror_url) +
-               " -o " + quote(p.path.string()))) {
+      // A missing pool entry is normal for a newly published version. Avoid
+      // repeated CDN 404/504 responses consuming the entire Pages job timeout.
+      if (!run("curl -fsSL --retry 0 --connect-timeout 6 --max-time 12 " +
+               quote(mirror_url) + " -o " + quote(p.path.string()))) {
         if (digest(p.path) == p.sha) {
           materialized = true;
           std::cout << "Reused published mirror for " << p.asset << '\n';
@@ -632,34 +634,39 @@ static int sync_intune(const fs::path& root) {
       }
 
       if (!materialized) {
-        // Public Pages and github.com asset delivery share caches which can
-        // simultaneously return transient HTTP 504. The documented REST
-        // release-assets API is an independent third retrieval route.
-        // Accept the API asset id only when it is a bounded decimal value;
-        // never construct a download URL from untrusted free-form text.
+        // An authenticated, bounded GitHub REST binary-asset request has
+        // proven more reliable than the public CDN while it returns 504.
+        // Prefer it for uncached packages; use the public browser endpoint
+        // only as a fallback. All routes must pass the same SHA-256 and DEB
+        // package identity validations below, with no partial-file reuse.
         const bool valid_asset_id =
             !asset_id.empty() && asset_id.size() <= 20 &&
             std::all_of(asset_id.begin(), asset_id.end(),
                         [](unsigned char c) { return c >= '0' && c <= '9'; });
-        int download_status = run(
-            "curl -fsSL --retry 5 --max-time 120 " + quote(url) + " -o " +
-            quote(p.path.string()));
-        if (download_status && valid_asset_id) {
-          fs::remove(p.path);  // Never combine partial downloads from routes.
+        int download_status = 1;
+        if (valid_asset_id) {
           const auto api_asset_url =
               "https://api.github.com/repos/" + owner + "/" + repo +
               "/releases/assets/" + asset_id;
-          std::cout << "Browser asset unavailable; trying GitHub REST "
-                       "octet-stream for " << p.asset << '\n';
+          std::cout << "Using GitHub REST binary asset for " << p.asset
+                    << '\n';
           download_status = run(
-              "curl -fsSL --retry 5 --max-time 120 " +
+              "curl -fsSL --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 60 " +
               github_asset_headers() + " " + quote(api_asset_url) +
               " -o " + quote(p.path.string()));
         }
         if (download_status) {
           fs::remove(p.path);
+          std::cout << "REST asset unavailable; trying browser download for "
+                    << p.asset << '\n';
+          download_status = run(
+              "curl -fsSL --retry 2 --retry-delay 1 --connect-timeout 10 --max-time 60 " +
+              quote(url) + " -o " + quote(p.path.string()));
+        }
+        if (download_status) {
+          fs::remove(p.path);
           throw std::runtime_error("unable to download " + p.asset +
-                                   " from mirror, browser or GitHub REST asset");
+                                   " from mirror, GitHub REST or browser asset");
         }
         // The third route has exactly the same digest and DEB identity gates
         // as the normal release-asset route. A JSON error body or stale file
