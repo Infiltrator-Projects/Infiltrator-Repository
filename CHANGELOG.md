@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-08 — InfiltratorOS 1.0.70 native verification fix
+
+- Refresh the beta APT catalogue after the fully verified InfiltratorOS v1.0.70 release. Correct false failures when installed applications omit an optional Defragmenter metadata field or do not ship a PDF. Continue to require version identity, package ownership, native-build evidence, SHA-256 attestation and dpkg verification. Preserve independently published application and filesystem packages.
+
 ## 2026-11-08 — InfiltratorOS 1.0.68 APT refresh
 
 - Refresh the beta APT index after the verified InfiltratorOS v1.0.68 GitHub release. This carries bounded retries for transient HTTP 504 failures when retrieving the four application-native RUN installers. Preserve independent application, calendar, clock, filesystem and Intune publication rules; retain existing package history and validation.
