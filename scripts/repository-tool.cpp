@@ -582,6 +582,10 @@ static int sync_intune(const fs::path& root) {
       std::getline(fields, p.sha, '\t');
       std::getline(fields, size, '\t');
       std::getline(fields, asset_id, '\t');
+      // jq emits a trailing newline after the final TSV field. Without
+      // trimming it, a valid numeric GitHub asset id silently fails the
+      // decimal-only fallback check and the REST route is never attempted.
+      asset_id = trim_eol(asset_id);
 
       if (p.asset.empty() || url.empty() ||
           p.sha.rfind("sha256:", 0) != 0 || p.sha.size() != 71)
