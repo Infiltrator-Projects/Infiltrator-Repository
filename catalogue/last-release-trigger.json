@@ -1,5 +1,5 @@
 {
-  "reason": "Trigger central APT beta publication of the exact qualified Defragmenter v1.8.0-291 release after GitHub release publication",
+  "reason": "Publish current verified InfiltratorOS 1.0.66, Boot 0.1.40, and InfiltratorFS 0.19.42 Debian packages into both alpha and beta APT indexes; recovery for missed scheduled/dispatch events",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -27,9 +27,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
-      "version": "0.19.40",
-      "release_sha": "c8f6431f2de34806d8614a241cab8db5a0daad48",
-      "release_published_at": "2026-11-05T11:30:01Z"
+      "version": "0.19.42",
+      "release_sha": "c5573d53ad28ccae0e43a7eef9f6707866a690c9",
+      "release_published_at": "2026-11-08T04:58:06Z"
     },
     {
       "repository": "Infiltrator-Projects/MBLINK",
@@ -93,9 +93,9 @@
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorOS",
-      "version": "1.0.61",
-      "release_sha": "55e11ba7caf273afa94186b6d359db19ff174b90",
-      "release_published_at": "2026-11-05T09:27:51Z"
+      "version": "1.0.66",
+      "release_sha": "40b2a99a9b221b6957ae493933d64a807a30115f",
+      "release_published_at": "2026-11-08T06:09:52Z"
     },
     {
       "repository": "Infiltrator-Projects/Filesystem-FAT12",
@@ -126,6 +126,11 @@
       "version": "0.1.8",
       "release_sha": "2c34d5363823ff7be66489b1462a4da8357e2114",
       "release_published_at": "2026-11-06T05:29:35Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Boot",
+      "version": "0.1.40",
+      "release_published_at": "2026-11-08T04:19:53Z"
     }
   ]
 }
