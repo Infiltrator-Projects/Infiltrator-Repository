@@ -84,7 +84,9 @@ jobs:
           ./build/native-source-contracts
           python3 tests/test_calendar_candidate.py
           python3 tests/test_retention.py build/repository-tool
-          python3 tests/test_release_identity.py build/repository-tool
+          g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror -pthread \
+            tests/test_release_identity.cpp -o build/test-release-identity
+          ./build/test-release-identity build/repository-tool
           python3 tests/test_slicer_publication.py build/repository-tool
           python3 tests/test_product_naming.py build/repository-tool
           python3 tests/test_deb_catalogue.py
