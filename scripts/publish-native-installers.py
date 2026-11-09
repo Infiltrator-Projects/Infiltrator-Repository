@@ -110,11 +110,14 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
         if bits not in ("12", "16", "32"):
             raise ValueError(repository + ": unknown independent FAT variant")
         expected = {run, "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
-        # Older immutable releases contain only .so installers. Once a
-        # format's triple-driver milestone is reached, its kernel-specific
-        # and firmware artifacts become mandatory, not optional labels.
+        # Historical FAT releases retain their exact immutable assets.
+        # FAT12 v0.1.15+ distributes just .deb and native .run (containing
+        # FAT12.so); KO/EFI compatibility work stays in CI, not releases.
+        # FAT16/32 retain their prior requirements pending separate review.
         milestone = (0, 1, 2) if bits == "32" else (0, 1, 3)
-        if tuple(map(int, version.split("."))) >= milestone:
+        parsed_version = tuple(map(int, version.split(".")))
+        if parsed_version >= milestone and not (
+                bits == "12" and parsed_version >= (0, 1, 15)):
             expected.update({f"FAT{bits}.efi", f"fat{bits}-linux-6.12.107.ko"})
         if names != expected:
             raise ValueError(repository + ": incomplete or unexpected filesystem driver release")

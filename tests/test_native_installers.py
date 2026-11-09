@@ -59,6 +59,45 @@ class NativeInstallers(unittest.TestCase):
             with self.assertRaises(ValueError):
                 publisher.verify("Filesystem-exFAT", {}, bad)
 
+    def test_fat12_release_transition_keeps_exact_assets(self):
+        """FAT12 v0.1.15+ has two release assets; older tags remain strict."""
+        cases = (
+            ("0.1.14", {"filesystem-fat12-0.1.14-native-installer.run",
+                        "infiltrator-filesystem-fat12_0.1.14_amd64.deb",
+                        "FAT12.efi", "fat12-linux-6.12.107.ko"}),
+            ("0.1.15", {"filesystem-fat12-0.1.15-native-installer.run",
+                        "infiltrator-filesystem-fat12_0.1.15_amd64.deb"}),
+            ("0.1.19", {"filesystem-fat12-0.1.19-native-installer.run",
+                        "infiltrator-filesystem-fat12_0.1.19_amd64.deb"}),
+        )
+        for version, names in cases:
+            with self.subTest(version=version):
+                prefix = ("https://github.com/Infiltrator-Projects/"
+                          "Filesystem-FAT12/releases/download/v" + version + "/")
+                release = {
+                    "tag_name": "v" + version,
+                    "target_commitish": "d" * 40,
+                    "assets": [
+                        {"name": name, "browser_download_url": prefix + name,
+                         "digest": "sha256:" + "e" * 64, "size": 1234}
+                        for name in sorted(names)],
+                }
+                result = publisher.verify("Filesystem-FAT12", {}, release)
+                self.assertEqual(result["tag_name"], "v" + version)
+                self.assertEqual({asset["name"] for asset in result["assets"]}, names)
+                for missing in names:
+                    bad = copy.deepcopy(release)
+                    bad["assets"] = [a for a in bad["assets"] if a["name"] != missing]
+                    with self.assertRaises(ValueError):
+                        publisher.verify("Filesystem-FAT12", {}, bad)
+                bad = copy.deepcopy(release)
+                bad["assets"].append({
+                    "name": "FAT12.efi", "browser_download_url": prefix + "FAT12.efi",
+                    "digest": "sha256:" + "f" * 64, "size": 1234})
+                if version in ("0.1.15", "0.1.19"):
+                    with self.assertRaises(ValueError):
+                        publisher.verify("Filesystem-FAT12", {}, bad)
+
     def test_new_and_legacy_snapshots_share_exact_release_records(self):
         entries = publisher.discover(ROOT / "catalogue/apps-source.json")
         self.assertEqual(len(entries), 63)
