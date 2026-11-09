@@ -1,9 +1,11 @@
 calculator 0.2.66
-files 0.1.78
+files 0.1.81 (FAT12 safe SD detection release; GitHub assets verified)
 system-monitor 1.0.242
 infiltratoros 1.0.64
 runnerscope 1.3.20
 calendar 1.0.127
 system-settings 0.4.121
-libraries 1.19.80 (provider implementation copies removed)
+libraries 1.19.82 (canonical Common filesystem API)
 temporal-providers 54 independent releases (14 localized calendars at 1.0.1)
+
+fat12 0.1.22 (FAT12.so canonical Linux VFS bridge; publish after qualification)
