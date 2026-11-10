@@ -131,28 +131,26 @@ static void write(const fs::path& path, const std::string& value) {
 }
 
 static std::string digest(const fs::path& file) {
-  fs::path output = file;
-  output += ".sha256.tmp";
+  PrivateDirectory temporary("repository-digest");
+  const fs::path output = temporary.path() / "sha256";
   if (run("sha256sum " + quote(file.string()) + " > " + quote(output.string())))
     throw std::runtime_error("sha256sum failed for " + file.string());
   std::istringstream line(read(output));
   std::string value;
   line >> value;
-  fs::remove(output);
   return value;
 }
 
 static void check_deb(const fs::path& file, const std::string& version,
                       const std::string& expected_package = "intune-zabbix-bridge",
                       const std::string& expected_architecture = "all") {
+  PrivateDirectory temporary("repository-deb-check");
   for (const auto& field : {"Package", "Version", "Architecture"}) {
-    fs::path out = file;
-    out += "." + std::string(field) + ".tmp";
+    const fs::path out = temporary.path() / field;
     if (run("dpkg-deb --field " + quote(file.string()) + " " + field +
             " > " + quote(out.string())))
       throw std::runtime_error("dpkg-deb failed for " + file.string());
     const auto value = read(out);
-    fs::remove(out);
     const std::string field_name(field);
     const std::string expected = field_name == "Package" ? expected_package :
       field_name == "Version" ? version : expected_architecture;
@@ -185,14 +183,14 @@ static std::string json_escape(const std::string& value) {
   }
 
   static std::string deb_field(const fs::path& file, const std::string& field, bool optional = false) {
-    fs::path out = file; out += "." + field + ".tmp";
+    PrivateDirectory temporary("repository-deb-field");
+    const fs::path out = temporary.path() / "value";
     const int status = run("dpkg-deb --field " + quote(file.string()) + " " + field + " > " + quote(out.string()));
     if (status) {
-      fs::remove(out);
       if (optional) return {};
       throw std::runtime_error("unable to read DEB field " + field);
     }
-    auto value = read(out); fs::remove(out);
+    auto value = read(out);
     return trim_eol(value);
   }
 
@@ -1004,15 +1002,13 @@ static void retain_index_history(const fs::path& current, std::string previous_b
       if (run("gzip -9 -n -c " + quote((binary / "Packages").string()) + " > " + quote((binary / "Packages.gz").string())))
         throw std::runtime_error("gzip failed");
       const auto release = public_dir / "dists" / suite / "Release";
-      const auto temp = public_dir / (".Release-" + suite + ".tmp");
       const auto command = "cd " + quote(public_dir.string()) + " && apt-ftparchive "
         "-o APT::FTPArchive::Release::Origin=Infiltrator "
         "-o APT::FTPArchive::Release::Label='Infiltrator " + suite_label + "' "
         "-o APT::FTPArchive::Release::Suite=" + suite + " -o APT::FTPArchive::Release::Codename=" + suite +
         " -o APT::FTPArchive::Release::Architectures=amd64 -o APT::FTPArchive::Release::Components=main "
         "-o APT::FTPArchive::Release::Description='Software Repository " + suite + "' release dists/" + suite;
-      if (run(command + " > " + quote(temp.string()))) throw std::runtime_error("apt-ftparchive failed");
-      auto release_text = read(temp); fs::remove(temp);
+      auto release_text = command_output(command);
       const auto marker = "Codename: " + suite + "\n";
       const auto pos = release_text.find(marker);
       release_text.insert(pos == std::string::npos ? 0 : pos + marker.size(), "Acquire-By-Hash: yes\n");
