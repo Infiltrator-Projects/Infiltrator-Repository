@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — Common V2 FAT firmware modules
+
+- Publish FAT12 0.1.27, FAT16 0.1.19 and FAT32 0.1.15 after Common V2 firmware and package qualification. The FAT shared objects use the Common interface for BOOT and volume labels.
+
 ## 2026-11-13 — InfiltratorOS Common V2 provider validation
 
 - Publish the qualified InfiltratorOS 1.0.83 package. Filesystem provisioning now requires the defined Common V2 export.
