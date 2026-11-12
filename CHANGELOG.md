@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — InfiltratorOS Common V2 provider validation
+
+- Publish the qualified InfiltratorOS 1.0.83 package. Filesystem provisioning now requires the defined Common V2 export.
+
 ## 2026-11-12 — Common V2 BOOT and Files rollout
 
 - Publish InfiltratorOS 1.0.82, BOOT 0.1.45, Files 0.1.83 and FAT16 0.1.18 from their verified release packages. The installer stages compatible Common V2 filesystem modules with BOOT after the filesystem workers finish. Files calls the selected installed module's format operation.
