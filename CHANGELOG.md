@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-12 — InfiltratorOS 1.0.76 APT refresh
+
+- Refresh the alpha and beta APT indexes after the verified InfiltratorOS v1.0.76 GitHub release. This release adapts native build concurrency to available CPU and RAM, up to 16 selected components.
+
 ## 2026-11-08 — InfiltratorOS 1.0.70 native verification fix
 
 - Refresh the beta APT catalogue after the fully verified InfiltratorOS v1.0.70 release. Correct false failures when installed applications omit an optional Defragmenter metadata field or do not ship a PDF. Continue to require version identity, package ownership, native-build evidence, SHA-256 attestation and dpkg verification. Preserve independently published application and filesystem packages.
