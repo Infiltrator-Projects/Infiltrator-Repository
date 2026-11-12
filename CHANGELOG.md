@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-12 — Common V2 BOOT and Files rollout
+
+- Publish InfiltratorOS 1.0.82, BOOT 0.1.45, Files 0.1.83 and FAT16 0.1.18 from their verified release packages. The installer stages compatible Common V2 filesystem modules with BOOT after the filesystem workers finish. Files calls the selected installed module's format operation.
+
 ## 2026-11-12 — InfiltratorOS 1.0.81 BOOT upgrade fix
 
 - Publish the verified update for existing firmware-registered BOOT installations, including installations created before the upgrader's marker.
