@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-12 — InfiltratorOS 1.0.79 and BOOT 0.1.42 APT refresh
+
+- Publish the verified automatic BOOT upgrade and its independent BOOT package together. The upgrader adds an EFI option on eligible systems and preserves GRUB as the default.
+
 ## 2026-11-12 — InfiltratorOS 1.0.78 APT refresh
 
 - Publish the refreshed GTK upgrader and the migration that keeps native Calendar builds selected on machines with the legacy priority-1001 rule.
