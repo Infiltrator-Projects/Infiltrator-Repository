@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-12 — InfiltratorOS 1.0.78 APT refresh
+
+- Publish the refreshed GTK upgrader and the migration that keeps native Calendar builds selected on machines with the legacy priority-1001 rule.
+
 ## 2026-11-12 — InfiltratorOS 1.0.77 APT refresh
 
 - Publish the InfiltratorOS upgrader window with the running package version in its title and a Debian-based systems description.
