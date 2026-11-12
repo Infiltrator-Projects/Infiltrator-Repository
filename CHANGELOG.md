@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-12 — InfiltratorOS 1.0.80 native BOOT fix
+
+- Publish the verified InfiltratorOS update that builds BOOT from its independent source installer during provisioning, without a portable BOOT package prerequisite.
+
 ## 2026-11-12 — InfiltratorOS 1.0.79 and BOOT 0.1.42 APT refresh
 
 - Publish the verified automatic BOOT upgrade and its independent BOOT package together. The upgrader adds an EFI option on eligible systems and preserves GRUB as the default.
