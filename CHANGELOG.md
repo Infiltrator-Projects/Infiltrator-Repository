@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-12 — InfiltratorOS 1.0.81 BOOT upgrade fix
+
+- Publish the verified update for existing firmware-registered BOOT installations, including installations created before the upgrader's marker.
+
 ## 2026-11-12 — InfiltratorOS 1.0.80 native BOOT fix
 
 - Publish the verified InfiltratorOS update that builds BOOT from its independent source installer during provisioning, without a portable BOOT package prerequisite.
