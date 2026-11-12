@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-12 — InfiltratorOS 1.0.77 APT refresh
+
+- Publish the InfiltratorOS upgrader window with the running package version in its title and a Debian-based systems description.
+
 ## 2026-11-12 — InfiltratorOS 1.0.76 APT refresh
 
 - Refresh the alpha and beta APT indexes after the verified InfiltratorOS v1.0.76 GitHub release. This release adapts native build concurrency to available CPU and RAM, up to 16 selected components.
