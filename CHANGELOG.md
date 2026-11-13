@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — Require Common V2-only BOOT deployment
+
+- Publish InfiltratorOS 1.0.86 with BOOT 0.1.46 as the minimum mandatory firmware component release.
+
 ## 2026-11-13 — Common V2 NTFS extent maps
 
 - Publish NTFS 1.0.18 with per-file physical extent mapping through the installed `NTFS.so`. Mapping is read-only and uses the Common V2 partition host.
