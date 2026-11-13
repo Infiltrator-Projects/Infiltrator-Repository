@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — Common V2 OFS firmware support
+
+- Publish the qualified OFS 0.1.15 package and native installer. BOOT reads OFS volumes and their labels through Common V2.
+
 ## 2026-11-13 — Common V2 FAT firmware modules
 
 - Publish FAT12 0.1.27, FAT16 0.1.19 and FAT32 0.1.15 after Common V2 firmware and package qualification. The FAT shared objects use the Common interface for BOOT and volume labels.
