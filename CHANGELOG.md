@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — Defragmenter 1.8.0-301
+
+- Publish the qualified Defragmenter package with Common V2 NTFS per-file extent mapping.
+
 ## 2026-11-13 — Require Common V2-only BOOT deployment
 
 - Publish InfiltratorOS 1.0.86 with BOOT 0.1.46 as the minimum mandatory firmware component release.
