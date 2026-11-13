@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — OFS Common V2 file access
+
+- Publish OFS 0.1.16 with the original drop-in file access exports removed. The package retains Common V2 for BOOT and file operations and preserves the qualified OFS relocation and recovery path.
+
 ## 2026-11-13 — Common V2 OFS firmware support
 
 - Publish the qualified OFS 0.1.15 package and native installer. BOOT reads OFS volumes and their labels through Common V2.
