@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-13 — Common V2 NTFS formatting
+
+- Publish NTFS 1.0.17 and Files 0.1.84. Files detects the selected removable volume and delegates NTFS creation to `NTFS.so` through Common V2. The NTFS native build does not install FUSE.
+- Publish InfiltratorOS 1.0.84 with validation of the NTFS native installer release and its FUSE-free build prerequisites.
+
 ## 2026-11-13 — Defragmenter 1.8.0-300
 
 - Publish the qualified Defragmenter package with Common V2 OFS Test Media formatting and verification.
