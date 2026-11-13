@@ -82,7 +82,9 @@ jobs:
           g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror \
             tests/native_source_contracts.cpp -o build/native-source-contracts
           ./build/native-source-contracts
-          python3 tests/test_calendar_candidate.py
+          g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror \
+            tests/test_calendar_candidate.cpp -o build/test-calendar-candidate
+          ./build/test-calendar-candidate .
           g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror \
             tests/test_retention.cpp -o build/test-retention
           ./build/test-retention build/repository-tool
