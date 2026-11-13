@@ -27,11 +27,6 @@ static void write(const fs::path& path,const std::string& content){
     out<<content;out.close();
     demand(bool(out),"Cannot write fixture "+path.string());
 }
-static std::string read(const fs::path& path){
-    std::ifstream in(path,std::ios::binary);
-    demand(bool(in),"Cannot read fixture "+path.string());
-    return {std::istreambuf_iterator<char>(in),std::istreambuf_iterator<char>()};
-}
 struct Temp{
     fs::path root;
     Temp(){
