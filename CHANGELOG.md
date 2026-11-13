@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — Defragmenter 1.8.0-300
+
+- Publish the qualified Defragmenter package with Common V2 OFS Test Media formatting and verification.
+
 ## 2026-11-13 — OFS Common V2 file access
 
 - Publish OFS 0.1.16 with the original drop-in file access exports removed. The package retains Common V2 for BOOT and file operations and preserves the qualified OFS relocation and recovery path.
