@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-13 — Common V2 NTFS extent maps
+
+- Publish NTFS 1.0.18 with per-file physical extent mapping through the installed `NTFS.so`. Mapping is read-only and uses the Common V2 partition host.
+
 ## 2026-11-13 — BOOT Common V2 filesystem loading
 
 - Publish BOOT 0.1.46 and InfiltratorOS 1.0.85 after their OVMF qualification. BOOT loads filesystem extensions through Common V2 shared objects. The updater preserves existing deployments that may still depend on a separate EFI filesystem driver.
