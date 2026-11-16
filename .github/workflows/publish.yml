@@ -50,11 +50,11 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/ssmithnet.net
-          ref: 688f0d627dcd208fc77c13709c8a0e6a96d9b363
+          ref: b2f94f2fa37b26e4279425e4c47e7c65eb0780f5
           path: _family
 
       - name: Verify website family pin
-        run: test "$(git -C _family rev-parse HEAD)" = "688f0d627dcd208fc77c13709c8a0e6a96d9b363"
+        run: test "$(git -C _family rev-parse HEAD)" = "b2f94f2fa37b26e4279425e4c47e7c65eb0780f5"
 
       - name: Install repository tools
         run: |
@@ -147,7 +147,7 @@ jobs:
           "$RUNNER_TEMP/check-web-family" public
           test -s public/assets/site-redesign.css
           test -s public/assets/brand-2026.svg
-          grep -Fq 'site-redesign.css?v=20261116-portfolio1' public/index.html
+          grep -Fq 'site-redesign.css?v=20261116-editorial1' public/index.html
           version="$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .version' public/catalogue/apps.json)"
           test -n "$version"
           mirror="mirrored-packages/intune-zabbix-bridge_${version}_all.deb"
