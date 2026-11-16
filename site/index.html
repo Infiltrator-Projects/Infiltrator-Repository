@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="infiltrator-build" content="editorial-family-v2">
+<meta name="infiltrator-build" content="unified-site-family-20261116">
 <title>Software Centre · ssmithnet.net</title>
 <meta name="description" content="Software Centre — verified Linux packages published by Shannon Smith.">
 <link rel="canonical" href="https://infiltrator-projects.github.io/Infiltrator-Repository/">
@@ -19,14 +19,15 @@
 <link rel="stylesheet" href="assets/infiltrator-web-v1.css?v=common-1.19.42">
 <link rel="stylesheet" href="assets/site.css?v=family-20261016-refined">
 <link rel="stylesheet" href="assets/site-overrides.css?v=family-20261016-refined">
+<link rel="icon" type="image/svg+xml" href="assets/brand-2026.svg">
 <style>
-.repository-hero{padding:64px 0 40px;border-bottom:1px solid var(--line-soft)}
+.repository-hero{padding:49px 0 33px;border-bottom:1px solid var(--line-soft)}
 .repository-hero .eyebrow{font:700 14px/1.5 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .repository-hero h1{font:400 clamp(42px,4.8vw,64px)/1.1 var(--display);letter-spacing:-.018em;margin:14px 0 18px}
 .repository-hero .lead{margin:0;max-width:780px}.stats{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
 .badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font:400 14px var(--sans);color:var(--muted);background:rgba(255,255,255,.02)}
 .badge.beta{border-color:var(--wood-strong);color:#d9c29d}.badge.good{color:var(--green)}.badge.warn{color:var(--infiltratr-warning,#e7c66d)}
-main{padding:28px 0 34px}.setup{border-top:1px solid var(--wood-strong);border-bottom:1px solid var(--line);margin:0 0 34px}
+main{padding:0 0 34px}.setup{border-top:1px solid var(--wood-strong);border-bottom:1px solid var(--line);margin:0 0 34px}
 .setup summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;font-weight:700;list-style:none}.setup summary::-webkit-details-marker{display:none}.setup summary:after{content:"＋";font-size:19px;color:var(--muted)}.setup[open] summary:after{content:"−"}
 .setup-body{padding:0 0 22px}.setup-note{color:var(--muted);margin:0 0 14px}.setup-note.warning{color:var(--infiltratr-warning,#e7c66d)}
 .command-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}.btn.small{padding:8px 12px;font-size:15px}
@@ -47,6 +48,7 @@ dialog{border:1px solid var(--line);border-radius:var(--radius);background:#0d10
 .modal-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,18px);opacity:0;background:var(--text);color:var(--bg);border-radius:var(--infiltratr-small-radius);padding:10px 14px;font-weight:700;box-shadow:0 18px 48px rgba(0,0,0,.28);transition:.2s;pointer-events:none;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:720px){.repository-hero{padding:42px 0 30px}.toolbar{align-items:stretch;flex-direction:column}.search{max-width:none}.catalogue-grid{grid-template-columns:1fr}.command-wrap,.install-row{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.info:nth-child(odd){border-right:0}.info:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.info:last-child{border-bottom:0}.actions{flex-wrap:wrap}.actions .source{margin-left:0}}
 </style>
+<link rel="stylesheet" href="assets/site-redesign.css?v=20261116-system1">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -60,6 +62,7 @@ dialog{border:1px solid var(--line);border-radius:var(--radius);background:#0d10
       <a class="nav-software" aria-current="page" href="https://infiltrator-projects.github.io/Infiltrator-Repository/">Software Centre</a>
     </div>
   </nav>
+  <main id="main">
   <header class="repository-hero">
     <div class="eyebrow">Software Centre</div>
     <h1>The Infiltrator applications.</h1>
@@ -71,7 +74,6 @@ dialog{border:1px solid var(--line);border-radius:var(--radius);background:#0d10
       <span class="badge beta">BETA</span>
     </div>
   </header>
-  <main id="main">
     <details class="setup">
       <summary><span>Add this repository to Linux Mint</span><span class="badge" id="suiteBadge">beta</span></summary>
       <div class="setup-body">
@@ -94,7 +96,7 @@ dialog{border:1px solid var(--line);border-radius:var(--radius);background:#0d10
     <section class="catalogue-grid" id="apps" aria-live="polite"><div class="empty">Loading current catalogue…</div></section>
   </main>
 
-  <footer><div class="footerline"><span>© Shannon Smith · ssmithnet.net</span><span>Software Centre · verified APT catalogue</span></div></footer>
+  <footer class="site-footer"><div class="footer-overview"><div class="footer-identity"><a class="footer-brand" href="https://ssmithnet.net/index.html">ssmith<span>net</span>.net</a><p>Online since 1993. Software, cars, open-reel audio and the things that keep them running.</p></div><nav aria-label="Footer" class="footer-navigation"><a href="https://ssmithnet.net/workbench.html">Workbench</a><a href="https://ssmithnet.net/garage.html">Garage</a><a href="https://ssmithnet.net/about.html">About</a><a href="https://github.com/Infiltrator-Projects">GitHub</a></nav></div><div class="footerline"><span>© Shannon Smith · ssmithnet.net</span><span>Software Centre · verified APT catalogue</span></div></footer>
 </div>
 
 <dialog id="details" aria-labelledby="modalName">

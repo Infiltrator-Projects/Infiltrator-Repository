@@ -50,11 +50,11 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: Infiltrator-Projects/ssmithnet.net
-          ref: 989b6a9ddfe46b83156d54fc43cac134b8056cfc
+          ref: 987202511b8b7aaa1b940ff36ad4cf55cf729bb4
           path: _family
 
       - name: Verify website family pin
-        run: test "$(git -C _family rev-parse HEAD)" = "989b6a9ddfe46b83156d54fc43cac134b8056cfc"
+        run: test "$(git -C _family rev-parse HEAD)" = "987202511b8b7aaa1b940ff36ad4cf55cf729bb4"
 
       - name: Install repository tools
         run: |
@@ -142,7 +142,12 @@ jobs:
           test -s public/assets/fonts/mb-corpo-a-cond-regular.woff2
           test -s public/assets/fonts/mb-corpo-s-regular.woff2
           test -s public/assets/fonts/mb-corpo-s-bold.woff2
-          python3 _family/tests/check_web_family.py public
+          # The personal site now validates its generated pages in native C++17.
+          g++ -std=c++17 -O2 -Wall -Wextra -pedantic _family/tests/check_web_family.cpp -o "$RUNNER_TEMP/check-web-family"
+          "$RUNNER_TEMP/check-web-family" public
+          test -s public/assets/site-redesign.css
+          test -s public/assets/brand-2026.svg
+          grep -Fq 'site-redesign.css?v=20261116-system1' public/index.html
           version="$(jq -r '.[] | select(.id == "intune-zabbix-bridge") | .version' public/catalogue/apps.json)"
           test -n "$version"
           mirror="mirrored-packages/intune-zabbix-bridge_${version}_all.deb"
