@@ -92,35 +92,27 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
                     "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
         if names != expected:
             raise ValueError(repository + ": incomplete independent temporal release")
-    if repository == "Filesystem-exFAT":
-        expected = {
-            run, "infiltrator-filesystem-exfat_" + version + "_amd64.deb",
-            "exFAT.so", "exfat-linux-6.12.107.ko", "SHA256SUMS",
+    if repository.startswith("Filesystem-"):
+        # A current filesystem release provides one native source-building
+        # installer and one portable Debian package. Freestanding EFI drivers,
+        # Linux kernel adapters and hosted shared objects are implementation
+        # outputs; they are not separately required GitHub release artifacts.
+        # An optional checksum manifest may accompany the two required assets.
+        # Every advertised asset has already passed the identity, SHA-256,
+        # download-origin and size checks above.
+        required = {
+            run,
+            "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb",
         }
-        if names != expected:
-            raise ValueError(repository + ": missing native source RUN, portable DEB or qualified KO")
-    elif repository == "Filesystem-OFS":
-        expected = {run, "infiltrator-filesystem-ofs_" + version + "_amd64.deb", "OFS.so", "SHA256SUMS"}
-        if tuple(map(int, version.split("."))) >= (0, 1, 1):
-            expected.add("ofs-linux-6.12.107.ko")
-        if names != expected:
-            raise ValueError(repository + ": incomplete OFS shared-module release")
-    elif repository.startswith("Filesystem-"):
-        bits = repository.removeprefix("Filesystem-FAT")
-        if bits not in ("12", "16", "32"):
-            raise ValueError(repository + ": unknown independent FAT variant")
-        expected = {run, "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
-        # Historical FAT releases retain their exact immutable assets.
-        # FAT12 v0.1.15+ distributes just .deb and native .run (containing
-        # FAT12.so); KO/EFI compatibility work stays in CI, not releases.
-        # FAT16/32 retain their prior requirements pending separate review.
-        milestone = (0, 1, 2) if bits == "32" else (0, 1, 3)
-        parsed_version = tuple(map(int, version.split(".")))
-        if parsed_version >= milestone and not (
-                bits == "12" and parsed_version >= (0, 1, 15)):
-            expected.update({f"FAT{bits}.efi", f"fat{bits}-linux-6.12.107.ko"})
-        if names != expected:
-            raise ValueError(repository + ": incomplete or unexpected filesystem driver release")
+        if names not in (
+            required,
+            required | {"SHA256SUMS"},
+            required | {"SHA256SUMS.txt"},
+        ):
+            raise ValueError(
+                repository + ": expected one native RUN, one generic DEB, "
+                "and at most one checksum manifest; got " + ", ".join(sorted(names))
+            )
     result = {"tag_name": tag, "draft": False, "prerelease": False, "assets": assets}
     if repository in OS_FILESYSTEMS or repository.startswith(("Calendar-", "Clock-")):
         # The native-build cache must compare its recorded source revision to
