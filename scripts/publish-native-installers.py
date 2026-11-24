@@ -88,9 +88,13 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
     if run not in names:
         raise ValueError(repository + ": missing native RUN installer")
     if repository.startswith(("Calendar-", "Clock-")):
-        expected = {run, repository.lower() + "-" + version + "-source.zip",
-                    "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
-        if names != expected:
+        # The native RUN already carries the exact source and pinned Common.
+        # GitHub generates the tag source archive; it is not an uploaded asset.
+        required = {run, "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb"}
+        legacy_zip = repository.lower() + "-" + version + "-source.zip"
+        # Keep immutable, previously published three-asset releases usable
+        # during migration. Reject all other extras and validate every digest.
+        if names not in (required, required | {legacy_zip}):
             raise ValueError(repository + ": incomplete independent temporal release")
     if repository.startswith("Filesystem-"):
         # A current filesystem release provides one native source-building
@@ -146,7 +150,7 @@ def write_snapshot(path: Path, snapshot: dict) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalogue", type=Path, default=Path("catalogue/apps-source.json"))
-    parser.add_argument("--output", type=Path, default=Path("public/catalogue/native-installers-v2.json"))
+    parser.add_argument("--output", type=Path, default=Path("public/catalogue/native-installers-v3.json"))
     parser.add_argument("--legacy-output", type=Path)
     parser.add_argument("--v2-output", type=Path)
     args = parser.parse_args()

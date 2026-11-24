@@ -100,22 +100,33 @@ class NativeInstallers(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "duplicate"):
             publisher.verify("Filesystem-OFS", {}, duplicate)
 
-    def test_temporal_release_still_requires_source_archive(self):
-        repository, version = "Calendar-Gregorian", "1.0.7"
-        base = self.release(repository, version)
-        base["assets"].append({
-            "name": f"calendar-gregorian-{version}-source.zip",
-            "browser_download_url": (
-                f"https://github.com/Infiltrator-Projects/{repository}/releases/"
-                f"download/v{version}/calendar-gregorian-{version}-source.zip"
-            ),
-            "digest": "sha256:" + "c" * 64,
-            "size": 100,
-        })
-        self.assertEqual(publisher.verify(repository, {}, base)["tag_name"], "v" + version)
-        base["assets"].pop()
-        with self.assertRaisesRegex(ValueError, "incomplete independent temporal"):
-            publisher.verify(repository, {}, base)
+    def test_temporal_release_accepts_two_assets_and_immutable_legacy_zip(self):
+        for repository in ("Calendar-Gregorian", "Clock-Decimal"):
+            version = "1.0.7"
+            with self.subTest(repository=repository):
+                base = self.release(repository, version)
+                self.assertEqual(publisher.verify(repository, {}, base)["tag_name"], "v" + version)
+                legacy = self.release(repository, version,
+                                      (f"{repository.lower()}-{version}-source.zip",))
+                publisher.verify(repository, {}, legacy)
+                for missing in base["assets"]:
+                    bad = copy.deepcopy(base)
+                    bad["assets"].remove(missing)
+                    with self.assertRaises(ValueError):
+                        publisher.verify(repository, {}, bad)
+                bad = self.release(repository, version, ("unrelated.zip",))
+                with self.assertRaisesRegex(ValueError, "incomplete independent temporal"):
+                    publisher.verify(repository, {}, bad)
+                bad = copy.deepcopy(legacy)
+                bad["assets"][-1]["digest"] = None
+                with self.assertRaises(ValueError):
+                    publisher.verify(repository, {}, bad)
+
+    def test_default_output_is_v3(self):
+        with patch.object(publisher, "build", return_value={"releases": {}}), patch.object(
+                publisher, "write_snapshot") as write, patch("sys.argv", ["publisher"]):
+            publisher.main()
+        self.assertEqual(write.call_args.args[0], Path("public/catalogue/native-installers-v3.json"))
 
     def test_new_and_legacy_snapshots_share_exact_release_records(self):
         entries = publisher.discover(ROOT / "catalogue/apps-source.json")
