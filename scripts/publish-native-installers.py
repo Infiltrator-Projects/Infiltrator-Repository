@@ -84,7 +84,8 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
     if len(names) != len(assets):
         raise ValueError(repository + ": duplicate assets")
     run = (repository.lower() + "-" + version + "-native-installer.run"
-           if repository != "Defragmenter" else "Defragmenter-" + version + "-local-folder.run")
+           if repository not in {"Defragmenter", "Calendar"} else
+           ("Defragmenter" if repository == "Defragmenter" else "calendar") + "-" + version + "-local-folder.run")
     if run not in names:
         raise ValueError(repository + ": missing native RUN installer")
     if repository.startswith(("Calendar-", "Clock-")):
@@ -108,7 +109,7 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
             run,
             "infiltrator-" + repository.lower() + "_" + version + "_amd64.deb",
         }
-        if names not in (
+        if repository in OS_FILESYSTEMS and names not in (
             required,
             required | {"SHA256SUMS"},
             required | {"SHA256SUMS.txt"},
@@ -117,8 +118,12 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
                 repository + ": expected one native RUN, one generic DEB, "
                 "and at most one checksum manifest; got " + ", ".join(sorted(names))
             )
+        if not required <= names:
+            raise ValueError(repository + ": missing native RUN or generic DEB")
+    if repository == "Boot" and "infiltrator-boot_" + version + "_amd64.deb" not in names:
+        raise ValueError("BOOT missing generic DEB")
     result = {"tag_name": tag, "draft": False, "prerelease": False, "assets": assets}
-    if repository in OS_FILESYSTEMS or repository.startswith(("Calendar-", "Clock-")):
+    if repository == "Calendar" or repository.startswith(("Filesystem-", "Calendar-", "Clock-")):
         # The native-build cache must compare its recorded source revision to
         # the exact published commit, not merely the human-readable version.
         revision = raw.get("target_commitish")
@@ -140,6 +145,34 @@ def build(source: Path) -> dict:
     return {"schema": 1, "releases": {key: releases[key] for key in sorted(releases)}}
 
 
+def build_full(source: Path) -> dict:
+    """Publish a single complete OS catalogue, independently of APT builds.
+
+    Required components fail closed; optional filesystems with no qualified
+    release are explicitly recorded as pending, never silently substituted.
+    """
+    required = set(discover(source)) | {"Boot", "Calendar"}
+    entries = {item["repo"]: item for item in json.loads(source.read_text(encoding="utf-8"))
+               if item["repo"] in required or item["repo"].startswith("Filesystem-")}
+    if len(required) != 65 or len(entries) != 83 or not required <= entries.keys():
+        raise ValueError("Expected 65 required and 18 optional OS components")
+    releases, pending = {}, {}
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        futures = {executor.submit(fetch, repo): repo for repo in entries}
+        for future in as_completed(futures):
+            repo = futures[future]
+            try:
+                releases[repo] = verify(repo, entries[repo], future.result())
+                print(f"Verified {repo} {releases[repo]['tag_name']}", flush=True)
+            except (ValueError, RuntimeError) as exc:
+                if repo in required:
+                    raise
+                pending[repo] = str(exc)
+                print(f"Pending {repo}: {exc}", flush=True)
+    return {"schema": 1, "releases": dict(sorted(releases.items())),
+            "pending": dict(sorted(pending.items()))}
+
+
 def write_snapshot(path: Path, snapshot: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     pending = path.with_suffix(".json.tmp")
@@ -153,7 +186,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("public/catalogue/native-installers-v3.json"))
     parser.add_argument("--legacy-output", type=Path)
     parser.add_argument("--v2-output", type=Path)
+    parser.add_argument("--full-output", type=Path)
     args = parser.parse_args()
+    if args.full_output:
+        write_snapshot(args.full_output, build_full(args.catalogue))
+        return
     snapshot = build(args.catalogue)
     write_snapshot(args.output, snapshot)
     # Keep both published legacy views immutable in scope: 61 and 62 jobs.

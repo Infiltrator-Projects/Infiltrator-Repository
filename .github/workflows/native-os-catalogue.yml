@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Independent of the large APT build and Pages deployment. A single
+# authenticated publisher collects release metadata for every OS client.
+name: Publish native OS release catalogue
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'catalogue/apps-source.json'
+      - 'scripts/publish-native-installers.py'
+      - '.github/workflows/native-os-catalogue.yml'
+  repository_dispatch:
+    types: [application-release]
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: native-os-catalogue
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Publish validated release metadata without touching APT
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/publish-native-installers.py --full-output catalogue/native-installers-v4.json
+          jq -e '(.releases | length) >= 65 and ((.releases | length) + (.pending | length)) == 83' catalogue/native-installers-v4.json >/dev/null
+          git add catalogue/native-installers-v4.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Refresh authenticated native OS release catalogue'
+          git pull --rebase origin main
+          git push origin HEAD:main
