@@ -1,136 +1,41 @@
 {
-  "reason": "Publish current verified InfiltratorOS 1.0.66, Boot 0.1.40, and InfiltratorFS 0.19.42 Debian packages into both alpha and beta APT indexes; recovery for missed scheduled/dispatch events",
+  "reason": "Request fresh publication of these six verified stable source releases following the 24 November 2026 audit. This is a trigger record, not a complete package inventory; the publisher discovers and validates current releases from the approved catalogue.",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
-      "version": "1.0.128",
-      "release_sha": "b45f5403c96c3a135a5763b35fbecc4438eaedbd",
-      "release_published_at": "2026-11-05T11:55:49Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Calculator",
-      "version": "0.2.65",
-      "release_sha": "0043b2033904b5e53ad8f3ef9398596185130e33",
-      "release_published_at": "2026-11-05T09:37:33Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Software",
-      "version": "0.3.53",
-      "release_sha": "319bedb6289a4aa15a6c8b223680e0ceb2e562ed",
-      "release_published_at": "2026-09-27T12:33:12Z"
+      "version": "1.0.131",
+      "release_sha": "50b4cfd105ad73fcfda93a368289a974cedb76fd",
+      "release_published_at": "2026-11-12T01:38:18Z"
     },
     {
       "repository": "Infiltrator-Projects/Files",
-      "version": "0.1.77",
-      "release_sha": "4f12f1f578b38326c1d2d8e2dae001fe0cf531af",
-      "release_published_at": "2026-11-05T09:37:09Z"
+      "version": "0.1.84",
+      "release_sha": "82535a9f1f67646885071a59b42b43684f8aacb2",
+      "release_published_at": "2026-11-13T02:15:36Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorFS",
-      "version": "0.19.42",
-      "release_sha": "c5573d53ad28ccae0e43a7eef9f6707866a690c9",
-      "release_published_at": "2026-11-08T04:58:06Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/MBLINK",
-      "version": "0.7.195",
-      "release_sha": "15133f06c8f3188dad95a1163b646e4e9c95292c",
-      "release_published_at": "2026-09-12T12:14:19Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Jaglink",
-      "version": "0.2.78",
-      "release_sha": "c8c58589c792a535fbfe82769f01f8c95c05ef90",
-      "release_published_at": "2026-09-18T08:40:58Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/FORDLINK",
-      "version": "0.2.21",
-      "release_sha": "9ba80982fcf878964d8ddfefb2dab717c39153cd",
-      "release_published_at": "2026-09-04T01:02:14Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/AUDILINK",
-      "version": "0.2.13",
-      "release_sha": "9fbe76e48434145eb2207064590705ecedabd83a",
-      "release_published_at": "2026-09-03T00:53:43Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/BMWLink",
-      "version": "0.2.11",
-      "release_sha": "67b906c4ac73da2ff4640acd1d1d6e7da62d9f7a",
-      "release_published_at": "2026-09-03T00:59:11Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/System-Settings",
-      "version": "0.4.90",
-      "release_sha": "80072999a9c54947e582ff68895738c50197ec06",
-      "release_published_at": "2026-10-13T05:13:12Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Filesystem-Support",
-      "version": "0.5.16",
-      "release_sha": "b9e1e7a6ab6a4e3c80c07055fc9cd6a760129820",
-      "release_published_at": "2026-10-06T23:37:08Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/System-Monitor",
-      "version": "1.0.188",
-      "release_sha": "ecc7280d973395896aa8f2e6261dc8376e2fe6f9",
-      "release_published_at": "2026-10-12T22:49:32Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Infiltrator-OS",
-      "version": "1.0.3",
-      "release_sha": "6aed0515f23f78086e0d667317538be46631ced3",
-      "release_published_at": "2026-09-27T12:49:57Z"
+      "version": "0.19.44",
+      "release_sha": "266fc7bece2698a6af330b9ec0ef8f2fe5e58bf6",
+      "release_published_at": "2026-11-09T23:02:50Z"
     },
     {
       "repository": "Infiltrator-Projects/Defragmenter",
-      "version": "1.8.0-291",
-      "release_sha": "821da4a822b8fc7c4dd4a421208c0c7d6534700a",
-      "release_published_at": "2026-11-07T12:34:34Z"
+      "version": "1.8.0-302",
+      "release_sha": "9b93c1192d6a58888abc1927c363ddb6d016da45",
+      "release_published_at": "2026-11-13T11:11:06Z"
     },
     {
       "repository": "Infiltrator-Projects/InfiltratorOS",
-      "version": "1.0.66",
-      "release_sha": "40b2a99a9b221b6957ae493933d64a807a30115f",
-      "release_published_at": "2026-11-08T06:09:52Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Filesystem-FAT12",
-      "version": "0.1.11",
-      "release_sha": "bb7ad61eef40a0acf41b9c439ee904c0316e8f4a",
-      "release_published_at": "2026-11-06T05:24:01Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Filesystem-FAT16",
-      "version": "0.1.12",
-      "release_sha": "6aa0a5e7fd80d0cd67909bb0231266de461d5c68",
-      "release_published_at": "2026-11-06T05:11:24Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Filesystem-FAT32",
-      "version": "0.1.9",
-      "release_sha": "e9abfaebc34749054063ffc0d26c9c0c246b0de1",
-      "release_published_at": "2026-11-06T05:15:23Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Filesystem-OFS",
-      "version": "0.1.11",
-      "release_sha": "e448e15f977ac71a174dc48811ce0bbb1237729c",
-      "release_published_at": "2026-11-06T05:27:03Z"
-    },
-    {
-      "repository": "Infiltrator-Projects/Filesystem-exFAT",
-      "version": "0.1.8",
-      "release_sha": "2c34d5363823ff7be66489b1462a4da8357e2114",
-      "release_published_at": "2026-11-06T05:29:35Z"
+      "version": "1.0.100",
+      "release_sha": "b1e6e4e17a5fab7653ea6cc888bf1ed8b8d4602a",
+      "release_published_at": "2026-11-24T02:26:25Z"
     },
     {
       "repository": "Infiltrator-Projects/Boot",
-      "version": "0.1.40",
-      "release_published_at": "2026-11-08T04:19:53Z"
+      "version": "0.1.642",
+      "release_sha": "eb0d5ed9d9d82b13ca58e61b54e6a0ddc18d9a4a",
+      "release_published_at": "2026-11-23T11:56:06Z"
     }
   ]
 }
