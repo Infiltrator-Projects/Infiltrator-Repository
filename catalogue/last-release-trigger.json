@@ -1,5 +1,5 @@
 {
-  "reason": "Request fresh publication of these six verified stable source releases following the 24 November 2026 audit. This is a trigger record, not a complete package inventory; the publisher discovers and validates current releases from the approved catalogue.",
+  "reason": "Request fresh publication of verified stable source releases, including qualified NTFS 1.0.30 on 26 November 2026. This is a trigger record, not a complete package inventory; the publisher discovers and validates current releases from the approved catalogue.",
   "releases": [
     {
       "repository": "Infiltrator-Projects/Calendar",
@@ -36,6 +36,12 @@
       "version": "0.1.642",
       "release_sha": "eb0d5ed9d9d82b13ca58e61b54e6a0ddc18d9a4a",
       "release_published_at": "2026-11-23T11:56:06Z"
+    },
+    {
+      "repository": "Infiltrator-Projects/Filesystem-NTFS",
+      "version": "1.0.30",
+      "release_sha": "d9a7140fe636a6618d2e90605b02743bcd505cc4",
+      "release_published_at": "2026-11-25T21:56:23Z"
     }
   ]
 }
