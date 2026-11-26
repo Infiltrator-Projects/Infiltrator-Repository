@@ -394,7 +394,7 @@
     "icon": "filesystem",
     "expected_package_regex": "^infiltrator\\-filesystem\\-efs$",
     "expected_architecture": "amd64",
-    "minimum_version": "0.1.12"
+    "minimum_version": "0.1.14"
   },
   {
     "id": "infiltrator-filesystem-swap",
