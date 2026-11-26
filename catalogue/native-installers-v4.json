@@ -1,7 +1,5 @@
 {
-  "pending": {
-    "Filesystem-EFS": "Filesystem-EFS: release API unavailable: HTTP Error 404: Not Found"
-  },
+  "pending": {},
   "releases": {
     "Boot": {
       "assets": [
@@ -1286,6 +1284,26 @@
       "prerelease": false,
       "tag_name": "v1.0.18",
       "target_commitish": "a1f0f76c795912bfe87ce622b8de7f4d9582d9db"
+    },
+    "Filesystem-EFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EFS/releases/download/v0.1.14/filesystem-efs-0.1.14-native-installer.run",
+          "digest": "sha256:27c6872021f74fe68f86a1d021983ae4d3176dee5aec3ab27ee2f9572d9ddf82",
+          "name": "filesystem-efs-0.1.14-native-installer.run",
+          "size": 1454
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EFS/releases/download/v0.1.14/infiltrator-filesystem-efs_0.1.14_amd64.deb",
+          "digest": "sha256:f52a29a4aca787f3976db32fe94a18804517a870be70d0f8af0e04953ee45efc",
+          "name": "infiltrator-filesystem-efs_0.1.14_amd64.deb",
+          "size": 45650
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.14",
+      "target_commitish": "bd30118b66f94b8caa916d76737dd475b96473e3"
     },
     "Filesystem-EXT2": {
       "assets": [
