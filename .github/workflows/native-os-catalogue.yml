@@ -33,7 +33,19 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/publish-native-installers.py --full-output catalogue/native-installers-v4.json
-          jq -e '(.releases | length) >= 65 and ((.releases | length) + (.pending | length)) == 83' catalogue/native-installers-v4.json >/dev/null
+          # Verify the entire approved provider inventory, not yesterday's
+          # fixed repository count. Published and pending must be disjoint.
+          jq -e --slurpfile source catalogue/apps-source.json '
+            (.releases | length) >= 65 and
+            ((.releases | keys) + (.pending | keys) | length) ==
+              ((.releases | keys) + (.pending | keys) | unique | length) and
+            ((.releases | keys) + (.pending | keys) | sort) ==
+              ([$source[0][] | .repo |
+                select(startswith("Filesystem-") or startswith("Calendar-") or
+                       startswith("Clock-") or . == "Boot" or . == "Calendar" or
+                       . == "System-Monitor" or . == "Calculator" or . == "Files" or
+                       . == "Defragmenter")] | sort)
+          ' catalogue/native-installers-v4.json >/dev/null
           git add catalogue/native-installers-v4.json
           if git diff --cached --quiet; then exit 0; fi
           git config user.name 'github-actions[bot]'

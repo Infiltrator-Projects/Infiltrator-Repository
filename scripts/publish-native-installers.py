@@ -152,10 +152,14 @@ def build_full(source: Path) -> dict:
     release are explicitly recorded as pending, never silently substituted.
     """
     required = set(discover(source)) | {"Boot", "Calendar"}
-    entries = {item["repo"]: item for item in json.loads(source.read_text(encoding="utf-8"))
-               if item["repo"] in required or item["repo"].startswith("Filesystem-")}
-    if len(required) != 65 or len(entries) != 83 or not required <= entries.keys():
-        raise ValueError("Expected 65 required and 18 optional OS components")
+    # Optional filesystem providers are catalogue-driven. Adding a new
+    # independently published provider must not require changing a compiled
+    # consumer or a hard-coded total. Keep the legacy required baseline strict.
+    selected = [item for item in json.loads(source.read_text(encoding="utf-8"))
+                if item["repo"] in required or item["repo"].startswith("Filesystem-")]
+    entries = {item["repo"]: item for item in selected}
+    if len(required) != 65 or len(entries) != len(selected) or not required <= entries.keys():
+        raise ValueError("Missing mandatory OS component or duplicate catalogue repository")
     releases, pending = {}, {}
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = {executor.submit(fetch, repo): repo for repo in entries}

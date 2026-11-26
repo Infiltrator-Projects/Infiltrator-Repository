@@ -122,6 +122,30 @@ class NativeInstallers(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     publisher.verify(repository, {}, bad)
 
+    def test_full_catalogue_includes_new_optional_filesystem_and_rejects_duplicates(self):
+        source = ROOT / "catalogue/apps-source.json"
+        items = json.loads(source.read_text())
+        self.assertIn("Filesystem-BFS", {item["repo"] for item in items})
+        additional = {"repo": "Filesystem-Additional"}
+        with tempfile.TemporaryDirectory() as tmp:
+            catalogue = Path(tmp) / "catalogue.json"
+            catalogue.write_text(json.dumps(items + [additional]))
+            required = set(publisher.discover(catalogue)) | {"Boot", "Calendar"}
+            def fetch(repo):
+                if repo == "Filesystem-Additional":
+                    raise RuntimeError("not independently released")
+                return self.release(repo)
+            with patch.object(publisher, "fetch", side_effect=fetch), patch.object(
+                    publisher, "verify", side_effect=lambda repo, item, raw: raw):
+                result = publisher.build_full(catalogue)
+            self.assertIn("Filesystem-BFS", result["releases"])
+            self.assertIn("Filesystem-Additional", result["pending"])
+            self.assertTrue(required <= result["releases"].keys())
+            self.assertFalse(result["releases"].keys() & result["pending"].keys())
+            catalogue.write_text(json.dumps(items + [additional, additional]))
+            with self.assertRaisesRegex(ValueError, "duplicate"):
+                publisher.build_full(catalogue)
+
     def test_default_output_is_v3(self):
         with patch.object(publisher, "build", return_value={"releases": {}}), patch.object(
                 publisher, "write_snapshot") as write, patch("sys.argv", ["publisher"]):

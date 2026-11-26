@@ -373,6 +373,18 @@
     "minimum_version": "1.0.1"
   },
   {
+    "id": "infiltrator-filesystem-bfs",
+    "name": "BFS",
+    "repo": "Filesystem-BFS",
+    "category": "Filesystems",
+    "description": "Independent SCO/UnixWare Boot File System provider. Common V2 native contiguous-file compaction and growth placement; complete consumer and deployment qualification remains separate.",
+    "deb_regex": "^infiltrator\\-filesystem\\-bfs_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-bfs$",
+    "expected_architecture": "amd64",
+    "minimum_version": "0.1.2"
+  },
+  {
     "id": "infiltrator-filesystem-swap",
     "name": "SWAP",
     "repo": "Filesystem-Swap",
