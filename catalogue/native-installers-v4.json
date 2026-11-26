@@ -1588,22 +1588,22 @@
     "Filesystem-UFS1": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.22/filesystem-ufs1-1.0.22-native-installer.run",
-          "digest": "sha256:f72c70ca716b7ab39b5d2516eb347b0474208e8f39c7a4660e3630d8c687a46f",
-          "name": "filesystem-ufs1-1.0.22-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.23/filesystem-ufs1-1.0.23-native-installer.run",
+          "digest": "sha256:15e2a706fcd2235c7670b578daf8de30dbc1460b01fa48c87abc1c58e59a3f71",
+          "name": "filesystem-ufs1-1.0.23-native-installer.run",
           "size": 856
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.22/infiltrator-filesystem-ufs1_1.0.22_amd64.deb",
-          "digest": "sha256:0c15b2ad10ca68e3f71c1c12f75ab53a1147cf4139253bc7fd792f125727c697",
-          "name": "infiltrator-filesystem-ufs1_1.0.22_amd64.deb",
-          "size": 67984
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.23/infiltrator-filesystem-ufs1_1.0.23_amd64.deb",
+          "digest": "sha256:5d479e43b041a6bc6eaf45bb01671078a8b3a173356121d7a42705bdb81b4702",
+          "name": "infiltrator-filesystem-ufs1_1.0.23_amd64.deb",
+          "size": 68338
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.22",
-      "target_commitish": "444f6af776afc7f485485ef9d4bad436d1ad96d4"
+      "tag_name": "v1.0.23",
+      "target_commitish": "367954660be4b59929ac01053a286cbc1c43c5d4"
     },
     "Filesystem-UFS2": {
       "assets": [
