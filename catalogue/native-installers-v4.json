@@ -1388,22 +1388,22 @@
     "Filesystem-FFS": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-FFS/releases/download/v1.0.23/filesystem-ffs-1.0.23-native-installer.run",
-          "digest": "sha256:6be91d478c7b814cb4f72bff98223e1f30bd425ec00be9dd6e4b9e6f3b83ee99",
-          "name": "filesystem-ffs-1.0.23-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-FFS/releases/download/v1.0.27/filesystem-ffs-1.0.27-native-installer.run",
+          "digest": "sha256:8248d855ed7277a956d1a9ad39e0dd2e7ded8fa77c610bcc471081644fb0cf99",
+          "name": "filesystem-ffs-1.0.27-native-installer.run",
           "size": 854
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-FFS/releases/download/v1.0.23/infiltrator-filesystem-ffs_1.0.23_amd64.deb",
-          "digest": "sha256:f3fa15f82c8dae4a006b085afc74f45f5c138b1e8b5cff5deccf44c1a0b57a89",
-          "name": "infiltrator-filesystem-ffs_1.0.23_amd64.deb",
-          "size": 47756
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-FFS/releases/download/v1.0.27/infiltrator-filesystem-ffs_1.0.27_amd64.deb",
+          "digest": "sha256:e8a692956c5e50b38ae3f2b20c8af7b01931ff2699f33a52e051bed471b5f335",
+          "name": "infiltrator-filesystem-ffs_1.0.27_amd64.deb",
+          "size": 58008
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.23",
-      "target_commitish": "5fab2052db64d457a0d1a3c863a92945e217cb21"
+      "tag_name": "v1.0.27",
+      "target_commitish": "dad6ac948c7f3d90b1abfca4d8d6dcf835f6f5ae"
     },
     "Filesystem-HFS": {
       "assets": [
