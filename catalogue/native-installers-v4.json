@@ -1,5 +1,7 @@
 {
-  "pending": {},
+  "pending": {
+    "Filesystem-EFS": "Filesystem-EFS: release API unavailable: HTTP Error 404: Not Found"
+  },
   "releases": {
     "Boot": {
       "assets": [
