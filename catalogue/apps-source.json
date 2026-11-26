@@ -385,6 +385,18 @@
     "minimum_version": "0.1.2"
   },
   {
+    "id": "infiltrator-filesystem-efs",
+    "name": "EFS",
+    "repo": "Filesystem-EFS",
+    "category": "Filesystems",
+    "description": "Independent SGI Extent File System Common V2 provider. Provider-formatted writable media, native relocation and persistent adjacent growth reservations; clean foreign media read-only. Deployment qualification is separate.",
+    "deb_regex": "^infiltrator\\-filesystem\\-efs_[^_]+_amd64\\.deb$",
+    "icon": "filesystem",
+    "expected_package_regex": "^infiltrator\\-filesystem\\-efs$",
+    "expected_architecture": "amd64",
+    "minimum_version": "0.1.12"
+  },
+  {
     "id": "infiltrator-filesystem-swap",
     "name": "SWAP",
     "repo": "Filesystem-Swap",
