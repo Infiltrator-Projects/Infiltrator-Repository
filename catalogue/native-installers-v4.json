@@ -4,27 +4,27 @@
     "Boot": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Boot/releases/download/v0.1.642/boot-0.1.642-native-installer.run",
-          "digest": "sha256:7356881f5a1465d7bbd4748406cc46cf1f37dc408b004097969e202347b517cf",
-          "name": "boot-0.1.642-native-installer.run",
-          "size": 60498
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Boot/releases/download/v0.1.698/boot-0.1.698-native-installer.run",
+          "digest": "sha256:ea498e7274d186ae351dada4814c3faf229d3933651966410ba0e0ee78b15895",
+          "name": "boot-0.1.698-native-installer.run",
+          "size": 61061
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Boot/releases/download/v0.1.642/infiltrator-boot_0.1.642_amd64.deb",
-          "digest": "sha256:eb9f89568bbdb202d451d23e43fc4acebd50ebba20bb42a638f6ca7c8539cb46",
-          "name": "infiltrator-boot_0.1.642_amd64.deb",
-          "size": 3267708
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Boot/releases/download/v0.1.698/infiltrator-boot_0.1.698_amd64.deb",
+          "digest": "sha256:e4d999c5df70cc00e475b7e23f9da66afa6f14a8300b06a03d7e6e8c4e3a4ff1",
+          "name": "infiltrator-boot_0.1.698_amd64.deb",
+          "size": 3287774
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Boot/releases/download/v0.1.642/SHA256SUMS",
-          "digest": "sha256:88bbfa141d2cd7ef6c9a2c55466e672ef545e40946179b5af05fe930b0b03f2d",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Boot/releases/download/v0.1.698/SHA256SUMS",
+          "digest": "sha256:480ef7a967434c319ac272383b8d1a3866c2c1b35258bcf6a5b25bb1c61b9339",
           "name": "SHA256SUMS",
           "size": 201
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v0.1.642"
+      "tag_name": "v0.1.698"
     },
     "Calculator": {
       "assets": [
