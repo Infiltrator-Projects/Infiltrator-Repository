@@ -98,1082 +98,1082 @@
     "Calendar-Armenian-Traditional": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Armenian-Traditional/releases/download/v1.0.7/calendar-armenian-traditional-1.0.7-native-installer.run",
-          "digest": "sha256:0e3ca5aca13ed9cfbea27b3dc19f01e5286a62b5a931ca6fc75b815ccf2dc4ee",
-          "name": "calendar-armenian-traditional-1.0.7-native-installer.run",
-          "size": 2058
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Armenian-Traditional/releases/download/v1.0.10/calendar-armenian-traditional-1.0.10-native-installer.run",
+          "digest": "sha256:332af05877060e44d68a0da910771941193dfefe18991c09a1c4b9db7ae271b7",
+          "name": "calendar-armenian-traditional-1.0.10-native-installer.run",
+          "size": 2059
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Armenian-Traditional/releases/download/v1.0.7/infiltrator-calendar-armenian-traditional_1.0.7_amd64.deb",
-          "digest": "sha256:64fa2cbcfd9a2d7e96a4df1654b920e15c85cbdb1d2c84e72ba96a1e50a729ef",
-          "name": "infiltrator-calendar-armenian-traditional_1.0.7_amd64.deb",
-          "size": 9892
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "312936693e5b4b5bac35ea73abda8738a59903cd"
-    },
-    "Calendar-Bahai": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Bahai/releases/download/v1.0.11/calendar-bahai-1.0.11-native-installer.run",
-          "digest": "sha256:3eab8214f2812677b3d10d69864969cd50b1c27ed9a81286dfa52f5bd53433e1",
-          "name": "calendar-bahai-1.0.11-native-installer.run",
-          "size": 1823
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Bahai/releases/download/v1.0.11/infiltrator-calendar-bahai_1.0.11_amd64.deb",
-          "digest": "sha256:e41f9519185084380442fad55e5ced07a94dfb0f1f80493708832579450ac889",
-          "name": "infiltrator-calendar-bahai_1.0.11_amd64.deb",
-          "size": 55136
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.11",
-      "target_commitish": "57b9fdf9f5cf30a75ebe6b032287b15beccdd995"
-    },
-    "Calendar-Buddhist": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Buddhist/releases/download/v1.0.11/calendar-buddhist-1.0.11-native-installer.run",
-          "digest": "sha256:0263efa8eb9004947a19278cd9499fe0e6b84d3b915702a3d84f6436af1a4f00",
-          "name": "calendar-buddhist-1.0.11-native-installer.run",
-          "size": 2047
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Buddhist/releases/download/v1.0.11/infiltrator-calendar-buddhist_1.0.11_amd64.deb",
-          "digest": "sha256:a344fb16b2cf515058f5e4f848f938898010933f1852ee84f609942ea36c0679",
-          "name": "infiltrator-calendar-buddhist_1.0.11_amd64.deb",
-          "size": 12100
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.11",
-      "target_commitish": "d5ab5c6b1dff181ae416e4a70f7819ace4a400ba"
-    },
-    "Calendar-Byzantine": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Byzantine/releases/download/v1.0.7/calendar-byzantine-1.0.7-native-installer.run",
-          "digest": "sha256:d2cca0305a37f522e498e05d55710dfb847861b4023bad41a130e9936029933b",
-          "name": "calendar-byzantine-1.0.7-native-installer.run",
-          "size": 2047
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Byzantine/releases/download/v1.0.7/infiltrator-calendar-byzantine_1.0.7_amd64.deb",
-          "digest": "sha256:1855a321db7464088a6b0655d2127326070f2ee76e15197493a04379a9354209",
-          "name": "infiltrator-calendar-byzantine_1.0.7_amd64.deb",
-          "size": 11640
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "c0866b64593e9b2af8c6be2487b204a91eb836a0"
-    },
-    "Calendar-Chinese": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Chinese/releases/download/v1.0.10/calendar-chinese-1.0.10-native-installer.run",
-          "digest": "sha256:f13ce70a55e63dc5c0987787d46d3764148fd8bf45343659dadab4c378dac299",
-          "name": "calendar-chinese-1.0.10-native-installer.run",
-          "size": 1825
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Chinese/releases/download/v1.0.10/infiltrator-calendar-chinese_1.0.10_amd64.deb",
-          "digest": "sha256:8bd2ef631e984e30f4e42c31ea9c0010b4a57cf53630f3fcf6a69cf88137e61f",
-          "name": "infiltrator-calendar-chinese_1.0.10_amd64.deb",
-          "size": 54184
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Armenian-Traditional/releases/download/v1.0.10/infiltrator-calendar-armenian-traditional_1.0.10_amd64.deb",
+          "digest": "sha256:c1f27491039a5b23266367bc2da7c020a76c408ad14e89a6283ad36f7e51f1fb",
+          "name": "infiltrator-calendar-armenian-traditional_1.0.10_amd64.deb",
+          "size": 9108
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.10",
-      "target_commitish": "7ab665b9ee813699f67dc0b3de65e9163fffa6b9"
+      "target_commitish": "d94d347846b624599647b05d2bb144cf502635d7"
     },
-    "Calendar-Coptic": {
+    "Calendar-Bahai": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Coptic/releases/download/v1.0.9/calendar-coptic-1.0.9-native-installer.run",
-          "digest": "sha256:cee5da12ff78c4b2c779f27bdb111036aa92afc320319bc6ca7060908786f5ca",
-          "name": "calendar-coptic-1.0.9-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Bahai/releases/download/v1.0.14/calendar-bahai-1.0.14-native-installer.run",
+          "digest": "sha256:ce962cd990312b1cc621e1bdf6d4a7b10a54297f40fc6ecf4e1de36e648a3a6e",
+          "name": "calendar-bahai-1.0.14-native-installer.run",
           "size": 1823
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Coptic/releases/download/v1.0.9/infiltrator-calendar-coptic_1.0.9_amd64.deb",
-          "digest": "sha256:eb95e3f138dbea05327d8b6743840c1d736b695290ad07628a67189720b772ff",
-          "name": "infiltrator-calendar-coptic_1.0.9_amd64.deb",
-          "size": 50908
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Bahai/releases/download/v1.0.14/infiltrator-calendar-bahai_1.0.14_amd64.deb",
+          "digest": "sha256:f8037f559de8cdef695d9f547e15bafbd5b15cd0d0b0eaa10e36158244667e29",
+          "name": "infiltrator-calendar-bahai_1.0.14_amd64.deb",
+          "size": 13268
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.9",
-      "target_commitish": "c7698b36a51d7f9d91fa6c00d9479aeb436b491a"
+      "tag_name": "v1.0.14",
+      "target_commitish": "ac1f8429e0ce3db58edb435ea55224e794705762"
     },
-    "Calendar-Dangi": {
+    "Calendar-Buddhist": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Dangi/releases/download/v1.0.8/calendar-dangi-1.0.8-native-installer.run",
-          "digest": "sha256:df9dcc20a7e039a11ee1b356cbda14afbc2ee0f020df74cb9ccec249f500b9c7",
-          "name": "calendar-dangi-1.0.8-native-installer.run",
-          "size": 1822
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Buddhist/releases/download/v1.0.12/calendar-buddhist-1.0.12-native-installer.run",
+          "digest": "sha256:1a93ce7ce5da8a5c050ff5e52a75528b46f44bc6a59de4cdf827a7298680a912",
+          "name": "calendar-buddhist-1.0.12-native-installer.run",
+          "size": 2047
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Dangi/releases/download/v1.0.8/infiltrator-calendar-dangi_1.0.8_amd64.deb",
-          "digest": "sha256:840b728960188f3e734d8594117ca1f34d714bfd79aa63653b8726b63437a486",
-          "name": "infiltrator-calendar-dangi_1.0.8_amd64.deb",
-          "size": 54112
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "5c2b3eeabe1323c35a2a34162770170a221969bd"
-    },
-    "Calendar-Egyptian-Nabonassar": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Egyptian-Nabonassar/releases/download/v1.0.7/calendar-egyptian-nabonassar-1.0.7-native-installer.run",
-          "digest": "sha256:c71a6df42e553e1aafd6e6e4dee2f7fc5254bd0ff7e4987e96f30a0f8d4d504c",
-          "name": "calendar-egyptian-nabonassar-1.0.7-native-installer.run",
-          "size": 2057
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Egyptian-Nabonassar/releases/download/v1.0.7/infiltrator-calendar-egyptian-nabonassar_1.0.7_amd64.deb",
-          "digest": "sha256:597b64fbd223f24132c11f077408cf8bf236eaf6ddf4008e8ba7d59d077166bd",
-          "name": "infiltrator-calendar-egyptian-nabonassar_1.0.7_amd64.deb",
-          "size": 10048
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "e837029506d2bf16f73546c7f025d5b5f12b9579"
-    },
-    "Calendar-Ethiopian": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopian/releases/download/v1.0.12/calendar-ethiopian-1.0.12-native-installer.run",
-          "digest": "sha256:81bca5c41ce50db1ff97d3a6aa35a243370fb3ceb93fb96503de7b9076054a9d",
-          "name": "calendar-ethiopian-1.0.12-native-installer.run",
-          "size": 2048
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopian/releases/download/v1.0.12/infiltrator-calendar-ethiopian_1.0.12_amd64.deb",
-          "digest": "sha256:7370c68575b5e60662492d9b49a731cfb2ba3ccdfb5bf8ab500f40e0918803ac",
-          "name": "infiltrator-calendar-ethiopian_1.0.12_amd64.deb",
-          "size": 11176
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Buddhist/releases/download/v1.0.12/infiltrator-calendar-buddhist_1.0.12_amd64.deb",
+          "digest": "sha256:514303505f4c53ef61453c2a3ac8ccdad318e5d884d9fa6453f7dd9dff64f83d",
+          "name": "infiltrator-calendar-buddhist_1.0.12_amd64.deb",
+          "size": 11272
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.12",
-      "target_commitish": "bc76cfbdd9472aa49674d55910e14ce10067e8ca"
+      "target_commitish": "bdae9b19767bcb490a149da626855426f7b467aa"
+    },
+    "Calendar-Byzantine": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Byzantine/releases/download/v1.0.8/calendar-byzantine-1.0.8-native-installer.run",
+          "digest": "sha256:340decc95f0d25da3e055cd6d9e1730e75aaacd8b13acf3750e9f1bcaff7d582",
+          "name": "calendar-byzantine-1.0.8-native-installer.run",
+          "size": 2047
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Byzantine/releases/download/v1.0.8/infiltrator-calendar-byzantine_1.0.8_amd64.deb",
+          "digest": "sha256:9780bac464bcab036d95a99ba292a305185c532e93e37c992db7e58d74557792",
+          "name": "infiltrator-calendar-byzantine_1.0.8_amd64.deb",
+          "size": 10904
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.8",
+      "target_commitish": "1178ef248c718b0d107573c4922b9b97822119e0"
+    },
+    "Calendar-Chinese": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Chinese/releases/download/v1.0.13/calendar-chinese-1.0.13-native-installer.run",
+          "digest": "sha256:8cc8e927c95d1d098880648ac7d69695e7b97bfbfc62cdd9182b3aa465dc655e",
+          "name": "calendar-chinese-1.0.13-native-installer.run",
+          "size": 1825
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Chinese/releases/download/v1.0.13/infiltrator-calendar-chinese_1.0.13_amd64.deb",
+          "digest": "sha256:9d1f99f43b731539e45a2dbebe610c62f94278f791de18c44c79ffaf69b88c56",
+          "name": "infiltrator-calendar-chinese_1.0.13_amd64.deb",
+          "size": 14120
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.13",
+      "target_commitish": "d8985285ba216e0b584a373b46f0e63facee21da"
+    },
+    "Calendar-Coptic": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Coptic/releases/download/v1.0.11/calendar-coptic-1.0.11-native-installer.run",
+          "digest": "sha256:1b0eb07dbbce4f92a999365fc4673e251a42dc0806d385099438f6c18158908c",
+          "name": "calendar-coptic-1.0.11-native-installer.run",
+          "size": 1824
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Coptic/releases/download/v1.0.11/infiltrator-calendar-coptic_1.0.11_amd64.deb",
+          "digest": "sha256:81573ebda7124716a9f226aa5aa317d84b2895331aac402a6dbe21afad7c94bd",
+          "name": "infiltrator-calendar-coptic_1.0.11_amd64.deb",
+          "size": 10052
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.11",
+      "target_commitish": "41b083e38dbf095e11276a1c55175d132ce0465f"
+    },
+    "Calendar-Dangi": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Dangi/releases/download/v1.0.11/calendar-dangi-1.0.11-native-installer.run",
+          "digest": "sha256:d51fd8b8fd2d9aa4c54df6181deb3c184b54a9036f1be74ba1cdef27bac2e413",
+          "name": "calendar-dangi-1.0.11-native-installer.run",
+          "size": 1823
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Dangi/releases/download/v1.0.11/infiltrator-calendar-dangi_1.0.11_amd64.deb",
+          "digest": "sha256:b55fa53464ce30bc8ae3df514e81be922c128eb333715981f48156c7b020e406",
+          "name": "infiltrator-calendar-dangi_1.0.11_amd64.deb",
+          "size": 14124
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.11",
+      "target_commitish": "dc3eb420bfdbcb8bb30b0aa986bc123a98a4802f"
+    },
+    "Calendar-Egyptian-Nabonassar": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Egyptian-Nabonassar/releases/download/v1.0.10/calendar-egyptian-nabonassar-1.0.10-native-installer.run",
+          "digest": "sha256:130c8d386af0eb0ef0cd101a0ec9bdac7945cd886115f7864eed8febe1a56f59",
+          "name": "calendar-egyptian-nabonassar-1.0.10-native-installer.run",
+          "size": 2058
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Egyptian-Nabonassar/releases/download/v1.0.10/infiltrator-calendar-egyptian-nabonassar_1.0.10_amd64.deb",
+          "digest": "sha256:b20b68b8d80f7f960fc8ec796e62eab6ea69c692eeade4b1321fc36124d8de7b",
+          "name": "infiltrator-calendar-egyptian-nabonassar_1.0.10_amd64.deb",
+          "size": 9348
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.10",
+      "target_commitish": "6c996377298cabbd5540678460952350a70b0484"
+    },
+    "Calendar-Ethiopian": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopian/releases/download/v1.0.14/calendar-ethiopian-1.0.14-native-installer.run",
+          "digest": "sha256:7d9f9f2848f50b0e1afd9a6f577f01d6db6d9a8d0abeda8ab444d5bf82605095",
+          "name": "calendar-ethiopian-1.0.14-native-installer.run",
+          "size": 2048
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopian/releases/download/v1.0.14/infiltrator-calendar-ethiopian_1.0.14_amd64.deb",
+          "digest": "sha256:81ff0d782927e826c78a0065124f1a15c7919b2456765d9422df607a9da57ffe",
+          "name": "infiltrator-calendar-ethiopian_1.0.14_amd64.deb",
+          "size": 10708
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.14",
+      "target_commitish": "dd6b44194980e00743890c04edb615dec9dbd4bc"
     },
     "Calendar-Ethiopic-Amete-Alem": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopic-Amete-Alem/releases/download/v1.0.8/calendar-ethiopic-amete-alem-1.0.8-native-installer.run",
-          "digest": "sha256:debf82267fff45e0c4e9c0b7a5f8d8768aa91ef39955e68d9f968bb2884577e7",
-          "name": "calendar-ethiopic-amete-alem-1.0.8-native-installer.run",
-          "size": 2057
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopic-Amete-Alem/releases/download/v1.0.10/calendar-ethiopic-amete-alem-1.0.10-native-installer.run",
+          "digest": "sha256:8cd771fa365c1e021f9b72a3edc92b10e50bea3fdaa078feb51b56abb2153b34",
+          "name": "calendar-ethiopic-amete-alem-1.0.10-native-installer.run",
+          "size": 2058
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopic-Amete-Alem/releases/download/v1.0.8/infiltrator-calendar-ethiopic-amete-alem_1.0.8_amd64.deb",
-          "digest": "sha256:1041974991f768ee61d3fe50989bfa2b526103c90007978bb6dd4a8554e139e6",
-          "name": "infiltrator-calendar-ethiopic-amete-alem_1.0.8_amd64.deb",
-          "size": 10652
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Ethiopic-Amete-Alem/releases/download/v1.0.10/infiltrator-calendar-ethiopic-amete-alem_1.0.10_amd64.deb",
+          "digest": "sha256:9729cf4ef24b5d622b1f6700dc422c6e9157947d2c42e2e34da47641d741d5c1",
+          "name": "infiltrator-calendar-ethiopic-amete-alem_1.0.10_amd64.deb",
+          "size": 10068
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "a4d0604287efc0393383ceb90eb9271deea4021f"
+      "tag_name": "v1.0.10",
+      "target_commitish": "6de0cdec8e4e9dd48d6173f88a06fb2bf82d8e66"
     },
     "Calendar-French-Republican": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-French-Republican/releases/download/v1.0.6/calendar-french-republican-1.0.6-native-installer.run",
-          "digest": "sha256:e7f1c27288125babf330aef94a060ebce8dcc87798b2388427aab37ab82f80f7",
-          "name": "calendar-french-republican-1.0.6-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-French-Republican/releases/download/v1.0.8/calendar-french-republican-1.0.8-native-installer.run",
+          "digest": "sha256:a5c65b6da1d5621b5ad748d845a6cf1c6c0d16fa510f19b7bdaa5526ea4b4d16",
+          "name": "calendar-french-republican-1.0.8-native-installer.run",
           "size": 2055
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-French-Republican/releases/download/v1.0.6/infiltrator-calendar-french-republican_1.0.6_amd64.deb",
-          "digest": "sha256:21d002db58a1bbe95c0be36186360bdc63a7f79834da0078601d95c7ac03112f",
-          "name": "infiltrator-calendar-french-republican_1.0.6_amd64.deb",
-          "size": 10908
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-French-Republican/releases/download/v1.0.8/infiltrator-calendar-french-republican_1.0.8_amd64.deb",
+          "digest": "sha256:3b4a067a37455616bfe57fb48f28a3c09d74c637340170834deb00f9c647bfd8",
+          "name": "infiltrator-calendar-french-republican_1.0.8_amd64.deb",
+          "size": 10076
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "63693f2e45e3959449181d30f52f8ff08250d67b"
+      "tag_name": "v1.0.8",
+      "target_commitish": "1fb8924d21680785fcea54d2333258c91b273823"
     },
     "Calendar-Gregorian": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Gregorian/releases/download/v1.0.8/calendar-gregorian-1.0.8-native-installer.run",
-          "digest": "sha256:8f6e1f53ca2f28d33473b18478eafa3c1bd29d676932648bc19d034d4f2209cc",
-          "name": "calendar-gregorian-1.0.8-native-installer.run",
-          "size": 2047
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Gregorian/releases/download/v1.0.10/calendar-gregorian-1.0.10-native-installer.run",
+          "digest": "sha256:9eb476edd1570b0b1108e61890cf9258d5775a4619eece4326da7573c19b1f00",
+          "name": "calendar-gregorian-1.0.10-native-installer.run",
+          "size": 2048
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Gregorian/releases/download/v1.0.8/infiltrator-calendar-gregorian_1.0.8_amd64.deb",
-          "digest": "sha256:87bbd1b87a760d60bd12d38b75dc730eecdb714ba1c70b4cbbe5738c324f5ed4",
-          "name": "infiltrator-calendar-gregorian_1.0.8_amd64.deb",
-          "size": 12168
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Gregorian/releases/download/v1.0.10/infiltrator-calendar-gregorian_1.0.10_amd64.deb",
+          "digest": "sha256:2293e7960a494a0ad3f3793bd8cfeea21348216a7a9d4faa6dda4d54bc4d947e",
+          "name": "infiltrator-calendar-gregorian_1.0.10_amd64.deb",
+          "size": 11360
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "df7963da495f9113d56412586d113854659f8db5"
+      "tag_name": "v1.0.10",
+      "target_commitish": "e7809d62803d2063c7a08a8d23d129fe1b729c4c"
     },
     "Calendar-Hebrew": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Hebrew/releases/download/v1.0.6/calendar-hebrew-1.0.6-native-installer.run",
-          "digest": "sha256:5f415d49de0ae78ed39d53bca75afbf7e144c65a2888e35ee9dbc8ba061f75e1",
-          "name": "calendar-hebrew-1.0.6-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Hebrew/releases/download/v1.0.7/calendar-hebrew-1.0.7-native-installer.run",
+          "digest": "sha256:afc4a952d08fddd216763e71f249d739983cd4e384ad9bce7dbad482eb89c89d",
+          "name": "calendar-hebrew-1.0.7-native-installer.run",
           "size": 2044
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Hebrew/releases/download/v1.0.6/infiltrator-calendar-hebrew_1.0.6_amd64.deb",
-          "digest": "sha256:1ef666cca384438ab6555d37d80b2e877d074c1884676a52614f0c5281632853",
-          "name": "infiltrator-calendar-hebrew_1.0.6_amd64.deb",
-          "size": 11516
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Hebrew/releases/download/v1.0.7/infiltrator-calendar-hebrew_1.0.7_amd64.deb",
+          "digest": "sha256:ca37e115b246817156a33f4b62640f337acb62cfe83e3570af90d08552b31a24",
+          "name": "infiltrator-calendar-hebrew_1.0.7_amd64.deb",
+          "size": 10768
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "a8c583ef8e9dda10c55af4599a25b99a8f0a1dc8"
+      "tag_name": "v1.0.7",
+      "target_commitish": "ef88757777c625339090b666439c8f9f2166416d"
     },
     "Calendar-ISO-Week": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-ISO-Week/releases/download/v1.0.9/calendar-iso-week-1.0.9-native-installer.run",
-          "digest": "sha256:7577afe7bd0cf10fad9e68738a8c8c95fd56ed239fa2bdde7b29a1dc649d03af",
-          "name": "calendar-iso-week-1.0.9-native-installer.run",
-          "size": 2046
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-ISO-Week/releases/download/v1.0.11/calendar-iso-week-1.0.11-native-installer.run",
+          "digest": "sha256:2f45b66415d289c1fc7dfbf6cc7ab69cf685bceb56c03eb7e472f9614d6b0d21",
+          "name": "calendar-iso-week-1.0.11-native-installer.run",
+          "size": 2047
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-ISO-Week/releases/download/v1.0.9/infiltrator-calendar-iso-week_1.0.9_amd64.deb",
-          "digest": "sha256:8f2849e002a96f2a4b8ee0b1b68907383e96747777f765ace75dc26d4bfe3ff0",
-          "name": "infiltrator-calendar-iso-week_1.0.9_amd64.deb",
-          "size": 10924
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-ISO-Week/releases/download/v1.0.11/infiltrator-calendar-iso-week_1.0.11_amd64.deb",
+          "digest": "sha256:6e3e5a93722bc933efd1c1001c5a4bef06fdf854ca3c73683cd1819cb538fb3e",
+          "name": "infiltrator-calendar-iso-week_1.0.11_amd64.deb",
+          "size": 9864
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.9",
-      "target_commitish": "228dcc807b768cb29e734ec2a117c2920d79421f"
+      "tag_name": "v1.0.11",
+      "target_commitish": "83e118acaa00c1c29f1ec0ffea9ec046115c66f6"
     },
     "Calendar-Indian": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Indian/releases/download/v1.0.10/calendar-indian-1.0.10-native-installer.run",
-          "digest": "sha256:d91bf41814ef7e88d825bdab38770c310af116f573094f6fce63afba557bc99f",
-          "name": "calendar-indian-1.0.10-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Indian/releases/download/v1.0.11/calendar-indian-1.0.11-native-installer.run",
+          "digest": "sha256:63dab93eb321a837ee2cd05ddb9b29426639ec07edb8d1ed48185c3afbaaf842",
+          "name": "calendar-indian-1.0.11-native-installer.run",
           "size": 2045
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Indian/releases/download/v1.0.10/infiltrator-calendar-indian_1.0.10_amd64.deb",
-          "digest": "sha256:bbe597db17b3af055486123fc1d229043308c225bedad098224286439b960f2a",
-          "name": "infiltrator-calendar-indian_1.0.10_amd64.deb",
-          "size": 11648
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Indian/releases/download/v1.0.11/infiltrator-calendar-indian_1.0.11_amd64.deb",
+          "digest": "sha256:5cd1c2c950ea2229ba0a0b3efd1ede37cd83d383f2f05952458fdeda4131247f",
+          "name": "infiltrator-calendar-indian_1.0.11_amd64.deb",
+          "size": 10768
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.10",
-      "target_commitish": "53570adfa5fb20e9918dd1d10cbaedcfb81c3b3f"
+      "tag_name": "v1.0.11",
+      "target_commitish": "f88bed6777669d97355c41abfd1ead40316642eb"
     },
     "Calendar-International-Fixed": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-International-Fixed/releases/download/v1.0.7/calendar-international-fixed-1.0.7-native-installer.run",
-          "digest": "sha256:521ae935bba0d024085f46d8d635cc79aa0ba6520fcad8a965a81c4a30ac9620",
-          "name": "calendar-international-fixed-1.0.7-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-International-Fixed/releases/download/v1.0.8/calendar-international-fixed-1.0.8-native-installer.run",
+          "digest": "sha256:b798c1563b2a6ce6549cd3384664f2169ab7a514109ff89451e09a5caa7f58c3",
+          "name": "calendar-international-fixed-1.0.8-native-installer.run",
           "size": 2057
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-International-Fixed/releases/download/v1.0.7/infiltrator-calendar-international-fixed_1.0.7_amd64.deb",
-          "digest": "sha256:6fef5780010d2ee317afc5292b1a35b326074c3ceaf4a61bfa0b29e5dce19a19",
-          "name": "infiltrator-calendar-international-fixed_1.0.7_amd64.deb",
-          "size": 12880
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-International-Fixed/releases/download/v1.0.8/infiltrator-calendar-international-fixed_1.0.8_amd64.deb",
+          "digest": "sha256:ce27f63dde240cf23abdb90b4c5d7ccacf52724a48215c2144ab4bb193bd5692",
+          "name": "infiltrator-calendar-international-fixed_1.0.8_amd64.deb",
+          "size": 12060
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "60ade4ce8b4c8129f1081de86290d8e088664021"
+      "tag_name": "v1.0.8",
+      "target_commitish": "2dcb50505551b3a68310910ff895969a7c86fe58"
     },
     "Calendar-Islamic": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic/releases/download/v1.0.8/calendar-islamic-1.0.8-native-installer.run",
-          "digest": "sha256:d85206e112c68f5a147994424925e5cb046b8fa35062aafe51cd7ff793350973",
-          "name": "calendar-islamic-1.0.8-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic/releases/download/v1.0.9/calendar-islamic-1.0.9-native-installer.run",
+          "digest": "sha256:ccc33dcc3542ae1e41563d8ee5e368243dc2e77acde60531f153c51a07d81b5f",
+          "name": "calendar-islamic-1.0.9-native-installer.run",
           "size": 2045
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic/releases/download/v1.0.8/infiltrator-calendar-islamic_1.0.8_amd64.deb",
-          "digest": "sha256:9fac0744a61496330e3477fd5ed461b61ce748291e227b3d7cd3c350e6ac610b",
-          "name": "infiltrator-calendar-islamic_1.0.8_amd64.deb",
-          "size": 10716
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic/releases/download/v1.0.9/infiltrator-calendar-islamic_1.0.9_amd64.deb",
+          "digest": "sha256:a3afd6f9b6444c2f41ce680e8e989a07aa806660a2badd8617d766965020b084",
+          "name": "infiltrator-calendar-islamic_1.0.9_amd64.deb",
+          "size": 9916
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "d2e2f8edfc5af7f1701e49385223a6a9c0541316"
+      "tag_name": "v1.0.9",
+      "target_commitish": "7f8c4c81ac0c72ce660e280952d4931e28d9e208"
     },
     "Calendar-Islamic-Civil": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Civil/releases/download/v1.0.7/calendar-islamic-civil-1.0.7-native-installer.run",
-          "digest": "sha256:b38aa25006c284439e18013ed01bab23ed52e7b7707c11b002df1ecbef9a97b7",
-          "name": "calendar-islamic-civil-1.0.7-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Civil/releases/download/v1.0.8/calendar-islamic-civil-1.0.8-native-installer.run",
+          "digest": "sha256:9e0a78227cc66614db5fbd412382753075a73f389cb7f980d988ab8b1b823968",
+          "name": "calendar-islamic-civil-1.0.8-native-installer.run",
           "size": 2051
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Civil/releases/download/v1.0.7/infiltrator-calendar-islamic-civil_1.0.7_amd64.deb",
-          "digest": "sha256:e06767b11baff5538a3a93b6b6e4d66dd9828e83a95d2ffe2b2ca39486c226e2",
-          "name": "infiltrator-calendar-islamic-civil_1.0.7_amd64.deb",
-          "size": 10328
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "924f2d4f1acbe0baa7e90d41fcfeceb66963dc02"
-    },
-    "Calendar-Islamic-TBLA": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-TBLA/releases/download/v1.0.7/calendar-islamic-tbla-1.0.7-native-installer.run",
-          "digest": "sha256:34112bb1c7d465f23f03a83e60691990316d7ce84c2c742a1f5cd0b4b8de0cdb",
-          "name": "calendar-islamic-tbla-1.0.7-native-installer.run",
-          "size": 2050
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-TBLA/releases/download/v1.0.7/infiltrator-calendar-islamic-tbla_1.0.7_amd64.deb",
-          "digest": "sha256:9dc0b0940cff05575aff5aab0d78483307881cb30778dcc52702ee76284b097c",
-          "name": "infiltrator-calendar-islamic-tbla_1.0.7_amd64.deb",
-          "size": 10876
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "00e1f6507b3f171f6eb8402e5c330d6ac18f520b"
-    },
-    "Calendar-Islamic-Umalqura": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Umalqura/releases/download/v1.0.9/calendar-islamic-umalqura-1.0.9-native-installer.run",
-          "digest": "sha256:7e47cfa05c293046e78397ee42ed7cfa64ff0115b058d9893e51b569c7d36a34",
-          "name": "calendar-islamic-umalqura-1.0.9-native-installer.run",
-          "size": 2054
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Umalqura/releases/download/v1.0.9/infiltrator-calendar-islamic-umalqura_1.0.9_amd64.deb",
-          "digest": "sha256:d0fb5efed1373a2c5e09f87fdb2f5809d828cc72c360e118d56ce33b219a5f22",
-          "name": "infiltrator-calendar-islamic-umalqura_1.0.9_amd64.deb",
-          "size": 12012
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.9",
-      "target_commitish": "b3be763399969b89106a4c6bd4969bc19fd57ee0"
-    },
-    "Calendar-Japanese": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Japanese/releases/download/v1.0.7/calendar-japanese-1.0.7-native-installer.run",
-          "digest": "sha256:5ba85a29cfd697df3e783867801c071d4935a2fa14eb458c7d5493d4aa4b7f32",
-          "name": "calendar-japanese-1.0.7-native-installer.run",
-          "size": 1825
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Japanese/releases/download/v1.0.7/infiltrator-calendar-japanese_1.0.7_amd64.deb",
-          "digest": "sha256:9496a879bb99cc371dd1d6e2e2d891d366468fa620e774df1aa52a17e3c61b41",
-          "name": "infiltrator-calendar-japanese_1.0.7_amd64.deb",
-          "size": 52052
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "6e51a4751c69c188195a670b995263d74edfd4c8"
-    },
-    "Calendar-Julian": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Julian/releases/download/v1.0.9/calendar-julian-1.0.9-native-installer.run",
-          "digest": "sha256:2f8abebdeddff7c9326495dc6bbff5937fc9565b15b6d4b6b434992b04622355",
-          "name": "calendar-julian-1.0.9-native-installer.run",
-          "size": 2044
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Julian/releases/download/v1.0.9/infiltrator-calendar-julian_1.0.9_amd64.deb",
-          "digest": "sha256:5f96a312aad6b3d90d4fe59a22767af75ea2e81f80a3872f6b6fc25a36f61cef",
-          "name": "infiltrator-calendar-julian_1.0.9_amd64.deb",
-          "size": 11208
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.9",
-      "target_commitish": "8805013416c501497b1bdd31015ef6e4ce3cad97"
-    },
-    "Calendar-Mayan": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Mayan/releases/download/v1.0.8/calendar-mayan-1.0.8-native-installer.run",
-          "digest": "sha256:0dc1ad3a20e5654cba6a688f40ec8370a21b569515c13c46f2dd6bd6424916b4",
-          "name": "calendar-mayan-1.0.8-native-installer.run",
-          "size": 2043
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Mayan/releases/download/v1.0.8/infiltrator-calendar-mayan_1.0.8_amd64.deb",
-          "digest": "sha256:04556405ad6d85075a5bbabc596877f5efdf1702893ccebdf49b52772ab1862f",
-          "name": "infiltrator-calendar-mayan_1.0.8_amd64.deb",
-          "size": 9508
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Civil/releases/download/v1.0.8/infiltrator-calendar-islamic-civil_1.0.8_amd64.deb",
+          "digest": "sha256:2f8d9e2d426d8d30f0047a4aea9884ebfad89d184a0fce8afc6c8cba2a69e764",
+          "name": "infiltrator-calendar-islamic-civil_1.0.8_amd64.deb",
+          "size": 9808
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.8",
-      "target_commitish": "4c3486e7686aeda0175f485cb39dca5266468ccd"
+      "target_commitish": "b5d97d7181a15e0631cb0d77744e2c24e3922097"
     },
-    "Calendar-Minguo": {
+    "Calendar-Islamic-TBLA": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Minguo/releases/download/v1.0.10/calendar-minguo-1.0.10-native-installer.run",
-          "digest": "sha256:7320bc4f59f10ae28ca58db05852253a6fb68280ac27b5847ec90d0e6177907b",
-          "name": "calendar-minguo-1.0.10-native-installer.run",
-          "size": 2045
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-TBLA/releases/download/v1.0.8/calendar-islamic-tbla-1.0.8-native-installer.run",
+          "digest": "sha256:f6e20ed29ac9c86585a6f269aec3d60209c040c2412254f6be0515bb5b90c493",
+          "name": "calendar-islamic-tbla-1.0.8-native-installer.run",
+          "size": 2050
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Minguo/releases/download/v1.0.10/infiltrator-calendar-minguo_1.0.10_amd64.deb",
-          "digest": "sha256:c12c949c6b6b59b3c58cd29864722bf0c33850dd7ded4761138c3ab3f59282c6",
-          "name": "infiltrator-calendar-minguo_1.0.10_amd64.deb",
-          "size": 12460
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-TBLA/releases/download/v1.0.8/infiltrator-calendar-islamic-tbla_1.0.8_amd64.deb",
+          "digest": "sha256:941d4c2257b1c2f1ab212231e0cb55b18f109068f0215fb34e5d74dfd96ec2f5",
+          "name": "infiltrator-calendar-islamic-tbla_1.0.8_amd64.deb",
+          "size": 10300
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.10",
-      "target_commitish": "75a69544ac60dd47484039c603f6ab9efaa6f944"
+      "tag_name": "v1.0.8",
+      "target_commitish": "a7ebf555c351cf892468798b6a3bc9e9306d3085"
     },
-    "Calendar-Persian": {
+    "Calendar-Islamic-Umalqura": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Persian/releases/download/v1.0.6/calendar-persian-1.0.6-native-installer.run",
-          "digest": "sha256:3a8f781ae150a8622a73dc3603d62c28aa0cb2376750ff1976fe986dfae09583",
-          "name": "calendar-persian-1.0.6-native-installer.run",
-          "size": 2045
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Umalqura/releases/download/v1.0.12/calendar-islamic-umalqura-1.0.12-native-installer.run",
+          "digest": "sha256:a42488dc6d5cce8e75cfda3db9ca843fdc5825bcf86a5309687a865e48ba9566",
+          "name": "calendar-islamic-umalqura-1.0.12-native-installer.run",
+          "size": 2055
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Persian/releases/download/v1.0.6/infiltrator-calendar-persian_1.0.6_amd64.deb",
-          "digest": "sha256:f82f30e0800624b7e823e19b2a4aeda2e194bcc1d95da2ad4de048701ae78cee",
-          "name": "infiltrator-calendar-persian_1.0.6_amd64.deb",
-          "size": 12432
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Islamic-Umalqura/releases/download/v1.0.12/infiltrator-calendar-islamic-umalqura_1.0.12_amd64.deb",
+          "digest": "sha256:13728cf20b9d5a211aceee7c6dd20d2d49f2d1a8f524edb6dc6c67fcd2cb3db2",
+          "name": "infiltrator-calendar-islamic-umalqura_1.0.12_amd64.deb",
+          "size": 11380
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "a2687261e9bb9ca75ce221e5e9dd477d10012045"
+      "tag_name": "v1.0.12",
+      "target_commitish": "924f54728fedf8f1dcbd911ee5ccee2e3c723546"
     },
-    "Calendar-Positivist": {
+    "Calendar-Japanese": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Positivist/releases/download/v1.0.6/calendar-positivist-1.0.6-native-installer.run",
-          "digest": "sha256:25b5a05b08117250827e6ac6d5da2252b4758781333d8a600e47631dbbfccae9",
-          "name": "calendar-positivist-1.0.6-native-installer.run",
-          "size": 2048
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Japanese/releases/download/v1.0.9/calendar-japanese-1.0.9-native-installer.run",
+          "digest": "sha256:b48a04592314845d7dbde3b7a32c74a049346f458a9b7c257c06a63da079bb35",
+          "name": "calendar-japanese-1.0.9-native-installer.run",
+          "size": 1825
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Positivist/releases/download/v1.0.6/infiltrator-calendar-positivist_1.0.6_amd64.deb",
-          "digest": "sha256:eb65efc7b43aed335d26ea4bcee60f13e574a054e20faa4fd0ccad420a0050d9",
-          "name": "infiltrator-calendar-positivist_1.0.6_amd64.deb",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Japanese/releases/download/v1.0.9/infiltrator-calendar-japanese_1.0.9_amd64.deb",
+          "digest": "sha256:267b87c66419ed209a3ee3f3060cc9496005c6fb5b28111395987a661b98bbee",
+          "name": "infiltrator-calendar-japanese_1.0.9_amd64.deb",
           "size": 11560
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "5181e233663776e40d48f413216190248bdb98e1"
+      "tag_name": "v1.0.9",
+      "target_commitish": "448bae152baa02672f90bdcf2f9da740df9e44d2"
+    },
+    "Calendar-Julian": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Julian/releases/download/v1.0.11/calendar-julian-1.0.11-native-installer.run",
+          "digest": "sha256:a249f15748fce4a20219ca087d17b6abbc75d723a2f1faccca77a8af0d928910",
+          "name": "calendar-julian-1.0.11-native-installer.run",
+          "size": 2045
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Julian/releases/download/v1.0.11/infiltrator-calendar-julian_1.0.11_amd64.deb",
+          "digest": "sha256:f968dff7ec71efa042c29011dfd21fa1d918b669fbaef831cf6637a3155731bf",
+          "name": "infiltrator-calendar-julian_1.0.11_amd64.deb",
+          "size": 10596
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.11",
+      "target_commitish": "4597138d3fc4267bf9062f2d3472b20ffaa436e5"
+    },
+    "Calendar-Mayan": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Mayan/releases/download/v1.0.9/calendar-mayan-1.0.9-native-installer.run",
+          "digest": "sha256:c5b8b6d726c969e998c839ea1c7a88514e9aad38ab4cfd6ba7ebc8162e41a0bf",
+          "name": "calendar-mayan-1.0.9-native-installer.run",
+          "size": 2043
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Mayan/releases/download/v1.0.9/infiltrator-calendar-mayan_1.0.9_amd64.deb",
+          "digest": "sha256:281935626625ed789b7a8b0685ac1430af2454f64c1651b6c2b85a5a9ec8859e",
+          "name": "infiltrator-calendar-mayan_1.0.9_amd64.deb",
+          "size": 8560
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "fa1e57896e65a235665da9ba4128923d1b1b932b"
+    },
+    "Calendar-Minguo": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Minguo/releases/download/v1.0.11/calendar-minguo-1.0.11-native-installer.run",
+          "digest": "sha256:19eba8c1db7b1cc63cc066b56a06ae0acf9fec721eaede39f630881381a47328",
+          "name": "calendar-minguo-1.0.11-native-installer.run",
+          "size": 2045
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Minguo/releases/download/v1.0.11/infiltrator-calendar-minguo_1.0.11_amd64.deb",
+          "digest": "sha256:5e206c241f073576484ecc468aca97ee0119d4c4379f64c40e93409a65c665bf",
+          "name": "infiltrator-calendar-minguo_1.0.11_amd64.deb",
+          "size": 11616
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.11",
+      "target_commitish": "ec9e3e9e7d4e7b7eca16e0d8d1e134168bca44b8"
+    },
+    "Calendar-Persian": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Persian/releases/download/v1.0.9/calendar-persian-1.0.9-native-installer.run",
+          "digest": "sha256:d61ec6db8e586bf16e9de7dc3cdd36e8d722e7578efc7bdd1eacd7c73b2ccc95",
+          "name": "calendar-persian-1.0.9-native-installer.run",
+          "size": 2045
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Persian/releases/download/v1.0.9/infiltrator-calendar-persian_1.0.9_amd64.deb",
+          "digest": "sha256:ed20e32e6292cea977d6db2955fdd1639e2a9b128586e5e56d920e3ec6883078",
+          "name": "infiltrator-calendar-persian_1.0.9_amd64.deb",
+          "size": 11728
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "edad800b2f0e19e6925b4b39308eae74d2ab6e90"
+    },
+    "Calendar-Positivist": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Positivist/releases/download/v1.0.8/calendar-positivist-1.0.8-native-installer.run",
+          "digest": "sha256:1bf44f1be7c61f72e0b489db169afe02cebf0ad4c2b94da3399aec5222801072",
+          "name": "calendar-positivist-1.0.8-native-installer.run",
+          "size": 2048
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Positivist/releases/download/v1.0.8/infiltrator-calendar-positivist_1.0.8_amd64.deb",
+          "digest": "sha256:241a138bd5879fd01ac939019e24912b121e58f0ca1d77506ddba4aac6665fff",
+          "name": "infiltrator-calendar-positivist_1.0.8_amd64.deb",
+          "size": 10764
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.8",
+      "target_commitish": "eb2d1a431ba17b62fa9fe82419f67c4566514bec"
     },
     "Calendar-Revised-Julian": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Revised-Julian/releases/download/v1.0.7/calendar-revised-julian-1.0.7-native-installer.run",
-          "digest": "sha256:b8dc228ca61a9c04a81f572ef30dc814312875a802844415a330049357f59c0d",
-          "name": "calendar-revised-julian-1.0.7-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Revised-Julian/releases/download/v1.0.8/calendar-revised-julian-1.0.8-native-installer.run",
+          "digest": "sha256:86e41d5accc8582b45d5f8273fc151cce1a7829d419183eacf018dceda2984e4",
+          "name": "calendar-revised-julian-1.0.8-native-installer.run",
           "size": 2052
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Revised-Julian/releases/download/v1.0.7/infiltrator-calendar-revised-julian_1.0.7_amd64.deb",
-          "digest": "sha256:e610c1be6e9466963e527720f68faa829a92ad6f3462ee5a0e35bcd7fb8152b7",
-          "name": "infiltrator-calendar-revised-julian_1.0.7_amd64.deb",
-          "size": 12000
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Revised-Julian/releases/download/v1.0.8/infiltrator-calendar-revised-julian_1.0.8_amd64.deb",
+          "digest": "sha256:34c88ce6f0efe1f037f3bf15c9e530807c24be5c25b717dc0b0f2028297b05e2",
+          "name": "infiltrator-calendar-revised-julian_1.0.8_amd64.deb",
+          "size": 10352
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.8",
+      "target_commitish": "49b73bc88631fc8ea1ff76310d8f93b1e679dcb3"
+    },
+    "Calendar-Roman": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Roman/releases/download/v1.0.11/calendar-roman-1.0.11-native-installer.run",
+          "digest": "sha256:3ce185e9f268d38f326b69bf9e89cdc68b39ab93c1cff75d3bec9e0ad6228c65",
+          "name": "calendar-roman-1.0.11-native-installer.run",
+          "size": 2044
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Roman/releases/download/v1.0.11/infiltrator-calendar-roman_1.0.11_amd64.deb",
+          "digest": "sha256:83693008e73cde745285358546d60f398a6298452a66911460c98f010e1765dc",
+          "name": "infiltrator-calendar-roman_1.0.11_amd64.deb",
+          "size": 10472
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.11",
+      "target_commitish": "bdc85727cb3f37398716e2fcdc0ca3c84693acaa"
+    },
+    "Calendar-Swedish-Historical": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Swedish-Historical/releases/download/v1.0.9/calendar-swedish-historical-1.0.9-native-installer.run",
+          "digest": "sha256:f7dd3f3b618dead705268adb92c9cb9af29001b48d1909706b936d583e0639b1",
+          "name": "calendar-swedish-historical-1.0.9-native-installer.run",
+          "size": 2056
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Swedish-Historical/releases/download/v1.0.9/infiltrator-calendar-swedish-historical_1.0.9_amd64.deb",
+          "digest": "sha256:a1c5a3690049ce2712be99a2a989c18212436ad629cf1a14437c2b5946410986",
+          "name": "infiltrator-calendar-swedish-historical_1.0.9_amd64.deb",
+          "size": 11636
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "7cc933497bc30854714397e20f505b9958df6a81"
+    },
+    "Calendar-Thai-Buddhist-Solar": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Thai-Buddhist-Solar/releases/download/v1.0.7/calendar-thai-buddhist-solar-1.0.7-native-installer.run",
+          "digest": "sha256:ea7b821841e05b094532e2fc6237622c856e8d44095687a860147b41258abc88",
+          "name": "calendar-thai-buddhist-solar-1.0.7-native-installer.run",
+          "size": 2057
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Thai-Buddhist-Solar/releases/download/v1.0.7/infiltrator-calendar-thai-buddhist-solar_1.0.7_amd64.deb",
+          "digest": "sha256:6939522e5fd1f90f14dbb2ee2993b1405df7b0aaee3f7119181a46576b36e7c1",
+          "name": "infiltrator-calendar-thai-buddhist-solar_1.0.7_amd64.deb",
+          "size": 7036
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.7",
-      "target_commitish": "2163290a2571735007184641004bb3a2eb98108b"
+      "target_commitish": "dd4368a2da938ba2122b5c21932b3be64ec87dfc"
     },
-    "Calendar-Roman": {
+    "Calendar-World": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Roman/releases/download/v1.0.10/calendar-roman-1.0.10-native-installer.run",
-          "digest": "sha256:5793687b7fcb932d307b52d53f17809f0d9062e666780562edd679f18b68eaba",
-          "name": "calendar-roman-1.0.10-native-installer.run",
-          "size": 2044
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-World/releases/download/v1.0.9/calendar-world-1.0.9-native-installer.run",
+          "digest": "sha256:09e9292cd82470f562e995e35eb10bcda112bd7a31265da21d1a4dcbe29de9d3",
+          "name": "calendar-world-1.0.9-native-installer.run",
+          "size": 2043
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Roman/releases/download/v1.0.10/infiltrator-calendar-roman_1.0.10_amd64.deb",
-          "digest": "sha256:374b5022800a1a5d17bdda232aed910294cbc1aa9182e6764febb07598876bdd",
-          "name": "infiltrator-calendar-roman_1.0.10_amd64.deb",
-          "size": 11464
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-World/releases/download/v1.0.9/infiltrator-calendar-world_1.0.9_amd64.deb",
+          "digest": "sha256:6ec33cc2096f0103a989bf42c738ec99dc1d87cfcb694296388c5b04f48570cf",
+          "name": "infiltrator-calendar-world_1.0.9_amd64.deb",
+          "size": 12028
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "e3c57d25769398dd22f12089e15633f3dbe9b5f7"
+    },
+    "Clock-Babylonian-Ancient": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Ancient/releases/download/v1.0.10/clock-babylonian-ancient-1.0.10-native-installer.run",
+          "digest": "sha256:4b3e0b6e3b0e21d96d0b01e165588143c3d7d778f8de88ff1c0d15e049095092",
+          "name": "clock-babylonian-ancient-1.0.10-native-installer.run",
+          "size": 2045
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Ancient/releases/download/v1.0.10/infiltrator-clock-babylonian-ancient_1.0.10_amd64.deb",
+          "digest": "sha256:c424ed949beba7e34d6a24ca2be2075e539c844b215b4d3b8dd202a0d4afdc16",
+          "name": "infiltrator-clock-babylonian-ancient_1.0.10_amd64.deb",
+          "size": 8632
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.10",
-      "target_commitish": "95eb5e166ab23855ea77c4a8d29724b4fd9de19c"
-    },
-    "Calendar-Swedish-Historical": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Swedish-Historical/releases/download/v1.0.8/calendar-swedish-historical-1.0.8-native-installer.run",
-          "digest": "sha256:7b5dae44f36f8182f3408c2c00f090f9c1a751f4970d0890f15c6d85c44c4499",
-          "name": "calendar-swedish-historical-1.0.8-native-installer.run",
-          "size": 2056
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Swedish-Historical/releases/download/v1.0.8/infiltrator-calendar-swedish-historical_1.0.8_amd64.deb",
-          "digest": "sha256:d7fcc4cd132f52503eecc279ebb82c4b2b57e2d09bdbe9ae55b7ac02d9c61108",
-          "name": "infiltrator-calendar-swedish-historical_1.0.8_amd64.deb",
-          "size": 12648
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "76bc66d55aff92c608fb7e4539cc396dfda9e2a3"
-    },
-    "Calendar-Thai-Buddhist-Solar": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Thai-Buddhist-Solar/releases/download/v1.0.6/calendar-thai-buddhist-solar-1.0.6-native-installer.run",
-          "digest": "sha256:f6a61cf7b85bcf2e092a3c7e252baac45833a2a810ba4963b4bbf1488273f06e",
-          "name": "calendar-thai-buddhist-solar-1.0.6-native-installer.run",
-          "size": 2057
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-Thai-Buddhist-Solar/releases/download/v1.0.6/infiltrator-calendar-thai-buddhist-solar_1.0.6_amd64.deb",
-          "digest": "sha256:f238c6523e7d47e3baf6abd1ad57f44d7328a2aa8bf3b9f8e72f0eb731d36007",
-          "name": "infiltrator-calendar-thai-buddhist-solar_1.0.6_amd64.deb",
-          "size": 8628
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "00a7974b377ff36e38408d5637cdf334fe17fd64"
-    },
-    "Calendar-World": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-World/releases/download/v1.0.8/calendar-world-1.0.8-native-installer.run",
-          "digest": "sha256:71959e9841167ac3e451b8e9562ab4fa01dc355ebb7361c93271a744eb4f0607",
-          "name": "calendar-world-1.0.8-native-installer.run",
-          "size": 2043
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Calendar-World/releases/download/v1.0.8/infiltrator-calendar-world_1.0.8_amd64.deb",
-          "digest": "sha256:722bf8d3e6ce0b623c1e845ebd8c78589556f75bbb6aefd049d5e5d328fbf8af",
-          "name": "infiltrator-calendar-world_1.0.8_amd64.deb",
-          "size": 12732
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "875fbb0e55c374b52586aa60b3481822e79091b6"
-    },
-    "Clock-Babylonian-Ancient": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Ancient/releases/download/v1.0.8/clock-babylonian-ancient-1.0.8-native-installer.run",
-          "digest": "sha256:33b8554d7d7217729abcaa60e8fbb28f8bdb8f5163014a85e4f9ff4d5596847d",
-          "name": "clock-babylonian-ancient-1.0.8-native-installer.run",
-          "size": 2044
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Ancient/releases/download/v1.0.8/infiltrator-clock-babylonian-ancient_1.0.8_amd64.deb",
-          "digest": "sha256:962d1522125ba53b453290b7851c3d6948350ddd338e6ac56d2654c82969e52b",
-          "name": "infiltrator-clock-babylonian-ancient_1.0.8_amd64.deb",
-          "size": 8988
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "e7c6010509d4401a2398502250d3d03a7b467d61"
+      "target_commitish": "19b8d7d308a0770cb7e6f77466512a8d9f52f1ce"
     },
     "Clock-Babylonian-Hours": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Hours/releases/download/v1.0.6/clock-babylonian-hours-1.0.6-native-installer.run",
-          "digest": "sha256:42580f859ce89fc74a6db2c4c2039177292b5c73b5988d966ba52ccdea489eab",
-          "name": "clock-babylonian-hours-1.0.6-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Hours/releases/download/v1.0.8/clock-babylonian-hours-1.0.8-native-installer.run",
+          "digest": "sha256:9539df4ae225e786fe136dff48326f8eab94e3e838bcd3c3200959d8bbe6d589",
+          "name": "clock-babylonian-hours-1.0.8-native-installer.run",
           "size": 2042
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Hours/releases/download/v1.0.6/infiltrator-clock-babylonian-hours_1.0.6_amd64.deb",
-          "digest": "sha256:6555608c8a15a9064e6b394a58497025a29d49ccc42f36de549a3e27bdb1c3cd",
-          "name": "infiltrator-clock-babylonian-hours_1.0.6_amd64.deb",
-          "size": 9024
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Babylonian-Hours/releases/download/v1.0.8/infiltrator-clock-babylonian-hours_1.0.8_amd64.deb",
+          "digest": "sha256:acd3e244a2911e5a5ef7f4494b8d90baafbf8174f154feaf97082ec8367331ff",
+          "name": "infiltrator-clock-babylonian-hours_1.0.8_amd64.deb",
+          "size": 8732
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "238d686ab0ba4bb73f3f8376dc46ab8a2728fc10"
+      "tag_name": "v1.0.8",
+      "target_commitish": "7987e4862af9be9ad219b4e7a05e3a54d4407700"
     },
     "Clock-Binary": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Binary/releases/download/v1.0.9/clock-binary-1.0.9-native-installer.run",
-          "digest": "sha256:0784994f285547ebd7fd513d504cff9fb01509b93dd35b01c917b6d49f2ae8cf",
-          "name": "clock-binary-1.0.9-native-installer.run",
-          "size": 2032
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Binary/releases/download/v1.0.10/clock-binary-1.0.10-native-installer.run",
+          "digest": "sha256:89f1a8d41319194edf0640b3da6d71acfa4be185d5a67a3896e63c3b3d0435e9",
+          "name": "clock-binary-1.0.10-native-installer.run",
+          "size": 2033
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Binary/releases/download/v1.0.9/infiltrator-clock-binary_1.0.9_amd64.deb",
-          "digest": "sha256:82ea8339c1d16ea1232cdf6dd947e7937b936420b73f9b2bbb0f86e0ed5d6834",
-          "name": "infiltrator-clock-binary_1.0.9_amd64.deb",
-          "size": 7096
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Binary/releases/download/v1.0.10/infiltrator-clock-binary_1.0.10_amd64.deb",
+          "digest": "sha256:437ecd4ddd22147498c3c75772272136fcd7f66a3ba247774a3d3360db20fd04",
+          "name": "infiltrator-clock-binary_1.0.10_amd64.deb",
+          "size": 6588
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.9",
-      "target_commitish": "b5c34757ff055e4f94ed353119753ec39e5e115a"
+      "tag_name": "v1.0.10",
+      "target_commitish": "51d3090ebd2a4edbbec0a9140102a802c8b11ffe"
     },
     "Clock-Chinese-Ke": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Ke/releases/download/v1.0.7/clock-chinese-ke-1.0.7-native-installer.run",
-          "digest": "sha256:7d48e46ccec7c11dcc4d6552fac8a8c689046b0bd66f6380671ee5339c5f2f8b",
-          "name": "clock-chinese-ke-1.0.7-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Ke/releases/download/v1.0.8/clock-chinese-ke-1.0.8-native-installer.run",
+          "digest": "sha256:ced183f4b2e919abb8f7173dd4442f552b6e4d2793876bbf095fdf99c248538f",
+          "name": "clock-chinese-ke-1.0.8-native-installer.run",
           "size": 2036
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Ke/releases/download/v1.0.7/infiltrator-clock-chinese-ke_1.0.7_amd64.deb",
-          "digest": "sha256:1bb9dda274f68ec13a854202d9e7c0dbb2018a464f1442dfdfa37cdefad53062",
-          "name": "infiltrator-clock-chinese-ke_1.0.7_amd64.deb",
-          "size": 7016
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Ke/releases/download/v1.0.8/infiltrator-clock-chinese-ke_1.0.8_amd64.deb",
+          "digest": "sha256:58dfa383966f9519fcc3fca53374346ec67e7001aa2d458f2419d1bcc432fc10",
+          "name": "infiltrator-clock-chinese-ke_1.0.8_amd64.deb",
+          "size": 6508
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.8",
+      "target_commitish": "417f387928ac8ec3eba24f0c4248f07ed1835abb"
+    },
+    "Clock-Chinese-Time": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Time/releases/download/v1.0.7/clock-chinese-time-1.0.7-native-installer.run",
+          "digest": "sha256:2715bf03f821cbd6a5c11d23e16acbaae0630cc64c69c3114b95e9c7f010bb0b",
+          "name": "clock-chinese-time-1.0.7-native-installer.run",
+          "size": 2038
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Time/releases/download/v1.0.7/infiltrator-clock-chinese-time_1.0.7_amd64.deb",
+          "digest": "sha256:334ece87bef2c12a2bbc9177886dba1dc67efcf8984dbf1c05ab7a7eb0b34c95",
+          "name": "infiltrator-clock-chinese-time_1.0.7_amd64.deb",
+          "size": 7752
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.7",
-      "target_commitish": "3f114262057bf945e4d7d3919dea7cec1d72595f"
-    },
-    "Clock-Chinese-Time": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Time/releases/download/v1.0.6/clock-chinese-time-1.0.6-native-installer.run",
-          "digest": "sha256:4f9f731012b53abe5141903917277fffcafeabd39d7292ad027e210d1f496455",
-          "name": "clock-chinese-time-1.0.6-native-installer.run",
-          "size": 2038
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Chinese-Time/releases/download/v1.0.6/infiltrator-clock-chinese-time_1.0.6_amd64.deb",
-          "digest": "sha256:a1262b1895ee9fb362696ca6efa10828fc36b68f7f82cdbccec1c1a8d030677b",
-          "name": "infiltrator-clock-chinese-time_1.0.6_amd64.deb",
-          "size": 8120
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "28d2996d145171e404fd3b377bf38bc17b324631"
+      "target_commitish": "eff9c58866b79db8e6d9ce871072423b43644454"
     },
     "Clock-Decimal": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Decimal/releases/download/v1.0.9/clock-decimal-1.0.9-native-installer.run",
-          "digest": "sha256:7e5fc4847acc256c8ad767b43b8ebfc3d0fcefc711798603a6e14c6f502d4e92",
-          "name": "clock-decimal-1.0.9-native-installer.run",
-          "size": 2033
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Decimal/releases/download/v1.0.10/clock-decimal-1.0.10-native-installer.run",
+          "digest": "sha256:31271f96f37dddceac7d50076058a4551453ee3a887465f0c7625cd603eecf41",
+          "name": "clock-decimal-1.0.10-native-installer.run",
+          "size": 2034
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Decimal/releases/download/v1.0.9/infiltrator-clock-decimal_1.0.9_amd64.deb",
-          "digest": "sha256:1ab5d91e06cf85f870fa9f3d71c00a3cf6effd3fcce2a3b334a2ea5241784797",
-          "name": "infiltrator-clock-decimal_1.0.9_amd64.deb",
-          "size": 7220
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Decimal/releases/download/v1.0.10/infiltrator-clock-decimal_1.0.10_amd64.deb",
+          "digest": "sha256:a19cf3631a9c935e7e83e85c7dcaee6f65c3e070ab720e1c08f465ba8fe2bdf0",
+          "name": "infiltrator-clock-decimal_1.0.10_amd64.deb",
+          "size": 6808
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.10",
+      "target_commitish": "2d3ab71014f2a5341a9b75fc5576f2f8feacb571"
+    },
+    "Clock-Hexadecimal": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Hexadecimal/releases/download/v1.0.9/clock-hexadecimal-1.0.9-native-installer.run",
+          "digest": "sha256:91b727eccae81dd86569a5c3bfcdc6e649376c460bd018214b9c5edb1d396352",
+          "name": "clock-hexadecimal-1.0.9-native-installer.run",
+          "size": 2037
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Hexadecimal/releases/download/v1.0.9/infiltrator-clock-hexadecimal_1.0.9_amd64.deb",
+          "digest": "sha256:5947fae42a8987cfa9fc9d66c557f217bc2dbb07e14011f7a1a3cb127d18fc73",
+          "name": "infiltrator-clock-hexadecimal_1.0.9_amd64.deb",
+          "size": 6292
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.9",
-      "target_commitish": "149024e17ac5b67229dd90b1da7c8b57a2de2059"
-    },
-    "Clock-Hexadecimal": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Hexadecimal/releases/download/v1.0.8/clock-hexadecimal-1.0.8-native-installer.run",
-          "digest": "sha256:c5d7a1b89f3365801fbac0f14f5adbd09c6ad53cdb0d15364d9124569be152ee",
-          "name": "clock-hexadecimal-1.0.8-native-installer.run",
-          "size": 2037
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Hexadecimal/releases/download/v1.0.8/infiltrator-clock-hexadecimal_1.0.8_amd64.deb",
-          "digest": "sha256:301ff775ce05b99c9665bcb7e78907fb59b9fe3a8e7ae8cda666e4e0a36a7e7a",
-          "name": "infiltrator-clock-hexadecimal_1.0.8_amd64.deb",
-          "size": 6840
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.8",
-      "target_commitish": "ed65ba11f7a9402e18e92054f2500543db4bc07c"
+      "target_commitish": "29805918adb6fe6ed9a6fa4fe0f4163debda4a98"
     },
     "Clock-Indian-Ghati": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Indian-Ghati/releases/download/v1.0.6/clock-indian-ghati-1.0.6-native-installer.run",
-          "digest": "sha256:b7f80190bc7fa46a18a0ce913752453118bc9d9276cce45684a163b49c9eb50b",
-          "name": "clock-indian-ghati-1.0.6-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Indian-Ghati/releases/download/v1.0.8/clock-indian-ghati-1.0.8-native-installer.run",
+          "digest": "sha256:67e4561105286be898340ef4fcd47270dd6b5e6c00f3145ebfba14af6d47a075",
+          "name": "clock-indian-ghati-1.0.8-native-installer.run",
           "size": 2038
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Indian-Ghati/releases/download/v1.0.6/infiltrator-clock-indian-ghati_1.0.6_amd64.deb",
-          "digest": "sha256:5c5a7c469dc46b6c302d0fa8d19c853d24bf2f0378384ad016121e909638d0fe",
-          "name": "infiltrator-clock-indian-ghati_1.0.6_amd64.deb",
-          "size": 8960
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "66c0718ea9b8629ae8d3445fbc0b8a805fa90bbd"
-    },
-    "Clock-Internet": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Internet/releases/download/v1.0.7/clock-internet-1.0.7-native-installer.run",
-          "digest": "sha256:07ae3e11296ba4f3153c3dc2da9337561957064d634d7ec3b714294d1606d542",
-          "name": "clock-internet-1.0.7-native-installer.run",
-          "size": 2034
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Internet/releases/download/v1.0.7/infiltrator-clock-internet_1.0.7_amd64.deb",
-          "digest": "sha256:a6d68b4bbb70322de26420690b7477ec506c588bbf5228dc9fa7c27cc8d0edc0",
-          "name": "infiltrator-clock-internet_1.0.7_amd64.deb",
-          "size": 7048
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "82d4168fd9ccf79f298c148adf813cf6958a0bd0"
-    },
-    "Clock-Italian-Hours": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Italian-Hours/releases/download/v1.0.7/clock-italian-hours-1.0.7-native-installer.run",
-          "digest": "sha256:921d658e61bfdd66d4c6054e68415d497792fdbe43cd46c4aefa7da08f108452",
-          "name": "clock-italian-hours-1.0.7-native-installer.run",
-          "size": 2039
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Italian-Hours/releases/download/v1.0.7/infiltrator-clock-italian-hours_1.0.7_amd64.deb",
-          "digest": "sha256:f74e0c19821a9e132f2c33e6e0b9fbee7d551bd7f188f14d044c2a6c6a2862da",
-          "name": "infiltrator-clock-italian-hours_1.0.7_amd64.deb",
-          "size": 9024
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "e1d11deefea87003ed81e87cc08bd55eba044e93"
-    },
-    "Clock-Japanese-Temporal": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal/releases/download/v1.0.6/clock-japanese-temporal-1.0.6-native-installer.run",
-          "digest": "sha256:6c75c7fe7a43e86cff5e0c5bce265b50e38e268226d3796fe888a3971c6eaf94",
-          "name": "clock-japanese-temporal-1.0.6-native-installer.run",
-          "size": 2043
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal/releases/download/v1.0.6/infiltrator-clock-japanese-temporal_1.0.6_amd64.deb",
-          "digest": "sha256:dd3f68cfb5c24351b8ef2b7692d19d1e325ad57df2fb3722fca391f414536992",
-          "name": "infiltrator-clock-japanese-temporal_1.0.6_amd64.deb",
-          "size": 12784
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "0047923681947be7384a333dbb87f7f678c0ce9f"
-    },
-    "Clock-Japanese-Temporal-Early": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal-Early/releases/download/v1.0.8/clock-japanese-temporal-early-1.0.8-native-installer.run",
-          "digest": "sha256:b970ea8d1c0d5a6a9e794ea9669dd9b9b53b50fdba309d0a2c1af04262803d76",
-          "name": "clock-japanese-temporal-early-1.0.8-native-installer.run",
-          "size": 2049
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal-Early/releases/download/v1.0.8/infiltrator-clock-japanese-temporal-early_1.0.8_amd64.deb",
-          "digest": "sha256:ca4bfde72b3c02d20ee251b48c1a29f2e53f2046c25a1d1ca4b248c79d3a0134",
-          "name": "infiltrator-clock-japanese-temporal-early_1.0.8_amd64.deb",
-          "size": 12852
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Indian-Ghati/releases/download/v1.0.8/infiltrator-clock-indian-ghati_1.0.8_amd64.deb",
+          "digest": "sha256:433a331c605d6f29e9bfdd8d90ab48b5dc953549bb59565c96ea1ac5686c3989",
+          "name": "infiltrator-clock-indian-ghati_1.0.8_amd64.deb",
+          "size": 8548
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.8",
-      "target_commitish": "b3c5a4a9cb837c5bbab141177683a0a3fde574ab"
+      "target_commitish": "9b3a5be9ba4f208f3a0ebb9751e1515c826bf69a"
+    },
+    "Clock-Internet": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Internet/releases/download/v1.0.8/clock-internet-1.0.8-native-installer.run",
+          "digest": "sha256:4503e8cce6e28d4cc0a9dd786d594b873e2c79d09b944b28cfd816d2f93fac8c",
+          "name": "clock-internet-1.0.8-native-installer.run",
+          "size": 2034
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Internet/releases/download/v1.0.8/infiltrator-clock-internet_1.0.8_amd64.deb",
+          "digest": "sha256:fa7a8f1c0d905c5051132bd6a4dc0ae16582f703492f67063ec5380292713a05",
+          "name": "infiltrator-clock-internet_1.0.8_amd64.deb",
+          "size": 6532
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.8",
+      "target_commitish": "7b535dbdbc6a3495f99891ca9392245e9a657be8"
+    },
+    "Clock-Italian-Hours": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Italian-Hours/releases/download/v1.0.9/clock-italian-hours-1.0.9-native-installer.run",
+          "digest": "sha256:2eb0f623a3ba78edb851bf2f6bb2c87557e75d7782e6bac68852f39f0a1b1519",
+          "name": "clock-italian-hours-1.0.9-native-installer.run",
+          "size": 2039
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Italian-Hours/releases/download/v1.0.9/infiltrator-clock-italian-hours_1.0.9_amd64.deb",
+          "digest": "sha256:b1de79911973de53b61e2059e60562114724f608313512017260d9659f6ca654",
+          "name": "infiltrator-clock-italian-hours_1.0.9_amd64.deb",
+          "size": 8772
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "9de96dfb0c532c8927939928837f7424d2775195"
+    },
+    "Clock-Japanese-Temporal": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal/releases/download/v1.0.9/clock-japanese-temporal-1.0.9-native-installer.run",
+          "digest": "sha256:c5b6cb9ad16104cecb3f421187600de7da2ddeed67c2b6d05711e87b2e2e2a65",
+          "name": "clock-japanese-temporal-1.0.9-native-installer.run",
+          "size": 2043
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal/releases/download/v1.0.9/infiltrator-clock-japanese-temporal_1.0.9_amd64.deb",
+          "digest": "sha256:86bf3d210ae18469bb28a2dda52dd42c8b93bc728e2178e095d29d5be743906e",
+          "name": "infiltrator-clock-japanese-temporal_1.0.9_amd64.deb",
+          "size": 12448
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "b5f7827d843da2f60561a5c6d5699d5a2a13b36e"
+    },
+    "Clock-Japanese-Temporal-Early": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal-Early/releases/download/v1.0.10/clock-japanese-temporal-early-1.0.10-native-installer.run",
+          "digest": "sha256:4085994b5e8087643ee270b951ae6da69d699672bf5ea1503d25d0d73141247a",
+          "name": "clock-japanese-temporal-early-1.0.10-native-installer.run",
+          "size": 2050
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Japanese-Temporal-Early/releases/download/v1.0.10/infiltrator-clock-japanese-temporal-early_1.0.10_amd64.deb",
+          "digest": "sha256:c82aea55b181bd80b8b409509a3117c12d9956164dba934579bdd7c38fc019a5",
+          "name": "infiltrator-clock-japanese-temporal-early_1.0.10_amd64.deb",
+          "size": 12448
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.10",
+      "target_commitish": "754242d48e23edb8decf24959789863eab81428b"
     },
     "Clock-Julian": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Julian/releases/download/v1.0.6/clock-julian-1.0.6-native-installer.run",
-          "digest": "sha256:aedbcfecddafab8a245efd3aa44feebf726ef541632cbcc13576d71b2a3b584a",
-          "name": "clock-julian-1.0.6-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Julian/releases/download/v1.0.8/clock-julian-1.0.8-native-installer.run",
+          "digest": "sha256:c3663ca130b89bf4a2a5d8472b1fcc2cf0fa93572c513d54263e54ac84cf1194",
+          "name": "clock-julian-1.0.8-native-installer.run",
           "size": 2032
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Julian/releases/download/v1.0.6/infiltrator-clock-julian_1.0.6_amd64.deb",
-          "digest": "sha256:27b82583670f703f937b4693573975619535cb7c98fdeaf38802fefd6b04da84",
-          "name": "infiltrator-clock-julian_1.0.6_amd64.deb",
-          "size": 6940
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Julian/releases/download/v1.0.8/infiltrator-clock-julian_1.0.8_amd64.deb",
+          "digest": "sha256:ce7f1e95644d92c29af68ca071eb7c1710b28df88fb7234f466eb86e972cb7fe",
+          "name": "infiltrator-clock-julian_1.0.8_amd64.deb",
+          "size": 6464
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "778a26036528ca60e0a434491a5f9772932028d7"
+      "tag_name": "v1.0.8",
+      "target_commitish": "b940be1e8ff32456b69a172f9ee741410c7baab1"
     },
     "Clock-Mean-Solar": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Mean-Solar/releases/download/v1.0.7/clock-mean-solar-1.0.7-native-installer.run",
-          "digest": "sha256:1bec571ffdee0f319532b7e9e0967bac37a9b162913cac89d756adc6e6c1f256",
-          "name": "clock-mean-solar-1.0.7-native-installer.run",
-          "size": 2036
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Mean-Solar/releases/download/v1.0.10/clock-mean-solar-1.0.10-native-installer.run",
+          "digest": "sha256:d660b8a0d76bc30f00b88e9a06527f73477fd09cd206e12f7db737cf78c05df7",
+          "name": "clock-mean-solar-1.0.10-native-installer.run",
+          "size": 2037
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Mean-Solar/releases/download/v1.0.7/infiltrator-clock-mean-solar_1.0.7_amd64.deb",
-          "digest": "sha256:4140b0aaacef70899275696d36a2ba56999a4c1c3afbda74da5feb50f07c0e85",
-          "name": "infiltrator-clock-mean-solar_1.0.7_amd64.deb",
-          "size": 7388
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Mean-Solar/releases/download/v1.0.10/infiltrator-clock-mean-solar_1.0.10_amd64.deb",
+          "digest": "sha256:27accb76a11a625ef4697692f5433091106a5823e4854f0e3669519538c8a6a6",
+          "name": "infiltrator-clock-mean-solar_1.0.10_amd64.deb",
+          "size": 7100
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "fb485f712658894b491ff56abaf429cb23d0920a"
+      "tag_name": "v1.0.10",
+      "target_commitish": "7fea6c5fb4c650f607b7fbb812bbcba17cbeb05a"
     },
     "Clock-Modified-Julian": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Modified-Julian/releases/download/v1.0.6/clock-modified-julian-1.0.6-native-installer.run",
-          "digest": "sha256:114710ad514393c9efafe44ef816bf0037126769636085536b464e4c1f58a562",
-          "name": "clock-modified-julian-1.0.6-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Modified-Julian/releases/download/v1.0.8/clock-modified-julian-1.0.8-native-installer.run",
+          "digest": "sha256:324ef1958f0654eccf079819fda3b6ff0f7f7c61d1b0dc46a24251795408ee94",
+          "name": "clock-modified-julian-1.0.8-native-installer.run",
           "size": 2041
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Modified-Julian/releases/download/v1.0.6/infiltrator-clock-modified-julian_1.0.6_amd64.deb",
-          "digest": "sha256:2157d716b5b33752aa6926a6a3dabaf667777188981410d789073306080ec32c",
-          "name": "infiltrator-clock-modified-julian_1.0.6_amd64.deb",
-          "size": 6892
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Modified-Julian/releases/download/v1.0.8/infiltrator-clock-modified-julian_1.0.8_amd64.deb",
+          "digest": "sha256:e16e0a3421ce9ae6a65819f9441391ff785d462de34cb4ac9dcee9983e11410a",
+          "name": "infiltrator-clock-modified-julian_1.0.8_amd64.deb",
+          "size": 6444
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.6",
-      "target_commitish": "37eee841ddc1e5728dc31e83db8c8e3720b6fb6e"
+      "tag_name": "v1.0.8",
+      "target_commitish": "8575439d2b51a03cc4d44cdf76e02655d9e0a491"
     },
     "Clock-Nuremberg-Hours": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Hours/releases/download/v1.0.12/clock-nuremberg-hours-1.0.12-native-installer.run",
-          "digest": "sha256:adfb3abcaf0a9b324d3389a67b50f72b2bdad05366dad6bfecdbcb62ee0a04be",
-          "name": "clock-nuremberg-hours-1.0.12-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Hours/releases/download/v1.0.14/clock-nuremberg-hours-1.0.14-native-installer.run",
+          "digest": "sha256:33fa62799e7bc13d371d9f1885735731b84227650058b10046a0da9067d3a06b",
+          "name": "clock-nuremberg-hours-1.0.14-native-installer.run",
           "size": 2042
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Hours/releases/download/v1.0.12/infiltrator-clock-nuremberg-hours_1.0.12_amd64.deb",
-          "digest": "sha256:fb4ca3d5a33f6400b30e117ae6c6d3bac9267a17beb4975ad6ea337fb15b404a",
-          "name": "infiltrator-clock-nuremberg-hours_1.0.12_amd64.deb",
-          "size": 9004
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Hours/releases/download/v1.0.14/infiltrator-clock-nuremberg-hours_1.0.14_amd64.deb",
+          "digest": "sha256:e3a4da77bd237d0e8d457c2f18dd30f633291c607f987178a8786bded943d655",
+          "name": "infiltrator-clock-nuremberg-hours_1.0.14_amd64.deb",
+          "size": 8904
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.14",
+      "target_commitish": "7039f29b3315b9d72c15d41bacf92f00576719cb"
+    },
+    "Clock-Nuremberg-Solar": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Solar/releases/download/v1.0.9/clock-nuremberg-solar-1.0.9-native-installer.run",
+          "digest": "sha256:29ffb67dfc62f4849737e4b27f0db625e8d364d4644bb94fb3219df824823603",
+          "name": "clock-nuremberg-solar-1.0.9-native-installer.run",
+          "size": 2041
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Solar/releases/download/v1.0.9/infiltrator-clock-nuremberg-solar_1.0.9_amd64.deb",
+          "digest": "sha256:3f5b92db3387e59bc0e6d512ae46b5a2b77696d9b692c644ca9863e01ec4ed2f",
+          "name": "infiltrator-clock-nuremberg-solar_1.0.9_amd64.deb",
+          "size": 9616
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "46b443a01584a69c0f549e5cc225e9902227ae5c"
+    },
+    "Clock-Roman-Temporal": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Roman-Temporal/releases/download/v1.0.9/clock-roman-temporal-1.0.9-native-installer.run",
+          "digest": "sha256:925368888ea6dd1663cdbfb6f4a2f46a2737d56474f103b6491535df39901784",
+          "name": "clock-roman-temporal-1.0.9-native-installer.run",
+          "size": 2040
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Roman-Temporal/releases/download/v1.0.9/infiltrator-clock-roman-temporal_1.0.9_amd64.deb",
+          "digest": "sha256:2901c902670031850b8cecdc1d81c677fde08a2b20ef5743f8b431db4c0a41f4",
+          "name": "infiltrator-clock-roman-temporal_1.0.9_amd64.deb",
+          "size": 11852
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v1.0.9",
+      "target_commitish": "cdebeb26a8781cfcfec8497b7477069c8d189fc7"
+    },
+    "Clock-Sidereal": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Sidereal/releases/download/v1.0.12/clock-sidereal-1.0.12-native-installer.run",
+          "digest": "sha256:7c4d02d6a74bea966e8a6d02aeadf82c9224a8d6c6bd4704374a14a9fc17e990",
+          "name": "clock-sidereal-1.0.12-native-installer.run",
+          "size": 2035
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Sidereal/releases/download/v1.0.12/infiltrator-clock-sidereal_1.0.12_amd64.deb",
+          "digest": "sha256:9fa82019f870931307bccf2db1c17bced45843839cfef6eea0c95ce85d0fd414",
+          "name": "infiltrator-clock-sidereal_1.0.12_amd64.deb",
+          "size": 7140
         }
       ],
       "draft": false,
       "prerelease": false,
       "tag_name": "v1.0.12",
-      "target_commitish": "ddd7ec61026e4576ad385e023bf06482466da737"
-    },
-    "Clock-Nuremberg-Solar": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Solar/releases/download/v1.0.7/clock-nuremberg-solar-1.0.7-native-installer.run",
-          "digest": "sha256:da62ae3102f3353bec87e3dd77b5334e7bdff15c1e85bfb498790ba209d27166",
-          "name": "clock-nuremberg-solar-1.0.7-native-installer.run",
-          "size": 2041
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Nuremberg-Solar/releases/download/v1.0.7/infiltrator-clock-nuremberg-solar_1.0.7_amd64.deb",
-          "digest": "sha256:6fed8f54d553da0d2d821eb2f9d85350167f4708c50ad5a9aa70d839f7a7226c",
-          "name": "infiltrator-clock-nuremberg-solar_1.0.7_amd64.deb",
-          "size": 9892
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "1dcb6189dfd1832f27a9e0f13ae2a65d2a82e557"
-    },
-    "Clock-Roman-Temporal": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Roman-Temporal/releases/download/v1.0.7/clock-roman-temporal-1.0.7-native-installer.run",
-          "digest": "sha256:71600fe02b4924e129b838a8b1422d52f6d905d65a10610f0b4174888d4972fa",
-          "name": "clock-roman-temporal-1.0.7-native-installer.run",
-          "size": 2040
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Roman-Temporal/releases/download/v1.0.7/infiltrator-clock-roman-temporal_1.0.7_amd64.deb",
-          "digest": "sha256:c0c8fd89195c9a3e63b76cd0e961d5377c8d3dca1ab44ed1681aebb2b9f13dc8",
-          "name": "infiltrator-clock-roman-temporal_1.0.7_amd64.deb",
-          "size": 12188
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "0ebf74363365b9090be2fa988d8d365060f14876"
-    },
-    "Clock-Sidereal": {
-      "assets": [
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Sidereal/releases/download/v1.0.9/clock-sidereal-1.0.9-native-installer.run",
-          "digest": "sha256:77a40f02cb2cdaa9df13a8128f81092d6f03be50506bd7e0adf1316dc55d4b9a",
-          "name": "clock-sidereal-1.0.9-native-installer.run",
-          "size": 2034
-        },
-        {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Sidereal/releases/download/v1.0.9/infiltrator-clock-sidereal_1.0.9_amd64.deb",
-          "digest": "sha256:8cb4ec59964867c784c102b319777b56d7a5b6081a044ea9f0ac449d03226e63",
-          "name": "infiltrator-clock-sidereal_1.0.9_amd64.deb",
-          "size": 7472
-        }
-      ],
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "v1.0.9",
-      "target_commitish": "1ed5942a7812beb7cf7f0f0e693e330eeeaa66f7"
+      "target_commitish": "bb00d703b52daaca7951d04cf34667ee32a36926"
     },
     "Clock-Solar": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Solar/releases/download/v1.0.7/clock-solar-1.0.7-native-installer.run",
-          "digest": "sha256:d9dd5ebc32cf7f360bcfe28c38a21571dc8e38be66d826ff035bfccc34983888",
-          "name": "clock-solar-1.0.7-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Solar/releases/download/v1.0.8/clock-solar-1.0.8-native-installer.run",
+          "digest": "sha256:2eb2e8e833d0a4dfcce2b76b98b76e6e359dfcd6298e16425a64796259437f07",
+          "name": "clock-solar-1.0.8-native-installer.run",
           "size": 2031
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Solar/releases/download/v1.0.7/infiltrator-clock-solar_1.0.7_amd64.deb",
-          "digest": "sha256:13beb3a4e4677318e2a51e994b3af4a550c424dead92e83c02f54b3953f90244",
-          "name": "infiltrator-clock-solar_1.0.7_amd64.deb",
-          "size": 8368
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Solar/releases/download/v1.0.8/infiltrator-clock-solar_1.0.8_amd64.deb",
+          "digest": "sha256:33b62623d256ebc9cca95431909aed54a7ce3fe5b0a6992e6a012382ebb2588e",
+          "name": "infiltrator-clock-solar_1.0.8_amd64.deb",
+          "size": 7904
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "b3513101a8c5f2a5bb2ce3e73c0cd16cd9f4bc04"
+      "tag_name": "v1.0.8",
+      "target_commitish": "02889d10c500b705df3475c315f86ecbae270ba6"
     },
     "Clock-Standard-12": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-12/releases/download/v1.0.9/clock-standard-12-1.0.9-native-installer.run",
-          "digest": "sha256:b806ef62b3b9ab87549f19dc37c8146dd88a0e12c61bb50c34d6827bf749dad6",
-          "name": "clock-standard-12-1.0.9-native-installer.run",
-          "size": 2037
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-12/releases/download/v1.0.10/clock-standard-12-1.0.10-native-installer.run",
+          "digest": "sha256:69363decee35a9eb2967401631b314eed0c76e7275aae3f3e6dc46ccaeab47a5",
+          "name": "clock-standard-12-1.0.10-native-installer.run",
+          "size": 2038
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-12/releases/download/v1.0.9/infiltrator-clock-standard-12_1.0.9_amd64.deb",
-          "digest": "sha256:30768fb19a65207bda0f5257d35967da2bc8a30b450c6bff671243324c44a484",
-          "name": "infiltrator-clock-standard-12_1.0.9_amd64.deb",
-          "size": 8008
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-12/releases/download/v1.0.10/infiltrator-clock-standard-12_1.0.10_amd64.deb",
+          "digest": "sha256:7eb724891defd843e3b583571dbf6929db790e13b42ca76bce5e35019e712bbb",
+          "name": "infiltrator-clock-standard-12_1.0.10_amd64.deb",
+          "size": 7320
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.9",
-      "target_commitish": "f970b39cfd44c1ae1b801d5785c50e85b1dc7829"
+      "tag_name": "v1.0.10",
+      "target_commitish": "1868ae10339355c5ca8e2949407587eae3fc6062"
     },
     "Clock-Standard-24": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-24/releases/download/v1.0.7/clock-standard-24-1.0.7-native-installer.run",
-          "digest": "sha256:87f3bf95db81d80ca06329af288d2df092f7ff445d49447da7659fa6811914c0",
-          "name": "clock-standard-24-1.0.7-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-24/releases/download/v1.0.8/clock-standard-24-1.0.8-native-installer.run",
+          "digest": "sha256:30bd08eb4fe8469a7485495796426e41207bccf4adebfd818e741ac841cacfb1",
+          "name": "clock-standard-24-1.0.8-native-installer.run",
           "size": 2037
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-24/releases/download/v1.0.7/infiltrator-clock-standard-24_1.0.7_amd64.deb",
-          "digest": "sha256:1a8dbce23ceed177977223dcbe85443a409bb5d380416b6f3cab34fc8c7ddac1",
-          "name": "infiltrator-clock-standard-24_1.0.7_amd64.deb",
-          "size": 7164
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Standard-24/releases/download/v1.0.8/infiltrator-clock-standard-24_1.0.8_amd64.deb",
+          "digest": "sha256:a08cb1db9aa524472e2d754b36d06ff530fb8406645445f5b105d83ff1f5ef0d",
+          "name": "infiltrator-clock-standard-24_1.0.8_amd64.deb",
+          "size": 6428
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "52f90b596aacfea9e04aa24772a794fd29e343d0"
+      "tag_name": "v1.0.8",
+      "target_commitish": "2f8cb1c233e04872735c9e70becde5055bac5567"
     },
     "Clock-Unix": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Unix/releases/download/v1.0.7/clock-unix-1.0.7-native-installer.run",
-          "digest": "sha256:86bb4a619b0e73d45f17a235645857dfeb73ac82ce409f6a4b19a416a3e84ccd",
-          "name": "clock-unix-1.0.7-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Unix/releases/download/v1.0.8/clock-unix-1.0.8-native-installer.run",
+          "digest": "sha256:5a2b99c55b1872412e742247142b43591c613b25a3ce11f172e25f121d9ce309",
+          "name": "clock-unix-1.0.8-native-installer.run",
           "size": 2030
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Unix/releases/download/v1.0.7/infiltrator-clock-unix_1.0.7_amd64.deb",
-          "digest": "sha256:b12575a43b0fb1a563d8054963bb871791fb691c2253c7677a37698d06557c68",
-          "name": "infiltrator-clock-unix_1.0.7_amd64.deb",
-          "size": 6732
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Clock-Unix/releases/download/v1.0.8/infiltrator-clock-unix_1.0.8_amd64.deb",
+          "digest": "sha256:bff67350f620087dc54ba12783a487f716eb955a38666e0398b07f38373d12e6",
+          "name": "infiltrator-clock-unix_1.0.8_amd64.deb",
+          "size": 6144
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.7",
-      "target_commitish": "28cd56bb90c932c95126fa8371483df3950ff962"
+      "tag_name": "v1.0.8",
+      "target_commitish": "d71ec4ceb042784972ac1aec92beca48a0319b3c"
     },
     "Defragmenter": {
       "assets": [
@@ -1328,42 +1328,42 @@
     "Filesystem-EXT3": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT3/releases/download/v1.0.22/filesystem-ext3-1.0.22-native-installer.run",
-          "digest": "sha256:7678c921633eba5ae09900f57eaeb8fa68c9226f014a6c43ff11d5ab5ab95998",
-          "name": "filesystem-ext3-1.0.22-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT3/releases/download/v1.0.23/filesystem-ext3-1.0.23-native-installer.run",
+          "digest": "sha256:4dc38ade4a054a4d53c09a1f14e75343dafa2fac2287e7b49c7314353e8859d3",
+          "name": "filesystem-ext3-1.0.23-native-installer.run",
           "size": 856
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT3/releases/download/v1.0.22/infiltrator-filesystem-ext3_1.0.22_amd64.deb",
-          "digest": "sha256:5db1c41f74ffa9e26872b5f57ea227d4cbf1962c2636b97c07b78e92e0a0c759",
-          "name": "infiltrator-filesystem-ext3_1.0.22_amd64.deb",
-          "size": 54574
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT3/releases/download/v1.0.23/infiltrator-filesystem-ext3_1.0.23_amd64.deb",
+          "digest": "sha256:0a8096e78e051747d622702ea22f470a58e2bc2330e6ceb98956e89d886e82d6",
+          "name": "infiltrator-filesystem-ext3_1.0.23_amd64.deb",
+          "size": 57046
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.22",
-      "target_commitish": "279001ec03eda291d23d4cb543d2b3277f1f2d9d"
+      "tag_name": "v1.0.23",
+      "target_commitish": "b0d0475c279675ec16b185f6c7d57e989737fac7"
     },
     "Filesystem-EXT4": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT4/releases/download/v1.0.25/filesystem-ext4-1.0.25-native-installer.run",
-          "digest": "sha256:4978ee113f22a792ae4c396f9a973ca0be1215285b53fe7c0157caadf9aa302e",
-          "name": "filesystem-ext4-1.0.25-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT4/releases/download/v1.0.26/filesystem-ext4-1.0.26-native-installer.run",
+          "digest": "sha256:a5f4698dc5d66702db8d6211eb438bc45855eb47c7d7da714f58c0dbb96f0cd7",
+          "name": "filesystem-ext4-1.0.26-native-installer.run",
           "size": 856
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT4/releases/download/v1.0.25/infiltrator-filesystem-ext4_1.0.25_amd64.deb",
-          "digest": "sha256:0014a221393321dd48094d441bca0d1ace2323269a9bc873fe1e739bda0c17b1",
-          "name": "infiltrator-filesystem-ext4_1.0.25_amd64.deb",
-          "size": 37236
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EXT4/releases/download/v1.0.26/infiltrator-filesystem-ext4_1.0.26_amd64.deb",
+          "digest": "sha256:2c461efd86c37d1ab3178b9df8d03aa7907387fcbc18f34495a377d7e4c77c85",
+          "name": "infiltrator-filesystem-ext4_1.0.26_amd64.deb",
+          "size": 37118
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.25",
-      "target_commitish": "0a3d5a2093bd895144ee746755d40726b10d63e6"
+      "tag_name": "v1.0.26",
+      "target_commitish": "6911d7b33d7864a7882e92e8d8db5461bade449e"
     },
     "Filesystem-FAT12": {
       "assets": [
@@ -1548,22 +1548,22 @@
     "Filesystem-PFS3": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-PFS3/releases/download/v1.0.20/filesystem-pfs3-1.0.20-native-installer.run",
-          "digest": "sha256:0bb9bf7a13a0bbac46b24bbfa91c60bf312513ea80ca99a2c569a9e8669610c4",
-          "name": "filesystem-pfs3-1.0.20-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-PFS3/releases/download/v1.0.21/filesystem-pfs3-1.0.21-native-installer.run",
+          "digest": "sha256:234f69c1667eb3faed38cb414249db7b0f5778c986cc3ea6fdebd237c6c6bdf2",
+          "name": "filesystem-pfs3-1.0.21-native-installer.run",
           "size": 856
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-PFS3/releases/download/v1.0.20/infiltrator-filesystem-pfs3_1.0.20_amd64.deb",
-          "digest": "sha256:4d7d33c73a0463adddf99328063c989c051c88bd6e16259ff3f2f69dd6b27570",
-          "name": "infiltrator-filesystem-pfs3_1.0.20_amd64.deb",
-          "size": 26154
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-PFS3/releases/download/v1.0.21/infiltrator-filesystem-pfs3_1.0.21_amd64.deb",
+          "digest": "sha256:af47b74a98ef92cfb6d518e8b83cc8f61bc184624268bebcc5272c2f31187a86",
+          "name": "infiltrator-filesystem-pfs3_1.0.21_amd64.deb",
+          "size": 26256
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.20",
-      "target_commitish": "2a4bfebea4b31ef0ea2d6cdbf6c04a7abcc7c5dc"
+      "tag_name": "v1.0.21",
+      "target_commitish": "8adba4a9dff9b7e450d1b57d8997a33780019eac"
     },
     "Filesystem-SFS": {
       "assets": [
@@ -1588,22 +1588,22 @@
     "Filesystem-SFS2": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-SFS2/releases/download/v0.1.13/filesystem-sfs2-0.1.13-native-installer.run",
-          "digest": "sha256:bc324c7ac5d7a709d19bade3236707cbd2f0268d940359fe024d9905f514ea0f",
-          "name": "filesystem-sfs2-0.1.13-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-SFS2/releases/download/v0.1.14/filesystem-sfs2-0.1.14-native-installer.run",
+          "digest": "sha256:1c6fb8d0bc2e730ebcccc6bdbe14bd82fa8a9d983a269c56e9eec03baed11e3a",
+          "name": "filesystem-sfs2-0.1.14-native-installer.run",
           "size": 856
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-SFS2/releases/download/v0.1.13/infiltrator-filesystem-sfs2_0.1.13_amd64.deb",
-          "digest": "sha256:b8f6fa60e77ba036305a6ca7738878ed5f9ff0d3f8ee4634ff3818f1f3fd10c7",
-          "name": "infiltrator-filesystem-sfs2_0.1.13_amd64.deb",
-          "size": 34706
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-SFS2/releases/download/v0.1.14/infiltrator-filesystem-sfs2_0.1.14_amd64.deb",
+          "digest": "sha256:f32769e5b9924369b2ffa7a5b9307ecf10f0a06f0f5fd7e4dc8198ca5ebb1cb5",
+          "name": "infiltrator-filesystem-sfs2_0.1.14_amd64.deb",
+          "size": 35348
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v0.1.13",
-      "target_commitish": "2adf2f03e31a8ec468138336e559488af671be91"
+      "tag_name": "v0.1.14",
+      "target_commitish": "a45e4816b2d52c946a013ea2fcda3fb3103f70e0"
     },
     "Filesystem-Swap": {
       "assets": [
@@ -1708,22 +1708,22 @@
     "Filesystem-exFAT": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-exFAT/releases/download/v0.1.29/filesystem-exfat-0.1.29-native-installer.run",
-          "digest": "sha256:7c99c01169d3793f23cd025aa43eccfb9326400289ab7f0f9231fe495e5ded64",
-          "name": "filesystem-exfat-0.1.29-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-exFAT/releases/download/v0.1.30/filesystem-exfat-0.1.30-native-installer.run",
+          "digest": "sha256:871337f5b17251e4ee65c26badc70ab4552bfde8b579c8773e8b626c2230191a",
+          "name": "filesystem-exfat-0.1.30-native-installer.run",
           "size": 858
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-exFAT/releases/download/v0.1.29/infiltrator-filesystem-exfat_0.1.29_amd64.deb",
-          "digest": "sha256:e95153e50e12ca63448f332ae082cdf432df297fe918c663f9918a47b7c71d2b",
-          "name": "infiltrator-filesystem-exfat_0.1.29_amd64.deb",
-          "size": 92542
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-exFAT/releases/download/v0.1.30/infiltrator-filesystem-exfat_0.1.30_amd64.deb",
+          "digest": "sha256:1f9e5f3920b7fc43931ecdcf1979268f6cf8d813dcf75fdde2f5cc720b9f5e73",
+          "name": "infiltrator-filesystem-exfat_0.1.30_amd64.deb",
+          "size": 88028
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v0.1.29",
-      "target_commitish": "abc426424c0047497b8392885fc369f6daab7d5a"
+      "tag_name": "v0.1.30",
+      "target_commitish": "94d04037fb373fd57bbcd486846243bbde8b67c6"
     },
     "System-Monitor": {
       "assets": [
