@@ -1288,22 +1288,22 @@
     "Filesystem-EFS": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EFS/releases/download/v0.1.15/filesystem-efs-0.1.15-native-installer.run",
-          "digest": "sha256:7f636f0e6dec28ba12bc43bee83500bf71868ff3324321c0b2941616abbd76d2",
-          "name": "filesystem-efs-0.1.15-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EFS/releases/download/v0.1.16/filesystem-efs-0.1.16-native-installer.run",
+          "digest": "sha256:2a98c6af9c7452e70c3cc938dac0bfbcc63735ebcb1b531af9fe6f51cad92ab7",
+          "name": "filesystem-efs-0.1.16-native-installer.run",
           "size": 1454
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EFS/releases/download/v0.1.15/infiltrator-filesystem-efs_0.1.15_amd64.deb",
-          "digest": "sha256:a239ffad3f9024fa49fddb7ec1940d6c0a18107fe70a2269309a4fdc252b6fc0",
-          "name": "infiltrator-filesystem-efs_0.1.15_amd64.deb",
-          "size": 46428
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-EFS/releases/download/v0.1.16/infiltrator-filesystem-efs_0.1.16_amd64.deb",
+          "digest": "sha256:c009cd897ec833b1fc760d010eb1d8b6be29a864056fccc5fdbb50143bbd33d4",
+          "name": "infiltrator-filesystem-efs_0.1.16_amd64.deb",
+          "size": 46436
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v0.1.15",
-      "target_commitish": "2e150de79daa85db41679a5944fb003c7c75c502"
+      "tag_name": "v0.1.16",
+      "target_commitish": "7ec2c75cf643e22fe76a1ad064f9da78b14eeed5"
     },
     "Filesystem-EXT2": {
       "assets": [
