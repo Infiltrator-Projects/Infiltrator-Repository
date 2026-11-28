@@ -1,5 +1,7 @@
 {
-  "pending": {},
+  "pending": {
+    "Filesystem-VMFS6": "Filesystem-VMFS6: 0.0.1 is below the catalogue minimum 0.1.0"
+  },
   "releases": {
     "Boot": {
       "assets": [
@@ -1225,6 +1227,26 @@
       "prerelease": false,
       "tag_name": "v0.1.84"
     },
+    "Filesystem-ADFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ADFS/releases/download/v0.1.1/filesystem-adfs-0.1.1-native-installer.run",
+          "digest": "sha256:8ab8c1c358575ebf763e1bd05c1289924d729fa9e337127df79e1c712e692524",
+          "name": "filesystem-adfs-0.1.1-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ADFS/releases/download/v0.1.1/infiltrator-filesystem-adfs_0.1.1_amd64.deb",
+          "digest": "sha256:daffd0f4d32c5792c0e231a873397c10a64c72550329264e5e5b9ebdc3ff1b15",
+          "name": "infiltrator-filesystem-adfs_0.1.1_amd64.deb",
+          "size": 21794
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "357384de1bf72d992d58f93d157e8ad3faf0b4cd"
+    },
     "Filesystem-APFS": {
       "assets": [
         {
@@ -1265,6 +1287,46 @@
       "tag_name": "v0.1.2",
       "target_commitish": "9ba7a3ceaa06fc93b919a49595d3cb6f0527966a"
     },
+    "Filesystem-Bcachefs": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Bcachefs/releases/download/v0.1.0/filesystem-bcachefs-0.1.0-native-installer.run",
+          "digest": "sha256:79ae7f466fc86fb4911962acefd68056996219477f4744b56411fc74d2669e13",
+          "name": "filesystem-bcachefs-0.1.0-native-installer.run",
+          "size": 1715
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Bcachefs/releases/download/v0.1.0/infiltrator-filesystem-bcachefs_0.1.0_amd64.deb",
+          "digest": "sha256:ab000f1e5a5edd85b1d51b97c14269850816dbb58536920e8b2b9d5561adc78b",
+          "name": "infiltrator-filesystem-bcachefs_0.1.0_amd64.deb",
+          "size": 15758
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.0",
+      "target_commitish": "cd0be31735cbc10d42f6762b12fba04cf41a56ae"
+    },
+    "Filesystem-BeFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-BeFS/releases/download/v0.1.1/filesystem-befs-0.1.1-native-installer.run",
+          "digest": "sha256:5bb2d4bea6961ee5351cad43d0e2be6e6dfc529709f1384a5d8a877d2af5eba2",
+          "name": "filesystem-befs-0.1.1-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-BeFS/releases/download/v0.1.1/infiltrator-filesystem-befs_0.1.1_amd64.deb",
+          "digest": "sha256:a34b30892258cc28cac5d53e2e573f4298403808f1405e0e094b03b44c47fc40",
+          "name": "infiltrator-filesystem-befs_0.1.1_amd64.deb",
+          "size": 23640
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "9fa19d205178d77ff86d1aa0a0a380974c6f9583"
+    },
     "Filesystem-Btrfs": {
       "assets": [
         {
@@ -1284,6 +1346,26 @@
       "prerelease": false,
       "tag_name": "v1.0.18",
       "target_commitish": "a1f0f76c795912bfe87ce622b8de7f4d9582d9db"
+    },
+    "Filesystem-CPM": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-CPM/releases/download/v0.1.0/filesystem-cpm-0.1.0-native-installer.run",
+          "digest": "sha256:ce375c64d359986420b74d34da07f8ced1a69ab46243230af61e2d82a80eb9db",
+          "name": "filesystem-cpm-0.1.0-native-installer.run",
+          "size": 1705
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-CPM/releases/download/v0.1.0/infiltrator-filesystem-cpm_0.1.0_amd64.deb",
+          "digest": "sha256:3f7f9bf83478ce7ceccc97e8091c783b492c9d7492e1b5282ba3466e0d2501ca",
+          "name": "infiltrator-filesystem-cpm_0.1.0_amd64.deb",
+          "size": 12634
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.0",
+      "target_commitish": "7b18df850b3a90a228458113bea2b688ba7efa0a"
     },
     "Filesystem-EFS": {
       "assets": [
@@ -1365,6 +1447,26 @@
       "tag_name": "v1.0.26",
       "target_commitish": "6911d7b33d7864a7882e92e8d8db5461bade449e"
     },
+    "Filesystem-F2FS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-F2FS/releases/download/v0.1.1/filesystem-f2fs-0.1.1-native-installer.run",
+          "digest": "sha256:cbf89d1fd020f15404182be0415f774bbc7a87bae6f9e82b49a28c16f397c9cc",
+          "name": "filesystem-f2fs-0.1.1-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-F2FS/releases/download/v0.1.1/infiltrator-filesystem-f2fs_0.1.1_amd64.deb",
+          "digest": "sha256:78018f9eb2558fdae0308b454f9df20edb1735028122a210bc33e76267ebebc9",
+          "name": "infiltrator-filesystem-f2fs_0.1.1_amd64.deb",
+          "size": 17376
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "0ec939270ca228aa0cfe3d062535c1bd01ef6add"
+    },
     "Filesystem-FAT12": {
       "assets": [
         {
@@ -1445,6 +1547,46 @@
       "tag_name": "v1.0.28",
       "target_commitish": "dbb98fd7466c77f62e5db2c39faac7f9fe53effb"
     },
+    "Filesystem-Fosfat": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Fosfat/releases/download/v0.1.0/filesystem-fosfat-0.1.0-native-installer.run",
+          "digest": "sha256:f9500f968f6eb66e3c90eaab6934475f5c9a3eda6961844ab9c93db7921e3bd2",
+          "name": "filesystem-fosfat-0.1.0-native-installer.run",
+          "size": 1711
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Fosfat/releases/download/v0.1.0/infiltrator-filesystem-fosfat_0.1.0_amd64.deb",
+          "digest": "sha256:1db6ec053ed89f9f80c400a1ded76342d99ddb481f3adbcc201b31230fbcd48f",
+          "name": "infiltrator-filesystem-fosfat_0.1.0_amd64.deb",
+          "size": 17840
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.0",
+      "target_commitish": "76c48adfafaad8cb26deb11734830755a8cbd485"
+    },
+    "Filesystem-GFS2": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-GFS2/releases/download/v0.1.1/filesystem-gfs2-0.1.1-native-installer.run",
+          "digest": "sha256:2f05b32bdf5526df51e6e326e7bdc6bf56d2bd49e67a93262d6b1d82e4f3cd0e",
+          "name": "filesystem-gfs2-0.1.1-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-GFS2/releases/download/v0.1.1/infiltrator-filesystem-gfs2_0.1.1_amd64.deb",
+          "digest": "sha256:4591ced07000ba54663c5c364d28a44a16546bd63e5b30085bd584864222b198",
+          "name": "infiltrator-filesystem-gfs2_0.1.1_amd64.deb",
+          "size": 17248
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "d690103349cc16649ef8715717a0713e4b4abcbe"
+    },
     "Filesystem-HFS": {
       "assets": [
         {
@@ -1485,6 +1627,46 @@
       "tag_name": "v1.0.19",
       "target_commitish": "0ed82d41510d9e3eb403b0385fa7fc6c47fdb4e0"
     },
+    "Filesystem-HPFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-HPFS/releases/download/v0.1.1/filesystem-hpfs-0.1.1-native-installer.run",
+          "digest": "sha256:aff2e2ecd1cb039f56a44e8297febdec8c6345702d966600a120a852ab342e6a",
+          "name": "filesystem-hpfs-0.1.1-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-HPFS/releases/download/v0.1.1/infiltrator-filesystem-hpfs_0.1.1_amd64.deb",
+          "digest": "sha256:9a7c2fc4711d8fe382070cc7a7f12714787083dbf5cf801a20319f7e60a09def",
+          "name": "infiltrator-filesystem-hpfs_0.1.1_amd64.deb",
+          "size": 19992
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "3d719ad50f36907b8a1ed4d863dd5769e28caceb"
+    },
+    "Filesystem-JFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-JFS/releases/download/v0.1.1/filesystem-jfs-0.1.1-native-installer.run",
+          "digest": "sha256:6e129980a7269c10c4fb49a7e5ac579c869190a7cbade765670c72ca2ff1c3c6",
+          "name": "filesystem-jfs-0.1.1-native-installer.run",
+          "size": 1705
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-JFS/releases/download/v0.1.1/infiltrator-filesystem-jfs_0.1.1_amd64.deb",
+          "digest": "sha256:5c31bce75140cd008400eb5caf55ca22397b26250ec106c62a68d288d93adeaf",
+          "name": "infiltrator-filesystem-jfs_0.1.1_amd64.deb",
+          "size": 16324
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "6e04e34ac8ef3da1c7865d0c524e0702e305317f"
+    },
     "Filesystem-Minix": {
       "assets": [
         {
@@ -1504,6 +1686,26 @@
       "prerelease": false,
       "tag_name": "v1.0.22",
       "target_commitish": "8e4dabccda4b0372f9e99d86cec21d0781947a0d"
+    },
+    "Filesystem-NILFS2": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-NILFS2/releases/download/v0.1.1/filesystem-nilfs2-0.1.1-native-installer.run",
+          "digest": "sha256:2be9f40acc1b5fd46a0186fce41502285e6225a24c383cabc743b14eb8b6034d",
+          "name": "filesystem-nilfs2-0.1.1-native-installer.run",
+          "size": 1711
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-NILFS2/releases/download/v0.1.1/infiltrator-filesystem-nilfs2_0.1.1_amd64.deb",
+          "digest": "sha256:1426e7bc60291f8d633415bc5b47fb4fb69c4ed04840946b033d84084ee01494",
+          "name": "infiltrator-filesystem-nilfs2_0.1.1_amd64.deb",
+          "size": 17790
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "592ec6a25df33125889ce7a2349c25713844084b"
     },
     "Filesystem-NTFS": {
       "assets": [
@@ -1525,6 +1727,26 @@
       "tag_name": "v1.0.31",
       "target_commitish": "430f716df21d843917cbfe2d5d025692def2e089"
     },
+    "Filesystem-OCFS2": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-OCFS2/releases/download/v0.1.1/filesystem-ocfs2-0.1.1-native-installer.run",
+          "digest": "sha256:3e02ab433ba1bd4e7142deb48a1da14bbb5abf7b59f4e4ea3d9142a44c40e354",
+          "name": "filesystem-ocfs2-0.1.1-native-installer.run",
+          "size": 1709
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-OCFS2/releases/download/v0.1.1/infiltrator-filesystem-ocfs2_0.1.1_amd64.deb",
+          "digest": "sha256:1e85616759bae25c00381c762dfd954a3a84ded070b46800998f4f9ec780ede3",
+          "name": "infiltrator-filesystem-ocfs2_0.1.1_amd64.deb",
+          "size": 16720
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "72507e90b158540f0141af7aefa8eb2e79fc4e86"
+    },
     "Filesystem-OFS": {
       "assets": [
         {
@@ -1545,6 +1767,26 @@
       "tag_name": "v0.1.24",
       "target_commitish": "790fa04b1e787ad45ca7846b07373dbb6eccce73"
     },
+    "Filesystem-OMFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-OMFS/releases/download/v0.1.1/filesystem-omfs-0.1.1-native-installer.run",
+          "digest": "sha256:8d22b17fb8741ec24b7c0bbf516461df33b394e09d70272570db2c264bb75897",
+          "name": "filesystem-omfs-0.1.1-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-OMFS/releases/download/v0.1.1/infiltrator-filesystem-omfs_0.1.1_amd64.deb",
+          "digest": "sha256:f41cd9884b7bef8d361f252bfc660e4f769324268ccd197a23eb521976dbb038",
+          "name": "infiltrator-filesystem-omfs_0.1.1_amd64.deb",
+          "size": 18552
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "13ff515e341be3d5f49eb706b391668c08024180"
+    },
     "Filesystem-PFS3": {
       "assets": [
         {
@@ -1564,6 +1806,66 @@
       "prerelease": false,
       "tag_name": "v1.0.21",
       "target_commitish": "8adba4a9dff9b7e450d1b57d8997a33780019eac"
+    },
+    "Filesystem-QNX4": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-QNX4/releases/download/v0.1.12/filesystem-qnx4-0.1.12-native-installer.run",
+          "digest": "sha256:5410a130cd6c256efd5644b396b9c805f746b1365241f7798d29605d4f7b4082",
+          "name": "filesystem-qnx4-0.1.12-native-installer.run",
+          "size": 1709
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-QNX4/releases/download/v0.1.12/infiltrator-filesystem-qnx4_0.1.12_amd64.deb",
+          "digest": "sha256:1781eb1249b9c58b810b5018dee3114d7d7017f315258a491a9b5a9dd92a43d5",
+          "name": "infiltrator-filesystem-qnx4_0.1.12_amd64.deb",
+          "size": 51880
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.12",
+      "target_commitish": "7e4a58bb886532f2661adffe7d12c12ebd569830"
+    },
+    "Filesystem-QNX6": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-QNX6/releases/download/v0.1.0/filesystem-qnx6-0.1.0-native-installer.run",
+          "digest": "sha256:9062ec10f5e525007552954d85791ee3df3d6a61ae6806e801b0a1fddebe9777",
+          "name": "filesystem-qnx6-0.1.0-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-QNX6/releases/download/v0.1.0/infiltrator-filesystem-qnx6_0.1.0_amd64.deb",
+          "digest": "sha256:7ea583e14f32b4543c47fc7f251f15582440bd81802b4707956c56ed1345eed6",
+          "name": "infiltrator-filesystem-qnx6_0.1.0_amd64.deb",
+          "size": 19072
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.0",
+      "target_commitish": "fe3f04792e6e175abccb51c9995b96a4f995a3fc"
+    },
+    "Filesystem-ReiserFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ReiserFS/releases/download/v0.1.0/filesystem-reiserfs-0.1.0-native-installer.run",
+          "digest": "sha256:c5164c843bf3765dbf185904f5a1d034cee28a3090e8a2b1d9d7fd1246307097",
+          "name": "filesystem-reiserfs-0.1.0-native-installer.run",
+          "size": 1715
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ReiserFS/releases/download/v0.1.0/infiltrator-filesystem-reiserfs_0.1.0_amd64.deb",
+          "digest": "sha256:028bbe84f6872f13f6851e323dcf7ee37225ca490428d8dec5e682c9edd22b3b",
+          "name": "infiltrator-filesystem-reiserfs_0.1.0_amd64.deb",
+          "size": 22288
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.0",
+      "target_commitish": "0eb5a11e5581e3d019274c17c250e043e080fdd3"
     },
     "Filesystem-SFS": {
       "assets": [
@@ -1608,42 +1910,82 @@
     "Filesystem-Swap": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Swap/releases/download/v1.0.14/filesystem-swap-1.0.14-native-installer.run",
-          "digest": "sha256:7413dbac99c3dac09c6e809a6fff10ba4630f761fb9df365dee9aaf4c50e1f9e",
-          "name": "filesystem-swap-1.0.14-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Swap/releases/download/v1.0.15/filesystem-swap-1.0.15-native-installer.run",
+          "digest": "sha256:0112dde1859c172eed7e89a269e2e2664811f3cd94052617390bb4f85601d6b8",
+          "name": "filesystem-swap-1.0.15-native-installer.run",
           "size": 856
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Swap/releases/download/v1.0.14/infiltrator-filesystem-swap_1.0.14_amd64.deb",
-          "digest": "sha256:b8f55b7b70fa113bb9fd19e3a6bc6db20da7283bd41f1940a1df9550ad1a7e52",
-          "name": "infiltrator-filesystem-swap_1.0.14_amd64.deb",
-          "size": 12842
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-Swap/releases/download/v1.0.15/infiltrator-filesystem-swap_1.0.15_amd64.deb",
+          "digest": "sha256:7cdb2a1907af8289d1c0d270c2c1921b2e27c7a0f51fa46b7ca03105c110484b",
+          "name": "infiltrator-filesystem-swap_1.0.15_amd64.deb",
+          "size": 10066
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.14",
-      "target_commitish": "65930d4888ad577c628eb91eb4757909a608d446"
+      "tag_name": "v1.0.15",
+      "target_commitish": "3fa81df3c43cd23281f16c2be2f4b5b8f36b344b"
+    },
+    "Filesystem-SysV": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-SysV/releases/download/v0.1.0/filesystem-sysv-0.1.0-native-installer.run",
+          "digest": "sha256:b02dc31f23cf3a9a43c222221ca891d49ee2e5979a3cdc5fb613c255de5d932d",
+          "name": "filesystem-sysv-0.1.0-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-SysV/releases/download/v0.1.0/infiltrator-filesystem-sysv_0.1.0_amd64.deb",
+          "digest": "sha256:7c77e240c518269af4e28079c50a6fd1750034ad33541e94a7c599b0796a5b5c",
+          "name": "infiltrator-filesystem-sysv_0.1.0_amd64.deb",
+          "size": 19312
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.0",
+      "target_commitish": "f0f8d4c9a28fe329b0f3a3999729aafb5dbc5096"
+    },
+    "Filesystem-UDF": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UDF/releases/download/v0.1.0/filesystem-udf-0.1.0-native-installer.run",
+          "digest": "sha256:ca4e5fa6012f5cf3dd53ff1990ebadb5b1b7858fe27b15a2f001a15e427c5f52",
+          "name": "filesystem-udf-0.1.0-native-installer.run",
+          "size": 1705
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UDF/releases/download/v0.1.0/infiltrator-filesystem-udf_0.1.0_amd64.deb",
+          "digest": "sha256:e19f8c0f4e4f383b016b415c6988f87bba6fd80c2afa06d554d903b7c8decbe2",
+          "name": "infiltrator-filesystem-udf_0.1.0_amd64.deb",
+          "size": 23890
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.0",
+      "target_commitish": "3a14b208b53f4b498f6101249d654d1a85f8ee11"
     },
     "Filesystem-UFS1": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.26/filesystem-ufs1-1.0.26-native-installer.run",
-          "digest": "sha256:e296b040ddce47444993e95ae4b60b74e63d054828b3626757a1a535afb3976f",
-          "name": "filesystem-ufs1-1.0.26-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.27/filesystem-ufs1-1.0.27-native-installer.run",
+          "digest": "sha256:7c5417f8ca8e839034c961c79f811328d4b07b0f601e722064e65cf3522357cf",
+          "name": "filesystem-ufs1-1.0.27-native-installer.run",
           "size": 856
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.26/infiltrator-filesystem-ufs1_1.0.26_amd64.deb",
-          "digest": "sha256:2f80dd9c923f5a8220a98a6efa5797fde929db2e8ea224bc4d64b22641cabb38",
-          "name": "infiltrator-filesystem-ufs1_1.0.26_amd64.deb",
-          "size": 68504
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-UFS1/releases/download/v1.0.27/infiltrator-filesystem-ufs1_1.0.27_amd64.deb",
+          "digest": "sha256:ba32d4edff324a6a7e12319b8540ee0b392c2e193e79d79e962acff03e9480e7",
+          "name": "infiltrator-filesystem-ufs1_1.0.27_amd64.deb",
+          "size": 68140
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.26",
-      "target_commitish": "fd86b0fad058cba1ba0aca13b25ee2b0e3165a44"
+      "tag_name": "v1.0.27",
+      "target_commitish": "be395abb4a6c4163f3bd005fd2a64f7adba0a530"
     },
     "Filesystem-UFS2": {
       "assets": [
@@ -1664,6 +2006,26 @@
       "prerelease": false,
       "tag_name": "v1.0.33",
       "target_commitish": "cf89573a17435b8c3c4b2cadb8f4fb30132bb573"
+    },
+    "Filesystem-VMFS": {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-VMFS/releases/download/v0.1.1/filesystem-vmfs-0.1.1-native-installer.run",
+          "digest": "sha256:de340460fdcff02d34b288ddbf0123bd102a816d32cbb0ce0412293fb7028962",
+          "name": "filesystem-vmfs-0.1.1-native-installer.run",
+          "size": 1707
+        },
+        {
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-VMFS/releases/download/v0.1.1/infiltrator-filesystem-vmfs_0.1.1_amd64.deb",
+          "digest": "sha256:34e6eaa26a91840b3c516144985b7c04185d4d5c30bb27c174abd0a3edf16b95",
+          "name": "infiltrator-filesystem-vmfs_0.1.1_amd64.deb",
+          "size": 17118
+        }
+      ],
+      "draft": false,
+      "prerelease": false,
+      "tag_name": "v0.1.1",
+      "target_commitish": "dbf398ed72a05d2fac991251b877d4f74dc877c3"
     },
     "Filesystem-XFS": {
       "assets": [
@@ -1688,22 +2050,22 @@
     "Filesystem-ZFS": {
       "assets": [
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ZFS/releases/download/v1.0.14/filesystem-zfs-1.0.14-native-installer.run",
-          "digest": "sha256:448e405dd10d0b986c4ac355cd26be55d4516fc45272e0c89ee92c223e54b639",
-          "name": "filesystem-zfs-1.0.14-native-installer.run",
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ZFS/releases/download/v1.0.15/filesystem-zfs-1.0.15-native-installer.run",
+          "digest": "sha256:673fd35ca59f80b26e67b0f24e82d8420fa3ff6f08eeb62a5fae164f379c0e1e",
+          "name": "filesystem-zfs-1.0.15-native-installer.run",
           "size": 854
         },
         {
-          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ZFS/releases/download/v1.0.14/infiltrator-filesystem-zfs_1.0.14_amd64.deb",
-          "digest": "sha256:0e96a8119e38f448ecf435ce81db4c9ee0b0c1a43ac466c11b235d21ccce8f72",
-          "name": "infiltrator-filesystem-zfs_1.0.14_amd64.deb",
-          "size": 32588
+          "browser_download_url": "https://github.com/Infiltrator-Projects/Filesystem-ZFS/releases/download/v1.0.15/infiltrator-filesystem-zfs_1.0.15_amd64.deb",
+          "digest": "sha256:5840c6b02dc4913dcc029d5670cf37ca7fe175c21195a29c93e18e3eb9a5765b",
+          "name": "infiltrator-filesystem-zfs_1.0.15_amd64.deb",
+          "size": 32706
         }
       ],
       "draft": false,
       "prerelease": false,
-      "tag_name": "v1.0.14",
-      "target_commitish": "e441b22ec6fd42089d85503c02e83f08b2a730e6"
+      "tag_name": "v1.0.15",
+      "target_commitish": "69828bbded492347341593650406afaed84f98f9"
     },
     "Filesystem-exFAT": {
       "assets": [
