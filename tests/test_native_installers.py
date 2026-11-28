@@ -37,6 +37,14 @@ class NativeInstallers(unittest.TestCase):
             ],
         }
 
+    def test_manual_only_pair_stays_below_native_release_floor(self):
+        repo = "Filesystem-VMFS6"
+        entry = {"minimum_version": "0.1.0"}
+        with self.assertRaisesRegex(ValueError, "below the catalogue minimum"):
+            publisher.verify(repo, entry, self.release(repo, "0.0.1"))
+        self.assertEqual(publisher.verify(repo, entry, self.release(repo, "0.1.10"))["tag_name"],
+                         "v0.1.10")
+
     def test_all_five_filesystems_accept_current_two_asset_release_contract(self):
         versions = {
             "Filesystem-FAT12": "0.1.30",

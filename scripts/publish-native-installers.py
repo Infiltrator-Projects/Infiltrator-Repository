@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import time
 import urllib.error
 import urllib.request
@@ -66,6 +67,14 @@ def verify(repository: str, item: dict, raw: dict) -> dict:
     if not isinstance(tag, str) or not VERSION.fullmatch(tag):
         raise ValueError(repository + ": invalid release version")
     version = tag[1:]
+    # Source-only manual releases use the same artifact names as runtime packages.
+    # Apply the catalogue's Debian version floor here as well as in the APT
+    # publisher so those historical pairs cannot enter the native OS snapshot.
+    minimum = item.get("minimum_version")
+    if minimum:
+        comparison = subprocess.run(["dpkg", "--compare-versions", version, "ge", minimum])
+        if comparison.returncode:
+            raise ValueError(f"{repository}: {version} is below the catalogue minimum {minimum}")
     prefix = f"https://github.com/{OWNER}/{repository}/releases/download/{tag}/"
     original = raw.get("assets")
     if not isinstance(original, list) or not original:
